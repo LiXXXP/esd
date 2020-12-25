@@ -13,6 +13,22 @@ const routes = [
         },
         component: () => import('@/components/index')
     },
+    {
+        path: '/register',
+        name: 'register',
+        meta: {
+            title: 'esd',
+        },
+        component: () => import('@/components/header/login/register')
+    },
+    {
+        path: '/login',
+        name: 'login',
+        meta: {
+            title: 'esd',
+        },
+        component: () => import('@/components/header/login/login')
+    },
 ]
 
 const router = createRouter({
