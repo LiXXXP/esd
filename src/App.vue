@@ -1,17 +1,8 @@
 <template>
-    <Index/>
+    <div id="app">
+        <router-view/>
+    </div>
 </template>
-
-<script>
-import Index from './components/index.vue'
-
-export default {
-    name: 'App',
-    components: {
-        Index
-    }
-}
-</script>
 
 <style>
     html,
@@ -19,5 +10,7 @@ export default {
     #app {
         width: 100%;
         height: 100%;
+        margin: 0;
+        padding: 0;
     }
 </style>

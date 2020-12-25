@@ -1,7 +1,6 @@
 import axios from 'axios'
-// import Qs from 'qs'
 import { sparkUrl } from './config'
-import { Message } from 'element-ui'
+import { Message } from 'element-plus'
 
 const TIMEOUT = 30000 // 设置请求超时时间
 
@@ -110,8 +109,6 @@ function putRequest(url,params = {}){
 export {
     getRequest,
     postRequest,
-    putRequest,
-    getEventList,
-    postEvents
+    putRequest
 }
 

@@ -7,7 +7,6 @@ import { BASE_PATH } from '@/scripts/config'
 const routes = [
     {
         path: '/',
-        redirect: '/index',
         name: 'index',
         meta: {
             title: 'esd',
@@ -18,7 +17,7 @@ const routes = [
 
 const router = createRouter({
 	history: createWebHashHistory(),
-    routes: routes
+    routes
 })
 
 // router.beforeEach((to, from, next) => {

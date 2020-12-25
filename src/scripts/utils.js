@@ -1,4 +1,3 @@
-// import CryptoJS from 'crypto-js'
 /**
  * 设置title
  * @param title 参数
@@ -65,30 +64,6 @@ function transHtml(str) {
         }
     }
     return str;
-}
-
-/**
- * AES加密
- */
-function encrypt(word, keyStr) {
-    let key = CryptoJS.enc.Utf8.parse(keyStr);
-    let encrypted = CryptoJS.AES.encrypt(word, key, {
-            mode: CryptoJS.mode.ECB,
-            padding: CryptoJS.pad.Pkcs7
-        });
-    return encrypted.toString();
-}
-
-/**
- * AES解密
- */
-function decrypt(word, keyStr) {
-    let key = CryptoJS.enc.Utf8.parse(keyStr);
-    let decrypted = CryptoJS.AES.decrypt(word, key, {
-        mode: CryptoJS.mode.ECB,
-        padding: CryptoJS.pad.Pkcs7
-    });
-    return decrypted.toString(CryptoJS.enc.Utf8);
 }
 
  /**
@@ -296,11 +271,35 @@ function resolveDeleteKey(str) {
     return str;
 }
 
+// 防抖
+function useDebounce(cb, delay) {
+    let start = +new Date()
+    return function (context, args) {
+        const now = +new Date()
+        if (now - start >= delay) {
+            cb.apply(context, args)
+            start = now
+        } else {
+            start = now
+        }
+    }
+}
+
+// 节流
+function useThrottle(cb, duration) {
+    let start = +new Date()
+    return function (context, args) {
+        const now = +new Date()
+        if (now - start >= duration) {
+            cb.apply(context, args)
+            start = now
+        }
+    }
+}
+
 export {
     setTitle,
     transHtml,
-    encrypt,
-    decrypt,
     getUrlParam,
     delQueStr,
     isPC,
@@ -312,5 +311,7 @@ export {
     getTrueData,
     formatDate,
     resolveDeleteKey,
-    getCurrentDate
+    getCurrentDate,
+    useDebounce,
+    useThrottle
 };
