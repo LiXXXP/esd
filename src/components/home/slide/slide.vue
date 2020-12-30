@@ -2,7 +2,7 @@
     <div class="slide">
         <el-carousel :interval="3000" arrow="always">
             <el-carousel-item 
-                v-for="item in 4" 
+                v-for="item in 2" 
                 :key="item">
             </el-carousel-item>
         </el-carousel>

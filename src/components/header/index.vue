@@ -1,29 +1,27 @@
 <template>
     <div class="head">
         <div class="page-content flex flex_end flex_only_center">
-            <nav-view 
-                :navList="list"
-            ></nav-view>
-            <search-view></search-view>
-            <login-view></login-view>
-            <lang-view></lang-view>
+            <NavView :navList="navList" />
+            <SearchView />
+            <LoginView />
+            <LangView />
         </div>
     </div>
 </template>
 
 <script>
-    import { defineComponent, reactive, toRefs } from 'vue'
-
     import NavView from '@/components/header/nav/nav.vue'           // 导航
     import SearchView from '@/components/header/search/search.vue'  // 搜索
     import LoginView from '@/components/header/login/loginBox.vue'  // 登录
     import LangView from '@/components/header/lang/lang.vue'        // 语言
 
+    import { defineComponent, reactive, toRefs } from 'vue'
+
     export default defineComponent({
         name: 'top',
         setup() {
             const navData = reactive({
-                list: [
+                navList: [
                     {
                         title: '首页',
                         path: '/'

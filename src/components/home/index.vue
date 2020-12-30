@@ -1,20 +1,22 @@
 <template>
     <div class="home">
-        <slide-view></slide-view>
+        <SlideView />
         <div class="page-content">
-
+            <EventsView />
         </div>
     </div>
 </template>
 
 <script>
-    import SlideView from '@/components/index/slide/slide.vue' // 导航栏
+    import SlideView from '@/components/home/slide/slide.vue'    // 导航栏
+    import EventsView from '@/components/home/events/events.vue' // 赛事
     export default {
         setup(props,ctx) {
 
         },
         components: {
             SlideView,
+            EventsView
         }
     }
 </script>

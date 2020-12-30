@@ -1,27 +1,139 @@
 <template>
     <div class="search">
-        <input type="text" placeholder="搜索">
+        <div class="search-input">
+            <input type="text" placeholder="搜索" @click="openSearch">
+        </div>
+        <div class="search-page" v-if="isShowSearch"  @click="openSearch">
+            <div class="page" @click.stop>
+                <div class="page-input flex flex_center">
+                    <input type="text" placeholder="输入搜索内容">
+                    <button>搜索</button>
+                </div>
+                <div class="page-history">
+                    <div class="flex flex_between">
+                        <p>搜索历史</p>
+                        <p class="icon">
+                            <i class="iconfont icon-lajixiang"></i>
+                            <span>清除历史</span>
+                        </p>
+                    </div>
+                    <div class="fruit flex flex_start flex_wrap">
+                        <p>LPL春季赛</p>
+                        <p>LOL全球赛</p>
+                        <p>2020职业联赛</p>
+                    </div>
+                </div>
+                <div class="page-history">
+                    <p class="hot">热门搜索</p>
+                    <div class="fruit flex flex_start flex_wrap">
+                        <p>LPL春季赛</p>
+                        <p>LOL全球赛</p>
+                        <p>2020职业联赛</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+    
 </template>
 
 <script>
-    export default {
+    import { defineComponent, ref } from 'vue'
+    export default defineComponent({
         setup(props,ctx) {
-
+            let isShowSearch = ref(false)
+            const openSearch = function () {
+                isShowSearch.value = !isShowSearch.value
+            }
+            return {
+                isShowSearch,
+                openSearch
+            }
         },
-    }
+    })
 </script>
 
 <style lang="less" scoped>
     .search {
-        input {
-            width: 180px;
-            height: 25px;
-            color: #fff;
-            padding: 0 10px;
-            border-radius: 13px;
+        .search-input {
+            input {
+                width: 180px;
+                height: 25px;
+                color: #fff;
+                padding: 0 10px;
+                border-radius: 13px;
+                box-sizing: border-box;
+                background-color: #555555;
+            }
+        }
+        .search-page {
+            width: 100%;
+            height: 100%;
+            z-index: 999;
+            font-size: 18px;
+            padding: 200px 0;
             box-sizing: border-box;
-            background-color: #555555;
+            transition: opacity .3s;
+            background-color: rgba(0,0,0, .85);
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            .page {
+                width: 800px;
+                margin: 0 auto;
+                .page-input {
+                    input {
+                        width: 650px;
+                        height: 55px;
+                        color: #333;
+                        padding: 0 20px;
+                        font-size: 18px;
+                        font-weight: 500;
+                        line-height: 55px;
+                        box-sizing: border-box;
+                        background-color: #fff;
+                        border-radius: 2px 0 0 2px;
+                    }
+                    button {
+                        width: 150px;
+                        height: 55px;
+                        color: #fff;
+                        font-size: 18px;
+                        font-weight: 500;
+                        line-height: 55px;
+                        background-color: #B29873;
+                        border-radius: 0 2px 2px 0;
+                    }
+                }
+                .page-history {
+                    font-size: 18px;
+                    margin-top: 90px;
+                    .icon {
+                        color: #999;
+                        cursor: pointer;
+                        span {
+                            padding-left: 2px;
+                        }
+                    }
+                    .hot {
+                        color: #FF3C00;
+                    }
+                    .fruit {
+                        margin-top: 30px;
+                        p {
+                            cursor: pointer;
+                            padding: 3px 20px;
+                            margin-right: 30px;
+                            margin-bottom: 13px;
+                            border-radius: 15px;
+                            box-sizing: border-box;
+                            background-color: #636363;
+                        }
+                    }
+                }
+            }
         }
     }
 </style>

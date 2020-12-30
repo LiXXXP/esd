@@ -12,7 +12,10 @@
 <script>
     export default {
         props: {
-            navList: Array
+            navList: {
+                type: Array,
+                default: () => []
+            }
         },
         setup(props,ctx) {
 
