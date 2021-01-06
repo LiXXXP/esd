@@ -24,15 +24,15 @@
                 navList: [
                     {
                         title: '首页',
-                        path: '/'
+                        path: '/home'
                     },
                     {
                         title: '电竞比赛',
-                        path: '/'
+                        path: '/match'
                     },
                     {
                         title: '资料库',
-                        path: '/'
+                        path: '/mean'
                     },
                     {
                         title: '系统通知',

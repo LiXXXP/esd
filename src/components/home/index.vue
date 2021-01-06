@@ -11,6 +11,7 @@
     import SlideView from '@/components/home/slide/slide.vue'    // 导航栏
     import EventsView from '@/components/home/events/events.vue' // 赛事
     export default {
+        name: 'home',
         setup(props,ctx) {
 
         },

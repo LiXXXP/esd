@@ -9,7 +9,7 @@
         </div>
         <TabLine :navList="navList" />
         <PlayerEvent />
-        <TableEvent />
+        <TableEvent :className="'home'" />
     </div>
 </template>
 

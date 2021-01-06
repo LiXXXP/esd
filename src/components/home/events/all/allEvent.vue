@@ -8,7 +8,7 @@
             <SelectView :selectList="selectList" :size="'small'" class="selectBox" />
         </div>
         <TabLine :navList="navList" />
-        <TableEvent />
+        <TableEvent :className="'home'" />
     </div>
 </template>
 

@@ -11,6 +11,7 @@ p, blockquote, th, td {
 }
 
 body {
+    color: #333;
     font-size: 14px;
     background-color: #eceef1;
     font-family: 'Microsoft YaHei','PingFang SC','PingFangSC-Regular';

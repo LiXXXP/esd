@@ -4,13 +4,15 @@
             v-for="item in navList"
             :key="item.title"
             :to="item.path"
-            class="link"
+            :class="['link',{active: toPath === item.path}]"
         >{{item.title}}</router-link>
     </div>
 </template>
 
 <script>
-    export default {
+    import { defineComponent, ref } from 'vue'
+    import { onBeforeRouteUpdate } from "vue-router"
+    export default defineComponent({
         props: {
             navList: {
                 type: Array,
@@ -18,9 +20,17 @@
             }
         },
         setup(props,ctx) {
-
+            let toPath = ref('')
+            return {
+                toPath
+            }
         },
-    }
+        watch: {
+            $route (to, from) {
+                this.toPath = to.path
+            }
+        }
+    })
 </script>
 
 <style lang="less" scoped>
@@ -30,7 +40,8 @@
             font-weight: 500;
             line-height: 50px;
             margin-right: 55px;
-            &:hover {
+            &:hover,
+            &.active {
                 color: #B29873;
             }
         }

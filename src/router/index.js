@@ -11,7 +11,24 @@ const routes = [
         meta: {
             title: 'esd',
         },
-        component: () => import('@/components/index')
+        component: () => import('@/components/index'),
+        children: [
+            {
+                path: '/home',
+                name: 'home',
+                component: () => import('@/components/home/index'),
+            },
+            {
+                path: '/match',
+                name: 'match',
+                component: () => import('@/components/match/index')
+            },
+            {
+                path: '/mean',
+                name: 'mean',
+                component: () => import('@/components/mean/index')
+            },
+        ]
     },
     {
         path: '/register',

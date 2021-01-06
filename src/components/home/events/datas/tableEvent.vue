@@ -1,11 +1,11 @@
 <template>
-    <div class="table-event">
-        <div class="tip">
+    <div :class="['table-event',className]">
+        <div class="tip" v-if="className === 'home'">
             <span class="dot"></span>
             <span>该排行榜为小场比赛的数据统计</span>
         </div>
         <div class="data">
-            <div class="title">选手数据</div>
+            <div class="title" v-if="className === 'home'">选手数据</div>
             <div class="list flex flex_between flex_center">
                 <div :style="{width: `${1200/10}%`}"
                     class="item"
@@ -51,7 +51,7 @@
                 </tr>
             </tbody>
         </table>
-        <Pagination />
+        <Pagination v-if="className === 'home'" />
     </div>
 </template>
 
@@ -62,6 +62,12 @@
     import { defineComponent, reactive, toRefs } from 'vue'
 
     export default defineComponent({
+        props: {
+            className: {
+                type: String,
+                default: ''
+            }
+        },
         setup(props,ctx) {
             return {
                 
@@ -77,7 +83,6 @@
     .table-event {
         margin-top: 50px;
         .tip {
-            color: #333;
             font-size: 12px;
             margin-bottom: 5px;
             .dot {
@@ -102,9 +107,8 @@
             }
             .list {
                 width: 100%;
-                background-color: #585858;
                 .item {
-                    color: #fff;
+                    
                     height: 100px;
                     cursor: pointer;
                     font-size: 16px;
@@ -119,7 +123,6 @@
                         height: 60px;
                         display: block;
                         border-radius: 1px;
-                        background-color: #4C4C4C;
                         position: absolute;
                         right: 0;
                         top: 50%;
@@ -128,18 +131,9 @@
                     &:last-child::after {
                         display: none;
                     }
-                    &:hover {
-                        background-color: #4C4C4C;
-                    }
                     img {
                         width: 34px;
                         height: 34px;
-                    }
-                    hr {
-                        width: 1px;
-                        height: 60px;
-                        border: 0;
-                        border-right: 1px solid #4C4C4C;
                     }
                 }
             }
@@ -152,21 +146,74 @@
                 color: #333;
                 font-weight: 500;
                 line-height: 50px;
-                background-color: #989898;
             }
             tbody {
                 tr {
                     height: 95px;
-                    color: #D6D5D5;
-                    background-color: #585858;
                     border-radius: 0px 0px 2px 2px;
-                    border-bottom: 1px solid #4C4C4C;
                 }
             }
         }
         .rank {
             color: #B29873;
             font-weight: 500;
+        }
+        &.home {
+            .data {
+                .list {
+                    background-color: #585858;
+                    .item {
+                        color: #fff;
+                        &::after {
+                            background-color: #4C4C4C;
+                        }
+                        &:hover {
+                            background-color: #4C4C4C;
+                        }
+                    }
+                }
+            }
+            table {
+                thead {
+                    background-color: #989898;
+                }
+                tbody {
+                    tr {
+                        color: #D6D5D5;
+                        background-color: #585858;
+                        border-bottom: 1px solid #4C4C4C;
+                    }
+                }
+            }
+        }
+        &.mean {
+            .data {
+                .list {
+                    background-color: #E3E5E8;
+                    .item {
+                        color: #333;
+                        &::after {
+                            background-color: #A6A7A9;
+                        }
+                        &:hover {
+                            color: #fff;
+                            background-color: #A6A7A9;
+                        }
+                    }
+                }
+            }
+            table {
+                thead {
+                    background-color: #CACCCF;
+                }
+                tbody {
+                    tr {
+                        color: #333;
+                        background-color: #E3E5E8;
+                        border-bottom: 1px solid #CACCCF;
+                    }
+                }
+            }
         }
     }
 </style>

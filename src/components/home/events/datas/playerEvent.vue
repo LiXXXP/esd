@@ -46,7 +46,6 @@
                     border-radius: 100%;
                 }
                 p {
-                    color: #333;
                     font-size: 18px;
                     padding-top: 5px;
                     text-align: center;
