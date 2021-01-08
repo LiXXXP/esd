@@ -24,6 +24,11 @@ const routes = [
                 component: () => import('@/components/match/index')
             },
             {
+                path: '/match/game',
+                name: 'game',
+                component: () => import('@/components/match/game/index')
+            },
+            {
                 path: '/mean',
                 name: 'mean',
                 component: () => import('@/components/mean/index')

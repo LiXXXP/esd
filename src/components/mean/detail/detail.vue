@@ -3,11 +3,11 @@
         <Breadcrumb />
         <TeamDetail />
         <div class="page-content">
-            <TitleView :titleName="playerName" />
+            <TitleLine :titleName="playerName" />
             <PlayerDetail />
-            <TitleView :titleName="teamName" />
+            <TitleLine :titleName="teamName" />
             <TeamEvent :className="'mean'" />
-            <TitleView :titleName="matchName" />
+            <TitleLine :titleName="matchName" />
             <AllEvent :className="'mean'" />
         </div>
     </div>
@@ -16,7 +16,7 @@
 <script>
     import Breadcrumb from '@/components/common/breadcrumb/breadcrumb.vue'    // 面包屑导航
     import TeamDetail from '@/components/mean/detail/teamDetail.vue'          // 战队详情
-    import TitleView from '@/components/common/title/title.vue'               // 页面标题
+    import TitleLine from '@/components/common/title/titleLine.vue'               // 页面标题
     import PlayerDetail from '@/components/mean/detail/playerDetail.vue'      // 现役成员
     import TeamEvent from '@/components/home/events/datas/tableEvent.vue'     // 战队数据
     import AllEvent from '@/components/home/events/all/tableEvent.vue'        // 近期赛事
@@ -37,7 +37,7 @@
         components: {
             Breadcrumb,
             TeamDetail,
-            TitleView,
+            TitleLine,
             PlayerDetail,
             TeamEvent,
             AllEvent

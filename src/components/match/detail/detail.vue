@@ -3,9 +3,9 @@
         <div class="page-content">
             <Breadcrumb />
             <MatchDetail />
-            <TitleView :titleName="teamName" />
+            <TitleLine :titleName="teamName" />
             <PlayerEvent :isText="false" />
-            <TitleView :titleName="matchName" />
+            <TitleLine :titleName="matchName" />
             <div class="tab flex flex_center">
                 <p class="active">预选赛</p>
                 <p>淘汰赛</p>
@@ -19,7 +19,7 @@
 <script>
     import Breadcrumb from '@/components/common/breadcrumb/breadcrumb.vue'    // 面包屑导航
     import MatchDetail from '@/components/match/detail/matchDetail.vue'       // 比赛详情
-    import TitleView from '@/components/common/title/title.vue'               // 页面标题
+    import TitleLine from '@/components/common/title/titleLine.vue'           // 页面标题
     import PlayerEvent from '@/components/home/events/datas/playerEvent.vue'  // 选手数据
     import AllEvent from '@/components/home/events/all/tableEvent.vue'        // 近期赛事
     import OutDetail from '@/components/match/detail/outDetail.vue'           // 淘汰赛
@@ -39,7 +39,7 @@
         components: {
             Breadcrumb,
             MatchDetail,
-            TitleView,
+            TitleLine,
             PlayerEvent,
             AllEvent,
             OutDetail
