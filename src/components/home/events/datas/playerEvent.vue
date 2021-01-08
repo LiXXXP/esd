@@ -5,9 +5,11 @@
                 <div class="circle flex flex_center">
                     <img src="">
                 </div>
-                <p class="name">补刀狂人</p>
-                <p>Meiko</p>
-                <p class="attach">场均补刀：666</p>
+                <div v-if="isText">
+                    <p class="name">补刀狂人</p>
+                    <p>Meiko</p>
+                    <p class="attach">场均补刀：666</p>
+                </div>
             </div>
         </div>
     </div>
@@ -15,6 +17,12 @@
 
 <script>
     export default {
+        props: {
+            isText: {
+                type: Boolean,
+                default: false
+            }
+        },
         setup(props,ctx) {
             
         }
@@ -26,6 +34,7 @@
         .list {
             .item {
                 width: 150px;
+                cursor: pointer;
                 .circle {
                     width: 126px;
                     height: 126px;

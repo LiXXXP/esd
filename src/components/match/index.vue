@@ -1,17 +1,18 @@
 <template>
     <div class="match">
-        赛事
+        <DetailView />
     </div>
 </template>
 
 <script>
+    import DetailView from '@/components/match/detail/detail.vue'    // 详情
     export default {
         name: 'match',
         setup(props,ctx) {
 
         },
         components: {
-            
+            DetailView
         }
     }
 </script>

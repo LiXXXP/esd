@@ -5,7 +5,7 @@
 </template>
 
 <script>
-    import DetailView from '@/components/mean/detail/detail.vue'    // 导航栏
+    import DetailView from '@/components/mean/detail/detail.vue'    // 详情
     export default {
         name: 'mean',
         setup(props,ctx) {
