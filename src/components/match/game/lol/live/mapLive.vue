@@ -18,13 +18,26 @@
             </div>
             <div class="score red">2</div>
         </div>
-        <div>
-            
+        <div class="round flex flex_between flex_only_end">
+            <RoleView :isReverse="false" />
+            <div class="time">
+                <p class="num">第三局</p>
+                <p>18:10</p>
+            </div>
+            <RoleView :isReverse="true" />
+        </div>
+        <div class="flex flex_between">
+            <PlayersView />
+            <CanvasView />
+            <PlayersView />
         </div>
     </div>
 </template>
 
 <script>
+    import RoleView from '@/components/match/game/lol/live/map/role.vue'             // 角色
+    import PlayersView from '@/components/match/game/lol/live/map/players.vue'       // 选手
+    import CanvasView from '@/components/match/game/lol/live/map/canvas.vue'         // 地图
 
     import { defineComponent, reactive, toRefs } from 'vue'
 
@@ -36,7 +49,9 @@
             }
         },
         components: {
-            
+            RoleView,
+            PlayersView,
+            CanvasView
         }
     })
 </script>
@@ -45,6 +60,7 @@
     .map-live {
         width: 1200px;
         height: 760px;
+        color: #fff;
         overflow: hidden;
         box-sizing: border-box;
         background-color: #333;
@@ -141,6 +157,14 @@
                         padding: 0 45px 0 20px;
                     }
                 }
+            }
+        }
+        .round {
+            font-size: 18px;
+            margin-bottom: 15px;
+            .num {
+                color: #999;
+                padding: 10px 0;
             }
         }
     }
