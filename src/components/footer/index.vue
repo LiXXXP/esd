@@ -10,7 +10,7 @@
                     <a href="http://39.106.24.22:8087/#/index" class="els" target="_blank">
                         <img src="../../assets/imgs/footer/els.png">
                     </a>
-                    <a href="/" class="api" target="_blank">
+                    <a href="http://47.95.177.25/#/main" class="api" target="_blank">
                         <img src="../../assets/imgs/footer/api.png">
                     </a>
                 </div>

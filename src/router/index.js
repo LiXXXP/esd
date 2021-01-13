@@ -33,15 +33,8 @@ const routes = [
                 name: 'mean',
                 component: () => import('@/components/mean/index')
             },
+            
         ]
-    },
-    {
-        path: '/register',
-        name: 'register',
-        meta: {
-            title: 'esd',
-        },
-        component: () => import('@/components/header/login/register')
     },
     {
         path: '/login',
@@ -49,7 +42,7 @@ const routes = [
         meta: {
             title: 'esd',
         },
-        component: () => import('@/components/header/login/login')
+        component: () => import('@/components/header/login/index')
     },
 ]
 

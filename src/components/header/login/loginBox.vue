@@ -1,7 +1,7 @@
 <template>
     <div class="login-box flex flex_start">
         <router-link 
-            to="/register"
+            to="/login?r=1"
             class="box register"
         >注册</router-link>
         <router-link 
@@ -24,8 +24,7 @@
         margin-left: 60px;
         .box {
             width: 67px;
-            height: 30px;
-            line-height: 30px;
+            padding: 4px 0;
             border-radius: 2px;
             text-align: center;
             box-sizing: border-box;
