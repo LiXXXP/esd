@@ -5,7 +5,7 @@
                 v-for="(item,index) in selectList"
                 :key="item.placeholder">
                 <div class="select" @click="openOption(index)">
-                    <input type="text" :placeholder="item.placeholder" v-model="selectValue">
+                    <input type="text" :placeholder="item.placeholder" v-model="selectValue" disabled="disabled">
                 </div>
                 <ul class="option" v-if="index === currentIndex">
                     <li v-for="item in 3" :key="item" @click="selectOption(item)"
@@ -18,7 +18,7 @@
                 v-for="(item,index) in selectList"
                 :key="item.placeholder">
                 <div class="select" @click="openOption(index)">
-                    <input type="text" :placeholder="item.placeholder" v-model="selectValue">
+                    <input type="text" :placeholder="item.placeholder" v-model="selectValue" disabled="disabled">
                 </div>
                 <ul class="option" v-show="index === currentIndex">
                     <li v-for="item in 3" :key="item" @click="selectOption(item)"

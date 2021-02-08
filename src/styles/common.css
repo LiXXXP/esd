@@ -163,6 +163,19 @@ button {
     margin: 0 auto;
 }
 
+/*滚动条的宽度*/
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+    background-color: rgba(0, 0, 0, 0);
+}
+
+/*滚动条的设置*/
+::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    background: rgba(140, 140, 140, .3);
+}
+
 /* flex布局 */
 .flex {
     display: flex;

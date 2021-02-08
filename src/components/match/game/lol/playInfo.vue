@@ -17,7 +17,7 @@
 
 <script>
     import TitleView from '@/components/common/title/title.vue'             // 页面标题
-    import VideoLive from '@/components/match/game/lol/live/videoLive.vue'  // 视频直播
+    import VideoLive from '@/components/match/game/module/videoLive.vue'    // 视频直播
     import MapLive from '@/components/match/game/lol/live/mapLive.vue'      // 图文直播
 
     import { defineComponent, reactive, toRefs } from 'vue'

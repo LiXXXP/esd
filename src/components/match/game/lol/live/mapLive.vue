@@ -31,13 +31,15 @@
             <CanvasView />
             <PlayersView />
         </div>
+        <LogsView />
     </div>
 </template>
 
 <script>
-    import RoleView from '@/components/match/game/lol/live/map/role.vue'             // 角色
-    import PlayersView from '@/components/match/game/lol/live/map/players.vue'       // 选手
-    import CanvasView from '@/components/match/game/lol/live/map/canvas.vue'         // 地图
+    import RoleView from '@/components/match/game/lol/live/map/role.vue'        // 角色
+    import PlayersView from '@/components/match/game/lol/live/map/players.vue'  // 选手
+    import CanvasView from '@/components/match/game/lol/live/map/canvas.vue'    // 地图
+    import LogsView from '@/components/match/game/lol/live/map/logs.vue'        // 日志
 
     import { defineComponent, reactive, toRefs } from 'vue'
 
@@ -51,7 +53,8 @@
         components: {
             RoleView,
             PlayersView,
-            CanvasView
+            CanvasView,
+            LogsView
         }
     })
 </script>
@@ -61,6 +64,7 @@
         width: 1200px;
         height: 760px;
         color: #fff;
+        cursor: pointer;
         overflow: hidden;
         box-sizing: border-box;
         background-color: #333;
