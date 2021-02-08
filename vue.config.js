@@ -22,7 +22,7 @@ module.exports = {
         requireModuleExtension: true
     },
 	devServer: {
-        port: 8024, // 端口号
+        port: 80, // 端口号
 		https: false,  // https:{type:Boolean}
 		open: true,    // 配置自动启动浏览器
         compress: true,// 配置热更新
