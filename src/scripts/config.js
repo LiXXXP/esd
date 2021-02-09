@@ -9,7 +9,7 @@ environmentVar = '开发';
 // environmentVar = '线上';
 
 if(environmentVar === '开发') {
-    sparkUrlVar = 'http://60.205.85.215'
+    sparkUrlVar = 'http://18.166.54.6'
     basePathVar = '/'
 } else if(environmentVar === '测试') {
     sparkUrlVar = ''
