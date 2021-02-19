@@ -1,55 +1,58 @@
 <template>
     <div class="slider flex flex_between flex_only_center">
-        <div class="arrow flex flex_center">
+        <div class="arrow flex flex_center" @click="cut('prev')">
             <p class="left"></p>
         </div>
-        <div class="content flex flex_start">
-            <div class="block" v-for="item in 4" :key="item">
+        <div class="content clearfix">
+            <div class="block f-left" v-for="item in shortList" :key="item.match_id">
                 <div class="title flex flex_between">
-                    <p>已结束</p>
-                    <p>10-15 17:00</p>
+                    <p>{{item.status}}</p>
+                    <p>{{item.scheduled_begin_at.substring(5,16)}}</p>
                 </div>
                 <div class="info">
                     <div class="flex flex_between flex_only_center">
                         <div class="team">
-                            <img src="">
-                            <p class="beyond-ellipsis">WE</p>
+                            <img :src="item.master_team_logo">
+                            <p class="beyond-ellipsis" :title="item.master_team_name">{{item.master_team_name}}</p>
                         </div>
                         <div class="vs">
-                            <p class="score">3 : 2</p>
-                            <p class="status">敬请期待</p>
+                            <p class="score">{{item.master_team_score}} : {{item.guest_team_score}}</p>
+                            <p class="status">{{item.match_feedback}}</p>
                         </div>
                         <div class="team">
-                            <img src="">
-                            <p class="beyond-ellipsis">TES</p>
+                            <img :src="item.guest_team_logo">
+                            <p class="beyond-ellipsis" :title="item.guest_team_name">{{item.guest_team_name}}</p>
                         </div>
                     </div>
-                    <p>2020发展联赛夏季赛季后赛</p>
-                    <p>四强 BO5</p>
+                    <p>{{item.tournament_name}}</p>
+                    <p>{{item.match_config}}</p>
                 </div>
             </div>
         </div>
-        <div class="arrow flex flex_center">
+        <div class="arrow flex flex_center" @click="cut('next')">
             <p class="right"></p>
         </div>
     </div>
 </template>
 
 <script>
-    import SelectView from '@/components/common/select/select.vue'    // 下拉框
-
-    import { defineComponent, reactive, toRefs } from 'vue'
+    import { defineComponent } from 'vue'
 
     export default defineComponent({
-        setup(props,ctx) {
-            
-            return {
-                
+        props: {
+            shortList: {
+                type: Array,
+                default: () => []
             }
         },
-        components: {
-            SelectView
-        }
+        setup(props,ctx) {
+            const cut = (val) => {
+                ctx.emit('cutData',val)
+            }
+            return {
+                cut
+            }
+        },
     })
 </script>
 
@@ -103,7 +106,7 @@
                     border-radius: 2px 2px 0px 0px;
                 }
                 .info {
-                    padding: 20px;
+                    padding: 10px 20px;
                     box-sizing: border-box;
                     .flex {
                         margin-bottom: 15px;

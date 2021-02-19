@@ -8,6 +8,7 @@ const routes = [
     {
         path: '/',
         name: 'index',
+        redirect: '/home',
         meta: {
             title: 'esd',
         },

@@ -7,8 +7,8 @@
             </div>
             <SelectView :selectList="selectList" :size="'small'" class="selectBox" />
         </div>
-        <TabLine :navList="navList" />
-        <TableEvent :className="'home'" />
+        <TabLine :navList="navList" @status="getStatus" />
+        <TableEvent :className="'home'" :screenList="screenList" />
     </div>
 </template>
 
@@ -17,7 +17,8 @@
     import TabLine from '@/components/common/tab/tabLine.vue'              // 切换页
     import TableEvent from '@/components/home/events/all/tableEvent.vue'   // 赛事列表
 
-    import { defineComponent, reactive, toRefs } from 'vue'
+    import { matchScreen } from "@/scripts/request"
+    import { defineComponent, reactive, toRefs, onMounted } from 'vue'
 
     export default defineComponent({
         setup(props,ctx) {
@@ -46,10 +47,36 @@
                     {
                         tab: '未开始'
                     }
-                ]
+                ],
+                screenList: [],
+            })
+            const getMatchScreen = ((val) => {
+                let params = {
+                    match_status: val
+                }
+                matchScreen(params).then(res => {
+                    if(res.code === 200) {
+                        selectData.screenList = res.data
+                    }
+                })
+            })
+            const getStatus = (val) => {
+                if(val === 0) {
+                    getMatchScreen('completed')
+                }
+                if(val === 1) {
+                    getMatchScreen('ongoing')
+                }
+                if(val === 2) {
+                    getMatchScreen('upcoming')
+                }
+            }
+            onMounted(() => {
+                getMatchScreen('completed')
             })
             return {
-                ...toRefs(selectData)
+                ...toRefs(selectData),
+                getStatus
             }
         },
         components: {

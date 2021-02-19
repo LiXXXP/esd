@@ -1,31 +1,53 @@
 <template>
     <div class="recent">
-        <SelectView :selectList="selectList" :size="'max'" class="selectBox" />
-        <SliderEvent />
+        <SliderEvent :shortList="shortList" @cutData="cutEvent" />
     </div>
 </template>
 
 <script>
-    import SelectView from '@/components/common/select/select.vue'              // 下拉框
     import SliderEvent from '@/components/home/events/recent/sliderEvent.vue'   // 赛事
-
-    import { defineComponent, reactive, toRefs } from 'vue'
+    import { shortMatch } from "@/scripts/request"
+    import { defineComponent, reactive, toRefs, onMounted } from 'vue'
 
     export default defineComponent({
         setup(props,ctx) {
-            const selectData = reactive({
-                selectList: [
-                    {
-                        placeholder: '近期赛事（近一个月赛程）'
+            const shortData = reactive({
+                num: 4,
+                list:[],
+                shortList: []
+            })
+            const getShortMatch = (() => {
+                shortMatch().then(res => {
+                    if(res.code === 200) {
+                        shortData.list = res.data
+                        shortData.shortList = res.data.slice(0,4)
                     }
-                ]
+                })
+            })
+            const cutEvent = (val) => {
+                if(val === 'prev') {
+                    if(shortData.num > 4) {
+                        shortData.num = shortData.num - 4
+                        shortData.shortList = shortData.list.slice(shortData.num - 4,shortData.num)
+                    }
+                }
+                if(val === 'next') {
+                    if(shortData.list.length-shortData.num >= 4) {
+                        shortData.shortList = shortData.list.slice(shortData.num,shortData.num + 4)
+                        shortData.num = shortData.num + 4
+                    }
+                }
+            }
+            onMounted(() => {
+                getShortMatch()
             })
             return {
-                ...toRefs(selectData)
+                ...toRefs(shortData),
+                getShortMatch,
+                cutEvent
             }
         },
         components: {
-            SelectView,
             SliderEvent
         }
     })

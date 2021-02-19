@@ -21,7 +21,7 @@
                         autocomplete="off"
                         placeholder="输入验证码"
                     ></el-input>
-                    <span class="send">发送验证码</span>
+                    <span class="send" @click="getCode">{{btnText}}</span>
                 </div>
             </el-form-item>
 
@@ -46,12 +46,10 @@
             </el-form-item>
 
             <el-form-item>
-                <el-checkbox-group v-model="ruleForm.protocol">
-                    <el-checkbox label="同意《服务条款》、《隐私政策》" name="protocol"></el-checkbox>
-                </el-checkbox-group>
+                <el-checkbox label="同意《服务条款》、《隐私政策》" v-model="ruleForm.protocol"></el-checkbox>
             </el-form-item>
 
-            <!-- <span>密码必须同时包含英文字母和数字且只能包含字母和数字，密码长度大于等于6位且小于等于15位</span> -->
+            <span>密码必须同时包含英文字母和数字且只能包含字母和数字，密码长度大于等于6位且小于等于15位</span>
 
             <el-form-item>
                 <el-button
@@ -67,6 +65,7 @@
 
 <script>
     import { transHtml } from '@/scripts/utils'
+    import { mailSend, userRegister } from '@/scripts/request'
 
     export default {
         data() {
@@ -126,12 +125,16 @@
             return {
                 isType: 'info',    // 登录按钮类型
                 isDisabled: true,  // 登录按钮是否可点击
+                totalCount: 0,     // 60s
+                interval: null,    // 验证码计时器
+                isAgree: false,    // 是否同意条款
+                isClick: true,     // 是否允许点击发送验证码
                 ruleForm: {        // 验证用户名和密码
                     email: '',
                     code: '',
                     pass: '',
                     checkPass: '',
-                    protocol: [],
+                    protocol: false,
                 },
                 rules: {           // 验证用户名和密码规则
                     email: [
@@ -145,14 +148,43 @@
                     ],
                     checkPass: [
                         { validator: validatePass2, trigger: 'change' }
-                    ],
-                    protocol: [
-                        { message: '请勾选《服务条款》', trigger: 'change' }
                     ]
                 }
             }
         },
+        computed: {
+            btnText(){
+                return this.totalCount !==0? `${this.totalCount} s后获取`: "获取验证码"
+            }
+        },
         methods: {
+            // 获取邮箱验证码
+            getCode() {
+                let _this = this
+                let params = {
+                    email: _this.ruleForm.email
+                }
+                if(_this.isClick) {
+                    mailSend(params).then(res => {
+                        if(res.code === 200) {
+                            _this.isClick = false
+                            _this.totalCount = 60
+                            _this.interval = setInterval(()=>{
+                                _this.totalCount--
+                                if(_this.totalCount === 0){
+                                    clearInterval(_this.interval)
+                                    _this.totalCount = 0
+                                    _this.isClick = true
+                                }
+                            },1000)
+                        }
+                        else {
+                            this.$message.error(res.message)
+                        }
+                    })
+                }
+                
+            },
             // 注册
             submitForm(formName) {
                 this.$refs[formName].validate((valid) => {
@@ -160,17 +192,19 @@
                         let _this = this
                         let params = {
                             email: transHtml(_this.ruleForm.email),
-                            code: transHtml(_this.ruleForm.code),
-                            password: transHtml(_this.ruleForm.checkPass)
+                            email_verification_code: transHtml(_this.ruleForm.code),
+                            password: transHtml(_this.ruleForm.pass),
+                            confirm_password: transHtml(_this.ruleForm.checkPass),
+                            is_agree_term: _this.ruleForm.protocol? 1 : 2
                         }
-                        // getRegister(params).then(res => {
-                        //     if(res.code === 200) {
-                        //         _this.$message.success(res.message)
-                        //         _this.$emit('loginIndex',0)
-                        //     } else {
-                        //         _this.$message.error(res.message)
-                        //     }
-                        // })
+                        userRegister(params).then(res => {
+                            if(res.code === 200) {
+                                _this.$message.success(res.message)
+                                _this.$router.push('/login')
+                            } else {
+                                _this.$message.error(res.message)
+                            }
+                        })
                     } else {
                         return false
                     }

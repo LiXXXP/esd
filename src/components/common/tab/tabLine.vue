@@ -4,14 +4,14 @@
             <div :class="['tab',{active: currentIndex === index}]" 
                 v-for="(item,index) in navList" 
                 :key="item.tab"
-                @click="currentIndex = index"
+                @click="tab(index)"
             >{{item.tab}}</div>
         </div>
     </div>
 </template>
 
 <script>
-    import { defineComponent , ref } from 'vue'
+    import { defineComponent, ref } from 'vue'
     export default defineComponent({
         props: {
             navList: {
@@ -21,8 +21,13 @@
         },
         setup(props,ctx) {
             let currentIndex = ref(0)
+            const tab = (index) => {
+                currentIndex.value = index
+                ctx.emit('status',index)
+            }
             return {
-                currentIndex
+                currentIndex,
+                tab
             }
         }
     })

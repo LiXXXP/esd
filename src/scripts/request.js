@@ -15,7 +15,9 @@ const service = axios.create({
         'X-Requested-With': 'XMLHttpRequest',
         'accept': 'application/json',
     }
-});
+})
+
+axios.defaults.headers.common["token"] = localStorage.getItem('userToken') || ''
 
 /**
  * 请求拦截器 
@@ -104,11 +106,106 @@ function putRequest(url,params = {}){
     });
 }
 
+/**
+ *
+ * 用户注册
+ * @param {*} params
+ */
+function userRegister(params) {
+    return postRequest('/user/register', params)
+}
 
+/**
+ *
+ * 用户登录
+ * @param {*} params
+ */
+function userLogin(params) {
+    return postRequest('/user/login', params)
+}
+
+/**
+ *
+ * 用户信息
+ * @param {*} params
+ */
+function userInfo(params) {
+    return postRequest('/user/info', params)
+}
+
+/**
+ *
+ * 退出登录
+ * @param {*} params
+ */
+function userLogout(params) {
+    return postRequest('/user/logout', params)
+}
+
+/**
+ *
+ * 发送邮件
+ * @param {*} params
+ */
+function mailSend(params) {
+    return postRequest('/mail/send', params)
+}
+
+/**
+ *
+ * 近期赛程
+ * @param {*} params
+ */
+function shortMatch(params) {
+    return postRequest('/match/short_term_match', params)
+}
+
+/**
+ *
+ * 赛事筛选
+ * @param {*} params
+ */
+function matchScreen(params) {
+    return postRequest('/match/match_screen', params)
+}
+
+/**
+ *
+ * 比赛详情
+ * @param {*} params
+ */
+function matchDetail(params) {
+    return postRequest('/match/match_detail', params)
+}
+
+/**
+ *
+ * 赛事详情
+ * @param {*} params
+ */
+function tournamentDetail(params) {
+    return postRequest('/tournament/tournament_detail', params)
+}
+
+/**
+ *
+ * 战队详情
+ * @param {*} params
+ */
+function teamDetail(params) {
+    return postRequest('/team/team_detail', params)
+}
 
 export {
-    getRequest,
-    postRequest,
-    putRequest
+    userRegister,
+    userLogin,
+    userInfo,
+    userLogout,
+    mailSend,
+    shortMatch,
+    matchScreen,
+    matchDetail,
+    tournamentDetail,
+    teamDetail
 }
 

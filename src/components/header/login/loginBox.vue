@@ -1,22 +1,58 @@
 <template>
-    <div class="login-box flex flex_start">
-        <router-link 
-            to="/login?r=1"
-            class="box register"
-        >注册</router-link>
-        <router-link 
-            to="/login"
-            class="box login"
-        >登录</router-link>
+    <div>
+        <div class="logout flex flex_start" v-if="email">
+            <p class="beyond-ellipsis" :title="email">{{email}}</p>
+            <p @click="logout">退出</p>
+        </div>
+        <div class="login-box flex flex_start" v-else>
+            <router-link 
+                to="/login?r=1"
+                class="box register"
+            >注册</router-link>
+            <router-link 
+                to="/login"
+                class="box login"
+            >登录</router-link>
+        </div>
     </div>
 </template>
 
 <script>
-    export default {
-        setup(props,ctx) {
+    import { userInfo, userLogout } from "@/scripts/request"
+    import { defineComponent, ref, onMounted } from 'vue'
+    import { ElMessage } from 'element-plus'
 
+    export default defineComponent({
+        setup(props,ctx) {
+            const email = ref('')
+            const getUserInfo = (() => {
+                userInfo().then(res => {
+                    if(res.code === 200) {
+                        email.value = res.data.email
+                    }
+                })
+            })
+            const logout = (() => {
+                userLogout().then(res => {
+                    if(res.code === 200) {
+                        email.value = 0
+                        localStorage.removeItem('userToken')
+                        ElMessage.success(res.message)
+                    } else {
+                        ElMessage.error(res.message)
+                    }
+                })
+            })
+            onMounted(() => {
+                getUserInfo()
+            })
+            return {
+                email,
+                getUserInfo,
+                logout
+            }
         },
-    }
+    })
 </script>
 
 <style lang="less" scoped>
@@ -37,6 +73,17 @@
                 color: #fff;
                 background-color: #B29873;
             }
+        }
+    }
+    .logout {
+        margin-left: 60px;
+        p {
+            cursor: pointer;
+            color: #B29873;
+        }
+        .beyond-ellipsis {
+            width: 80px;
+            padding-right: 10px;
         }
     }
 </style>

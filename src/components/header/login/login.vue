@@ -38,6 +38,7 @@
 
 <script>
     import { transHtml } from '@/scripts/utils'
+    import { userLogin } from '@/scripts/request'
 
     export default {
         data() {
@@ -45,7 +46,7 @@
                 if (value === '') {
                     this.isType = 'info'
                     this.isDisabled = true
-                    callback(new Error('请输入用户名'))
+                    callback(new Error('请输入邮箱'))
                 } else {
                     if(this.ruleForm.pass !== '') {
                         this.isType = 'danger'
@@ -92,7 +93,14 @@
                             email: transHtml(_this.ruleForm.email),
                             password: transHtml(_this.ruleForm.pass)
                         }
-                        
+                        userLogin(params).then(res => {
+                            if(res.code === 200) {
+                                localStorage.setItem('userToken',res.data.token)
+                                window.location.href = '/'
+                            } else {
+                                _this.$message.error(res.message)
+                            }
+                        })
                     } else {
                         return false
                     }
