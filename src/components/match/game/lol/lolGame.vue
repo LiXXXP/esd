@@ -17,9 +17,8 @@
 
     export default {
         setup(props,ctx) {
-
             return {
-
+                
             }
         },
         components: {

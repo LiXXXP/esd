@@ -57,8 +57,8 @@
                 -webkit-text-fill-color: transparent;
             }
             .square {
-                width: 12px;
-                height: 12px;
+                width: 8px;
+                height: 8px;
                 display: block;
                 background-color: #B29873;
                 transform: rotateZ(45deg)skew(20deg,20deg);

@@ -12,7 +12,7 @@
                 <tbody>
                     <tr v-for="item in screenList" :key="item.match_id">
                         <td>{{item.match_status}}</td>
-                        <td>{{item.tournament_name}}</td>
+                        <td style="width:300px;">{{item.tournament_name}}</td>
                         <td>
                             <p>{{item.scheduled_begin_at.substring(0,10)}}</p>
                             <p>{{item.scheduled_begin_at.substring(11,19)}}</p>
@@ -31,7 +31,7 @@
                             </div>
                         </td>
                         <td>
-                            <p class="detail">详情</p>
+                            <p class="detail" @click="gotoLink(item.game_id,item.match_id)">详情</p>
                         </td>
                     </tr>
                 </tbody>
@@ -41,8 +41,8 @@
 </template>
 
 <script>
-
-    import { defineComponent, reactive, toRefs, inject } from 'vue'
+    import { useRouter } from "vue-router"
+    import { defineComponent } from 'vue'
 
     export default defineComponent({
         props: {
@@ -56,9 +56,18 @@
             }
         },
         setup(props,ctx) {
-            
+            const router = useRouter()
+            const gotoLink = (gameId,matchId) => {
+                router.push({
+                    path: '/match/game',
+                    query: {
+                        gameId: gameId,
+                        matchId: matchId
+                    }
+                })
+            }
             return {
-                
+                gotoLink
             }
         },
         components: {
@@ -118,6 +127,9 @@
                 width: 35px;
                 height: 35px;
                 margin: 0 5px;
+            }
+            span {
+                width: 80px;
             }
         }
         .vs {

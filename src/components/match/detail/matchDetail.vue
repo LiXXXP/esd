@@ -2,27 +2,26 @@
     <div class="match-detail page-content">
         <div class="block flex flex_start flex_only_center">
             <div class="img">
-                <img src="">
+                <img :src="detail.tournament_logo">
             </div>
             <div class="text">
-                <p class="title">深渊联赛线上赛第三赛季</p>
+                <p class="title beyond-ellipsis"
+                    style="width:800px;"
+                    :title="detail.tournament_name"
+                >{{detail.tournament_name}}</p>
                 <div class="flex flex_between">
                     <div>
-                        <p>2020/09/09 ～ 2020/09/30</p>
-                        <p>举办地：北京</p>
-                        <p>举办方：One Game Agency</p>
+                        <p>{{detail.tournament_time}}</p>
+                        <p>举办地：{{detail.location}}</p>
+                        <p>举办方：{{detail.organizer}}</p>
                     </div>
                     <div>
-                        <p class="title">48</p>
+                        <p class="title">{{detail.number_of_teams}}</p>
                         <p>参赛队伍</p>
                     </div>
                     <div>
-                        <p class="title">$9.999.999</p>
+                        <p class="title">{{detail.prize_bonus || `$0`}}</p>
                         <p>总奖金</p>
-                    </div>
-                    <div>
-                        <p class="title">BO5</p>
-                        <p>赛制</p>
                     </div>
                 </div>
             </div>
@@ -31,14 +30,21 @@
 </template>
 
 <script>
-    export default {
+    import { defineComponent, ref, inject, watch } from 'vue'
+
+    export default defineComponent({
         setup(props,ctx) {
-
-        },
-        components: {
-
+            const detail = ref({})
+            const tournament = inject('detail')
+            watch(tournament, () => {
+                detail.value = tournament.tournamentDetail
+            })
+            return {
+                detail,
+                tournament
+            }
         }
-    }
+    })
 </script>
 
 <style lang="less" scoped>

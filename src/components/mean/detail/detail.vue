@@ -1,13 +1,13 @@
 <template>
     <div class="detail">
-        <Breadcrumb />
+        <Breadcrumb :breadLink="breadLink" />
         <TeamDetail />
         <div class="page-content">
-            <TitleLine :titleName="playerName" />
+            <TitleLine :titleName="titleName.playerName"/>
             <PlayerDetail />
-            <TitleLine :titleName="teamName" />
+            <TitleLine :titleName="titleName.teamName" />
             <TeamEvent :className="'mean'" />
-            <TitleLine :titleName="matchName" />
+            <TitleLine :titleName="titleName.matchName" />
             <AllEvent :className="'mean'" />
         </div>
     </div>
@@ -21,17 +21,53 @@
     import TeamEvent from '@/components/home/events/datas/tableEvent.vue'     // 战队数据
     import AllEvent from '@/components/home/events/all/tableEvent.vue'        // 近期赛事
 
-    import { defineComponent, reactive, toRefs } from 'vue'
+    import { useRoute } from "vue-router"
+    import { teamDetail } from "@/scripts/request"
+    import { defineComponent, reactive, toRefs, provide, onMounted } from 'vue'
 
     export default defineComponent({
+        name:'meanDetail',
         setup(props,ctx) {
-             const titleName = reactive({
-                playerName: '现役成员',
-                teamName: '战队数据',
-                matchName: '近期赛事'
-             })
+            const route = useRoute()
+            const detailData= reactive({
+                titleName :{
+                    playerName: '现役成员',
+                    teamName: '战队数据',
+                    matchName: '近期赛事'
+                },
+                breadLink: [
+                    {
+                        title: '首页',
+                        link: '/home'
+                    },
+                    {
+                        title: '资料库',
+                        link: '/mean'
+                    },
+                    {
+                        title: '战队详情',
+                        link: `/mean/detail?teamId=${route.query.teamId}`
+                    }
+                ],
+                teamsDetail: {}
+            })
+            const getTeamDetail = () => {
+                let params = {
+                    team_id: route.query.teamId,
+                }
+                teamDetail(params).then(res => {
+                    if(res.code === 200) {
+                        detailData.teamsDetail = res.data
+                    }
+                })
+            }
+            provide('detail',detailData)
+            onMounted(() => {
+                getTeamDetail()
+            })
             return {
-                ...toRefs(titleName)
+                ...toRefs(detailData),
+                getTeamDetail
             }
         },
         components: {

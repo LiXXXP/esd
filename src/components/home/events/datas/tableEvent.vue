@@ -51,7 +51,11 @@
                 </tr>
             </tbody>
         </table>
-        <Pagination v-if="className === 'home'" />
+        <Pagination 
+            v-if="className === 'home'"
+            :pageData="page"
+            @currentPage="currentPage" 
+        />
     </div>
 </template>
 
@@ -69,8 +73,19 @@
             }
         },
         setup(props,ctx) {
+            const tableData = reactive({
+                page: {
+                    limit: 5,    // 条数
+                    count: 0,    // 总数
+                    current: 1   // 当前页
+                }
+            })
+            const currentPage = (val) => {
+                listData.page.current = val
+            }
             return {
-                
+                ...toRefs(tableData),
+                currentPage
             }
         },
         components: {

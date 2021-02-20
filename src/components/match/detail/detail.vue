@@ -1,11 +1,11 @@
 <template>
     <div class="detail">
         <div class="page-content">
-            <Breadcrumb />
+            <Breadcrumb :breadLink="breadLink" />
             <MatchDetail />
-            <TitleLine :titleName="teamName" />
+            <TitleLine :titleName="titleName.teamName"/>
             <PlayerEvent :isText="false" />
-            <TitleLine :titleName="matchName" />
+            <TitleLine :titleName="titleName.matchName" />
             <div class="tab flex flex_center">
                 <p class="active">预选赛</p>
                 <p>淘汰赛</p>
@@ -24,16 +24,52 @@
     import AllEvent from '@/components/home/events/all/tableEvent.vue'        // 近期赛事
     import OutDetail from '@/components/match/detail/outDetail.vue'           // 淘汰赛
 
-    import { defineComponent, reactive, toRefs } from 'vue'
+    import { tournamentDetail } from "@/scripts/request"
+    import { defineComponent, reactive, toRefs, provide, onMounted } from 'vue'
+    import { useRoute } from "vue-router"
 
     export default defineComponent({
+        name: 'matchDetail',
         setup(props,ctx) {
-             const titleName = reactive({
-                teamName: '参赛队伍',
-                matchName: '焦点赛事'
-             })
+            const route = useRoute()
+            const detailData= reactive({
+                titleName :{
+                    teamName: '参赛队伍',
+                    matchName: '焦点赛事'
+                },
+                breadLink: [
+                    {
+                        title: '首页',
+                        link: '/home'
+                    },
+                    {
+                        title: '电竞比赛',
+                        link: '/match'
+                    },
+                    {
+                        title: '赛事详情',
+                        link: `/match/detail?tournamentId=${route.query.tournamentId}`
+                    }
+                ],
+                tournamentDetail: {}
+            })
+            const getTournamentDetail = () => {
+                let params = {
+                    tournament_id: route.query.tournamentId,
+                }
+                tournamentDetail(params).then(res => {
+                    if(res.code === 200) {
+                        detailData.tournamentDetail = res.data
+                    }
+                })
+            }
+            provide('detail',detailData)
+            onMounted(() => {
+                getTournamentDetail()
+            })
             return {
-                ...toRefs(titleName)
+                ...toRefs(detailData),
+                getTournamentDetail
             }
         },
         components: {

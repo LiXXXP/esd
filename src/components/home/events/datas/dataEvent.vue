@@ -19,7 +19,7 @@
     import PlayerEvent from '@/components/home/events/datas/playerEvent.vue'    // 选手数据
     import TableEvent from '@/components/home/events/datas/tableEvent.vue'      // 数据统计
 
-    import { defineComponent, reactive, toRefs } from 'vue'
+    import { defineComponent, reactive, toRefs, provide, ref } from 'vue'
 
     export default defineComponent({
         setup(props,ctx) {
@@ -44,6 +44,7 @@
                     }
                 ]
             })
+            provide('detail',ref({}))
             return {
                 ...toRefs(selectData)
             }

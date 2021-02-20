@@ -3,18 +3,12 @@
         <div class="page-content">
             <div class="flex flex_center">
                 <div class="img">
-                    <img src="">
+                    <img :src="detail.team_logo">
                 </div>
                 <div class="text">
-                    <p class="name">RNG</p>
-                    <p class="full">RoyalNeverGiveUp</p>
-                    <p>
-                        RNG（RoyalNeverGiveUp）电子竞技俱乐部成立于2015年5月，现LPL联盟成员之一。
-                        俱乐部LOGO标志以黑金为主色调，一个“R”字母简洁明了，“ROYALNEVERGIVEUP”展现在“R”的下方，
-                        翻译为中文“皇族永不言弃”，展示了他们永不放弃、战至最后一刻的决心。
-                        2018年RNG在一年中先后夺得了LPL春季赛冠军、MSI季中邀请赛冠军、德玛西亚杯夏季赛冠军及2018年LPL夏季赛冠军，
-                        一年拿下无数冠军的同时，也成为了LPL历史上第二支春夏双冠的队伍，创造了新的历史。
-                    </p>
+                    <p class="name">{{detail.team_short_name}}</p>
+                    <p class="full">{{detail.team_full_name}}</p>
+                    <p>{{detail.team_introduction}}</p>
                 </div>
             </div>
         </div>
@@ -22,14 +16,21 @@
 </template>
 
 <script>
-    export default {
+    import { defineComponent, ref, inject, watch } from 'vue'
+
+    export default defineComponent({
         setup(props,ctx) {
-
-        },
-        components: {
-
+            const detail = ref({})
+            const team = inject('detail')
+            watch(team, () => {
+                detail.value = team.teamsDetail
+            })
+            return {
+                detail,
+                team
+            }
         }
-    }
+    })
 </script>
 
 <style lang="less" scoped>

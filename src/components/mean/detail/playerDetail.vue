@@ -1,26 +1,36 @@
 <template>
     <div class="player-detail">
         <div class="flex flex_start flex_wrap">
-            <div class="player" v-for="item in 6" :key="item">
-                <span>ADC</span>
+            <div class="player" 
+                v-for="item in players" 
+                :key="item.player_id"
+                :title="item.player_name">
+                <span>{{item.player_role}}</span>
                 <div class="img flex flex_only_end flex_center">
-                    <img src="">
+                    <img :src="item.player_logo">
                 </div>
-                <p>Betty</p>
+                <p class="beyond-ellipsis">{{item.player_name}}</p>
             </div>
         </div>
     </div>
 </template>
 
 <script>
-    export default {
+    import { defineComponent, ref, inject, watch } from 'vue'
+
+    export default defineComponent({
         setup(props,ctx) {
-
-        },
-        components: {
-
+            const players = ref({})
+            const team = inject('detail')
+            watch(team, () => {
+                players.value = team.teamsDetail.players
+            })
+            return {
+                players,
+                team
+            }
         }
-    }
+    })
 </script>
 
 <style lang="less" scoped>
@@ -46,10 +56,10 @@
                 }
             }
             span {
-                width: 45px;
-                height: 19px;
+                height: 18px;
+                padding: 0 3px;
                 display: block;
-                line-height: 19px;
+                line-height: 18px;
                 text-align: center;
                 border-radius: 10px;
                 border: 1px solid #333;
@@ -69,9 +79,11 @@
                 width: 190px;
                 height: 35px;
                 color: #fff;
+                padding: 0 5px;
                 font-size: 24px;
                 line-height: 35px;
                 text-align: center;
+                box-sizing: border-box;
                 border-radius: 0px 0px 2px 2px;
                 background-color: rgba(0,0,0, .6);
                 position: absolute;

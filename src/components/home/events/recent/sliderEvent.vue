@@ -4,7 +4,10 @@
             <p class="left"></p>
         </div>
         <div class="content clearfix">
-            <div class="block f-left" v-for="item in shortList" :key="item.match_id">
+            <div class="block f-left" 
+                v-for="item in shortList" 
+                :key="item.match_id"
+                @click="gotoLink(item.game_id,item.match_id)">
                 <div class="title flex flex_between">
                     <p>{{item.status}}</p>
                     <p>{{item.scheduled_begin_at.substring(5,16)}}</p>
@@ -36,6 +39,7 @@
 </template>
 
 <script>
+    import { useRouter } from "vue-router"
     import { defineComponent } from 'vue'
 
     export default defineComponent({
@@ -49,8 +53,19 @@
             const cut = (val) => {
                 ctx.emit('cutData',val)
             }
+            const router = useRouter()
+            const gotoLink = (gameId,matchId) => {
+                router.push({
+                    path: '/match/game',
+                    query: {
+                        gameId: gameId,
+                        matchId: matchId
+                    }
+                })
+            }
             return {
-                cut
+                cut,
+                gotoLink
             }
         },
     })
@@ -88,6 +103,7 @@
             .block {
                 width: 247px;
                 height: 180px;
+                cursor: pointer;
                 margin-right: 24px;
                 border-radius: 2px;
                 background: linear-gradient(180deg, #353535 1%, #585858 100%);

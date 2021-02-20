@@ -1,9 +1,9 @@
 <template>
     <div class="player">
-        <div class="list flex flex_around">
-            <div class="item" v-for="item in 5" :key="item">
-                <div class="circle flex flex_center">
-                    <img src="">
+        <div class="list flex flex_only_center flex_wrap">
+            <div class="item" v-for="item in teams" :key="item.team_id">
+                <div class="circle flex flex_center" @click="gotoLink(item.team_id)">
+                    <img :src="item.team_logo" :title="item.team_name">
                 </div>
                 <div v-if="isText">
                     <p class="name">补刀狂人</p>
@@ -16,7 +16,10 @@
 </template>
 
 <script>
-    export default {
+    import { useRouter } from "vue-router"
+    import { defineComponent, ref, inject, watch } from 'vue'
+
+    export default defineComponent({
         props: {
             isText: {
                 type: Boolean,
@@ -24,9 +27,27 @@
             }
         },
         setup(props,ctx) {
-            
+            const teams = ref([])
+            const tournament = inject('detail')
+            watch(tournament, () => {
+                teams.value = tournament.tournamentDetail.teams
+            })
+            const router = useRouter()
+            const gotoLink = (id) => {
+                router.push({
+                    path: '/mean/detail',
+                    query: {
+                        teamId: id
+                    }
+                })
+            }
+            return {
+                teams,
+                tournament,
+                gotoLink
+            }
         }
-    }
+    })
 </script>
 
 <style lang="less" scoped>
@@ -35,6 +56,11 @@
             .item {
                 width: 150px;
                 cursor: pointer;
+                margin-right: 60px;
+                margin-bottom: 30px;
+                &:nth-child(6n) {
+                    margin-right: 0;
+                }
                 .circle {
                     width: 126px;
                     height: 126px;

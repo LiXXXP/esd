@@ -171,11 +171,11 @@ function matchScreen(params) {
 
 /**
  *
- * 比赛详情
+ * 赛事列表
  * @param {*} params
  */
-function matchDetail(params) {
-    return postRequest('/match/match_detail', params)
+function tournamentList(params) {
+    return postRequest('/tournament/tournament_list', params)
 }
 
 /**
@@ -189,11 +189,29 @@ function tournamentDetail(params) {
 
 /**
  *
+ * 战队列表
+ * @param {*} params
+ */
+function teamList(params) {
+    return postRequest('/team/team_list', params)
+}
+
+/**
+ *
  * 战队详情
  * @param {*} params
  */
 function teamDetail(params) {
     return postRequest('/team/team_detail', params)
+}
+
+/**
+ *
+ * 比赛详情
+ * @param {*} params
+ */
+function matchDetail(params) {
+    return postRequest('/match/match_detail', params)
 }
 
 export {
@@ -204,8 +222,10 @@ export {
     mailSend,
     shortMatch,
     matchScreen,
-    matchDetail,
+    tournamentList,
     tournamentDetail,
-    teamDetail
+    teamList,
+    teamDetail,
+    matchDetail,
 }
 

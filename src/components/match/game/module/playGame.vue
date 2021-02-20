@@ -3,22 +3,22 @@
         <div class="flex flex_between">
             <div class="flex flex_only_center">
                 <div class="team">
-                    <img src="">
-                    <p>LGD</p>
+                    <img :src="masterTeam.team_image">
+                    <p>{{masterTeam.team_name}}</p>
                 </div>
-                <div class="score blue">0</div>
+                <div class="score blue">{{masterTeam.team_score}}</div>
             </div>
             <div class="info">
-                <p>2020-12-05 18:00</p>
-                <p>LPL秋季赛</p>
-                <p>BO5</p>
-                <p>比赛进行中</p>
+                <p>{{playData.scheduled_begin_at}}</p>
+                <p>{{playData.tournament_name}}</p>
+                <p>{{playData.match_type_number}}</p>
+                <p>{{playData.status}}</p>
             </div>
             <div class="flex flex_only_center">
-                <div class="score red">2</div>
+                <div class="score red">{{guestTeam.team_score}}</div>
                 <div class="team">
-                    <img src="">
-                    <p>SN</p>
+                    <img :src="guestTeam.team_image">
+                    <p>{{guestTeam.team_name}}</p>
                 </div>
             </div>
         </div>
@@ -26,14 +26,27 @@
 </template>
 
 <script>
-    export default {
+    import { defineComponent, ref, inject, watch } from 'vue'
+
+    export default defineComponent({
         setup(props,ctx) {
-
+            const playData = ref({})
+            const masterTeam = ref({})
+            const guestTeam = ref({})
+            const gameData = inject('detail')
+            watch(gameData, () => {
+                playData.value = gameData.gameDetail
+                masterTeam.value = gameData.gameDetail.teams_info.master_team_info
+                guestTeam.value = gameData.gameDetail.teams_info.guest_team_info
+            })
             return {
-
+                playData,
+                masterTeam,
+                guestTeam,
+                gameData
             }
         }
-    }
+    })
 </script>
 
 <style lang="less" scoped>

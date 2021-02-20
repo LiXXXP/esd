@@ -1,24 +1,33 @@
 <template>
     <div class="pagination flex flex_center">
         <el-pagination
-            :page-size="5"
             :pager-count="11"
             layout="prev, pager, next"
-            :total="30">
+            :page-size="pageData.limit"
+            :total="pageData.count"
+            :current-page="currentPage"
+            @current-change="handleCurrentChange">
         </el-pagination>
     </div>
 </template>
 
 <script>
-    import { defineComponent , ref } from 'vue'
+    import { defineComponent, ref } from 'vue'
     export default defineComponent({
         props: {
-            
+            pageData: {
+                type: Object,
+                default: () => {}
+            }
         },
         setup(props,ctx) {
-            
+            const currentPage = ref(1)
+            const handleCurrentChange = (val) => {
+                ctx.emit('currentPage',val)
+            }
             return {
-                
+                currentPage,
+                handleCurrentChange
             }
         }
     })

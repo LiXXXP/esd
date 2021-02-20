@@ -28,6 +28,12 @@
         watch: {
             $route (to, from) {
                 this.toPath = to.path
+                if (to.path === '/match/detail') {
+                    this.toPath = '/match'
+                }
+                if (to.path === '/mean/detail') {
+                    this.toPath = '/mean'
+                }
             }
         }
     })

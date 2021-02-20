@@ -25,6 +25,11 @@ const routes = [
                 component: () => import('@/components/match/index')
             },
             {
+                path: '/match/detail',
+                name: 'matchDetail',
+                component: () => import('@/components/match/detail/detail')
+            },
+            {
                 path: '/match/game',
                 name: 'game',
                 component: () => import('@/components/match/game/index')
@@ -34,7 +39,11 @@ const routes = [
                 name: 'mean',
                 component: () => import('@/components/mean/index')
             },
-            
+            {
+                path: '/mean/detail',
+                name: 'meanDetail',
+                component: () => import('@/components/mean/detail/detail')
+            }
         ]
     },
     {

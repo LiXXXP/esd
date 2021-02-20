@@ -31,9 +31,6 @@
                         placeholder: '赛事'
                     },
                     {
-                        placeholder: '场次'
-                    },
-                    {
                         placeholder: '战队'
                     }
                 ],
