@@ -214,6 +214,15 @@ function matchDetail(params) {
     return postRequest('/match/match_detail', params)
 }
 
+/**
+ *
+ * battle详情--LOL
+ * @param {*} params
+ */
+function battleDetailByLOL(params) {
+    return postRequest('/battle/battle_detail', params)
+}
+
 export {
     userRegister,
     userLogin,
@@ -227,5 +236,6 @@ export {
     teamList,
     teamDetail,
     matchDetail,
+    battleDetailByLOL
 }
 

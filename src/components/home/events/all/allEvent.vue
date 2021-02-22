@@ -9,6 +9,7 @@
         </div>
         <TabLine :navList="navList" @status="getStatus" />
         <TableEvent :className="'home'" :screenList="screenList" />
+        <Pagination :pageData="page" @currentPage="currentPage" />
     </div>
 </template>
 
@@ -16,6 +17,7 @@
     import SelectView from '@/components/common/select/select.vue'         // 下拉框
     import TabLine from '@/components/common/tab/tabLine.vue'              // 切换页
     import TableEvent from '@/components/home/events/all/tableEvent.vue'   // 赛事列表
+    import Pagination from '@/components/common/pagination/pagination.vue' // 分页
 
     import { matchScreen } from "@/scripts/request"
     import { defineComponent, reactive, toRefs, onMounted } from 'vue'
@@ -45,41 +47,57 @@
                         tab: '未开始'
                     }
                 ],
+                page: {
+                    limit: 5,    // 条数
+                    count: 0,    // 总数
+                    current: 1   // 当前页
+                },
                 screenList: [],
+                val: 'completed'
             })
             const getMatchScreen = ((val) => {
                 let params = {
-                    match_status: val
+                    match_status: val,
+                    page: selectData.page.current,
+                    limit: selectData.page.limit
                 }
                 matchScreen(params).then(res => {
                     if(res.code === 200) {
-                        selectData.screenList = res.data
+                        selectData.screenList = res.data.list
+                        selectData.page.count = res.data.count
                     }
                 })
             })
             const getStatus = (val) => {
                 if(val === 0) {
-                    getMatchScreen('completed')
+                    selectData.val = 'completed'
                 }
                 if(val === 1) {
-                    getMatchScreen('ongoing')
+                    selectData.val = 'ongoing'
                 }
                 if(val === 2) {
-                    getMatchScreen('upcoming')
+                    selectData.val = 'upcoming'
                 }
+                getMatchScreen(selectData.val)
+            }
+            const currentPage = (val) => {
+                selectData.page.current = val
+                getMatchScreen(selectData.val)
             }
             onMounted(() => {
-                getMatchScreen('completed')
+                getMatchScreen(selectData.val)
             })
             return {
                 ...toRefs(selectData),
-                getStatus
+                getStatus,
+                currentPage
             }
         },
         components: {
             SelectView,
             TabLine,
-            TableEvent
+            TableEvent,
+            Pagination
         }
     })
 </script>

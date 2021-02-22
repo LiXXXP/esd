@@ -3,15 +3,15 @@
         <div class="page-content">
             <Breadcrumb :breadLink="breadLink" />
             <MatchDetail />
-            <TitleLine :titleName="titleName.teamName"/>
+            <TitleLine :titleName="titleName.teamName" v-if="teams.length>0"/>
             <PlayerEvent :isText="false" />
-            <TitleLine :titleName="titleName.matchName" />
+            <!-- <TitleLine :titleName="titleName.matchName" />
             <div class="tab flex flex_center">
                 <p class="active">预选赛</p>
                 <p>淘汰赛</p>
             </div>
             <AllEvent :className="'mean'" />
-            <OutDetail />
+            <OutDetail /> -->
         </div>
     </div>
 </template>
@@ -51,7 +51,8 @@
                         link: `/match/detail?tournamentId=${route.query.tournamentId}`
                     }
                 ],
-                tournamentDetail: {}
+                tournamentDetail: {},
+                teams: []
             })
             const getTournamentDetail = () => {
                 let params = {
@@ -60,6 +61,7 @@
                 tournamentDetail(params).then(res => {
                     if(res.code === 200) {
                         detailData.tournamentDetail = res.data
+                        detailData.teams = res.data.teams
                     }
                 })
             }

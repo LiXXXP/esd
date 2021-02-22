@@ -6,23 +6,30 @@
         <div class="content clearfix">
             <div class="block f-left" 
                 v-for="item in shortList" 
-                :key="item.match_id"
-                @click="gotoLink(item.game_id,item.match_id)">
-                <div class="title flex flex_between">
+                :key="item.match_id">
+                <div :class="['title flex flex_between',{
+                    ongoing: item.status === '比赛进行中'
+                }]">
                     <p>{{item.status}}</p>
                     <p>{{item.scheduled_begin_at.substring(5,16)}}</p>
                 </div>
                 <div class="info">
                     <div class="flex flex_between flex_only_center">
-                        <div class="team">
+                        <div class="team" 
+                            @click="gotoMean(item.master_team_id)">
                             <img :src="item.master_team_logo">
                             <p class="beyond-ellipsis" :title="item.master_team_name">{{item.master_team_name}}</p>
                         </div>
                         <div class="vs">
                             <p class="score">{{item.master_team_score}} : {{item.guest_team_score}}</p>
-                            <p class="status">{{item.match_feedback}}</p>
+                            <p :class="['status',{
+                                    ongoing: item.match_feedback === '进入直播'
+                                }]"
+                                @click="gotoLink(item.match_feedback,item.game_id,item.match_id)"
+                            >{{item.match_feedback}}</p>
                         </div>
-                        <div class="team">
+                        <div class="team"
+                            @click="gotoMean(item.guest_team_id)">
                             <img :src="item.guest_team_logo">
                             <p class="beyond-ellipsis" :title="item.guest_team_name">{{item.guest_team_name}}</p>
                         </div>
@@ -54,24 +61,36 @@
                 ctx.emit('cutData',val)
             }
             const router = useRouter()
-            const gotoLink = (gameId,matchId) => {
+            const gotoLink = (status, gameId,matchId) => {
+                if(status !== '敬请期待') {
+                    router.push({
+                        path: '/match/game',
+                        query: {
+                            gameId: gameId,
+                            matchId: matchId
+                        }
+                    })
+                }
+            }
+            const gotoMean = (teamId) => {
                 router.push({
-                    path: '/match/game',
+                    path: '/mean/detail',
                     query: {
-                        gameId: gameId,
-                        matchId: matchId
+                        teamId: teamId
                     }
                 })
             }
             return {
                 cut,
-                gotoLink
+                gotoLink,
+                gotoMean
             }
         },
     })
 </script>
 
 <style lang="less" scoped>
+    @green: #01FE9B;
     .slider {
         padding: 20px 0;
         .arrow {
@@ -120,6 +139,12 @@
                     box-sizing: border-box;
                     background-color: #999;
                     border-radius: 2px 2px 0px 0px;
+                    &.ongoing {
+                        background-color: #B29873;
+                        p:first-child {
+                            color: @green;
+                        }
+                    }
                 }
                 .info {
                     padding: 10px 20px;
@@ -154,6 +179,10 @@
                                 text-align: center;
                                 border-radius: 2px;
                                 border: 1px solid #B29873;
+                                &.ongoing {
+                                    color: #fff;
+                                    background-color: #B29873;
+                                }
                             }
                         }
                     }

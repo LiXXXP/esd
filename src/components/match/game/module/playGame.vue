@@ -2,9 +2,11 @@
     <div class="play-game">
         <div class="flex flex_between">
             <div class="flex flex_only_center">
-                <div class="team">
+                <div class="team" 
+                    :title="masterTeam.team_name"
+                    @click="gotoLink(masterTeam.team_id)">
                     <img :src="masterTeam.team_image">
-                    <p>{{masterTeam.team_name}}</p>
+                    <p class="beyond-ellipsis">{{masterTeam.team_name}}</p>
                 </div>
                 <div class="score blue">{{masterTeam.team_score}}</div>
             </div>
@@ -16,9 +18,11 @@
             </div>
             <div class="flex flex_only_center">
                 <div class="score red">{{guestTeam.team_score}}</div>
-                <div class="team">
+                <div class="team" 
+                    :title="guestTeam.team_name"
+                    @click="gotoLink(guestTeam.team_id)">
                     <img :src="guestTeam.team_image">
-                    <p>{{guestTeam.team_name}}</p>
+                    <p class="beyond-ellipsis">{{guestTeam.team_name}}</p>
                 </div>
             </div>
         </div>
@@ -26,6 +30,7 @@
 </template>
 
 <script>
+    import { useRouter } from "vue-router"
     import { defineComponent, ref, inject, watch } from 'vue'
 
     export default defineComponent({
@@ -39,11 +44,21 @@
                 masterTeam.value = gameData.gameDetail.teams_info.master_team_info
                 guestTeam.value = gameData.gameDetail.teams_info.guest_team_info
             })
+            const router = useRouter()
+            const gotoLink = (id) => {
+                router.push({
+                    path: '/mean/detail',
+                    query: {
+                        teamId: id
+                    }
+                })
+            }
             return {
                 playData,
                 masterTeam,
                 guestTeam,
-                gameData
+                gameData,
+                gotoLink
             }
         }
     })
@@ -61,11 +76,13 @@
         box-sizing: border-box;
         background: linear-gradient(270deg, #333333 1%, #333333 100%);
         .team {
+            cursor: pointer;
             img {
                 width: 96px;
                 height: 96px;
             }
             p {
+                width: 96px;
                 font-size: 18px;
                 padding-top: 10px;
                 text-align: center;
@@ -91,7 +108,7 @@
             font-size: 18px;
             text-align: center;
             p {
-                line-height: 1.8;
+                line-height: 1.5;
             }
         }
     }

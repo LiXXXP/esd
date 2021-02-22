@@ -35,11 +35,11 @@
                         path: '/mean'
                     },
                     {
-                        title: '系统通知',
+                        title: '    ',
                         path: '/'
                     },
                     {
-                        title: '意见反馈',
+                        title: '    ',
                         path: '/'
                     }
                 ]

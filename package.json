@@ -20,11 +20,13 @@
     "@vue/compiler-sfc": "^3.0.0",
     "axios": "^0.21.1",
     "babel-eslint": "^10.1.0",
+    "echarts": "^5.0.2",
     "element-plus": "^v1.0.1-beta.14",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^7.0.0-0",
     "less": "^4.0.0",
     "less-loader": "^7.2.0",
+    "v-charts": "^1.19.0",
     "vue-loader-v16": "^16.0.0-beta.5.4",
     "vue-router": "^4.0.1",
     "vuex": "^4.0.0-rc.2"

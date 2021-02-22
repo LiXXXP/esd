@@ -2,7 +2,7 @@
     <div class="events">
         <RecentEvent />
         <AllEvent />
-        <DataEvent />
+        <!-- <DataEvent /> -->
     </div>
 </template>
 

@@ -5,7 +5,7 @@
                 v-for="item in players" 
                 :key="item.player_id"
                 :title="item.player_name">
-                <span>{{item.player_role}}</span>
+                <span v-if="item.player_role">{{item.player_role}}</span>
                 <div class="img flex flex_only_end flex_center">
                     <img :src="item.player_logo">
                 </div>

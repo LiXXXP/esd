@@ -297,6 +297,54 @@ function useThrottle(cb, duration) {
     }
 }
 
+/**
+ * 秒数转换时间
+ * @param {*} sec 秒
+ */
+function formatSeconds(sec) {
+    let theTime = parseInt(sec) // 秒
+    let middle = 0  // 分
+    let hour = 0    // 小时
+    if(theTime >= 60) {
+        middle = parseInt( theTime / 60 )
+        theTime = parseInt( theTime % 60 )
+        if( middle >= 60 ) {
+            hour = parseInt( middle / 60 )
+            middle = parseInt( middle % 60 )
+        }
+    }
+    let result = parseInt(theTime)
+    if( theTime < 10) {
+        result = `00:0${parseInt(theTime)}`
+    }
+    if(theTime >= 10 && middle < 1) {
+        result = `00:${parseInt(theTime)}`
+    }
+    if( middle > 0 ) {
+        result = parseInt(theTime)
+        result = `${parseInt(middle)}:${result}`
+    }
+    if( hour > 0 ) {
+        result = parseInt(theTime)
+        result = `${parseInt(hour)}:${result}`
+    }
+    return result
+}
+
+/**
+ * 将数值四舍五入后格式化.
+ *
+ * @param num 数值(Number或者String)
+ * @return 格式的字符串,如'1,234,567.45'
+ * @type String
+ */
+function formatNumber(num) {
+    if(num>=1000) {
+        return `${num.toLocaleString()}`.slice(0,-2) + 'k'
+    }
+    return num
+}
+
 export {
     setTitle,
     transHtml,
@@ -313,5 +361,7 @@ export {
     resolveDeleteKey,
     getCurrentDate,
     useDebounce,
-    useThrottle
+    useThrottle,
+    formatSeconds,
+    formatNumber
 };

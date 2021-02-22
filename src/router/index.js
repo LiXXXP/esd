@@ -19,6 +19,7 @@ const routes = [
                 path: '/home',
                 name: 'home',
                 meta: {
+                    title: 'esd',
                     requireAuth: true
                 },
                 component: () => import('@/components/home/index'),
@@ -27,6 +28,7 @@ const routes = [
                 path: '/match',
                 name: 'match',
                 meta: {
+                    title: 'esd-电竞比赛',
                     requireAuth: true
                 },
                 component: () => import('@/components/match/index')
@@ -35,6 +37,7 @@ const routes = [
                 path: '/match/detail',
                 name: 'matchDetail',
                 meta: {
+                    title: 'esd-电竞比赛',
                     requireAuth: true
                 },
                 component: () => import('@/components/match/detail/detail')
@@ -43,6 +46,7 @@ const routes = [
                 path: '/match/game',
                 name: 'game',
                 meta: {
+                    title: 'esd-电竞比赛',
                     requireAuth: true
                 },
                 component: () => import('@/components/match/game/index')
@@ -51,6 +55,7 @@ const routes = [
                 path: '/mean',
                 name: 'mean',
                 meta: {
+                    title: 'esd-资料库',
                     requireAuth: true
                 },
                 component: () => import('@/components/mean/index')
@@ -59,6 +64,7 @@ const routes = [
                 path: '/mean/detail',
                 name: 'meanDetail',
                 meta: {
+                    title: 'esd-资料库',
                     requireAuth: true
                 },
                 component: () => import('@/components/mean/detail/detail')

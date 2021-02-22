@@ -3,12 +3,12 @@
         <TitleView :titleName="analyName" />
         <div class="analy flex flex_only_center flex_wrap">
             <div :class="['nav flex flex_center',{active: currentIndex === index}]" 
-                v-for="(item,index) in 5" 
-                :key="item"
-                @click="currentIndex = index">
-                <img src="">
-                <p>第{{item}}局</p>
-                <i class="win"></i>
+                v-for="(item,index) in battleList" 
+                :key="item.battle_id"
+                @click="getBattleId(index,item.battle_id)">
+                <img :src="item.winner_team_image" v-if="item.winner_team_image">
+                <p>第{{item.order}}局</p>
+                <i class="win" v-if="item.winner_team_id"></i>
             </div>
         </div>
     </div>
@@ -17,17 +17,26 @@
 <script>
     import TitleView from '@/components/common/title/title.vue'    // 页面标题
 
-    import { defineComponent, ref, reactive, toRefs } from 'vue'
+    import { defineComponent, reactive, toRefs, inject, watch } from 'vue'
 
     export default defineComponent({
         setup(props,ctx) {
-            const titleName = reactive({
+            const battleDate = reactive({
                 analyName: '对战分析',
+                currentIndex: 0,
+                battleList: []
             })
-            let currentIndex = ref(0)
+            const gameData = inject('detail')
+            watch(gameData, () => {
+                battleDate.battleList = gameData.gameDetail.battle_info
+            })
+            const getBattleId = (index,battleId) => {
+                battleDate.currentIndex = index
+                ctx.emit('getBattleId',battleId)
+            }
             return {
-                currentIndex,
-                ...toRefs(titleName)
+                ...toRefs(battleDate),
+                getBattleId
             }
         },
         components: {

@@ -2,15 +2,25 @@
     <div class="play-score">
         <TitleView :titleName="scoreName" />
         <div class="score flex flex_between flex_only_center">
-            <div class="team flex flex_only_center">
+            
+            <div class="team flex flex_only_center" 
+                :title="masterTeam.team_name"
+                @click="gotoLink(masterTeam.team_id)">
                 <img :src="masterTeam.team_image">
-                <p>{{masterTeam.team_name}}</p>
+                <p class="beyond-ellipsis">{{masterTeam.team_name}}</p>
             </div>
-            <div class="vs">{{masterTeam.team_score}} : {{guestTeam.team_score}}</div>
-            <div class="team flex flex_only_center">
-                <p>{{guestTeam.team_name}}</p>
+
+            <div class="vs">
+                {{masterTeam.team_score}} : {{guestTeam.team_score}}
+            </div>
+
+            <div class="team flex flex_only_center" 
+                :title="guestTeam.team_name"
+                @click="gotoLink(guestTeam.team_id)">
+                <p class="beyond-ellipsis">{{guestTeam.team_name}}</p>
                 <img :src="guestTeam.team_image">
             </div>
+
         </div>
     </div>
 </template>
@@ -18,6 +28,7 @@
 <script>
     import TitleView from '@/components/common/title/title.vue'    // 页面标题
 
+    import { useRouter } from "vue-router"
     import { defineComponent, reactive, toRefs, ref, inject, watch } from 'vue'
 
     export default defineComponent({
@@ -32,11 +43,21 @@
                 masterTeam.value = gameData.gameDetail.teams_info.master_team_info
                 guestTeam.value = gameData.gameDetail.teams_info.guest_team_info
             })
+            const router = useRouter()
+            const gotoLink = (id) => {
+                router.push({
+                    path: '/mean/detail',
+                    query: {
+                        teamId: id
+                    }
+                })
+            }
             return {
                 ...toRefs(titleName),
                 masterTeam,
                 guestTeam,
-                gameData
+                gameData,
+                gotoLink
             }
         },
         components: {
@@ -55,11 +76,13 @@
             box-sizing: border-box;
             background: linear-gradient(90deg, #DAE0F2 0%, #EAE5E5 100%);
             .team {
+                cursor: pointer;
                 img {
                     width: 44px;
                     height: 44px;
                 }
                 p {
+                    width: 120px;
                     padding: 0 20px;
                     font-size: 24px;
                     font-weight: 600;

@@ -11,7 +11,9 @@
                 </thead>
                 <tbody>
                     <tr v-for="item in screenList" :key="item.match_id">
-                        <td>{{item.match_status}}</td>
+                        <td :class="[{
+                            green: item.match_status !== '已结束' && item.match_status !== '未开始'
+                        }]">{{item.match_status}}</td>
                         <td style="width:300px;">{{item.tournament_name}}</td>
                         <td>
                             <p>{{item.scheduled_begin_at.substring(0,10)}}</p>
@@ -19,19 +21,29 @@
                         </td>
                         <td>
                             <div class="flex flex_center">
-                                <div class="team flex flex_center">
+
+                                <div class="team flex flex_center" 
+                                    @click="gotoMean(item.match_situation.master_team_id)">
                                     <img :src="item.match_situation.master_team_logo">
                                     <span>{{item.match_situation.master_team_name}}</span>
                                 </div>
-                                <div class="vs">{{item.match_situation.master_team_score}}:{{item.match_situation.guest_team_score}}</div>
-                                <div class="team flex flex_center">
+
+                                <div class="vs">
+                                    {{item.match_situation.master_team_score}}:{{item.match_situation.guest_team_score}}
+                                </div>
+
+                                <div class="team flex flex_center" 
+                                    @click="gotoMean(item.match_situation.guest_team_id)">
                                     <span>{{item.match_situation.guest_team_name}}</span>
                                     <img :src="item.match_situation.guest_team_logo">
                                 </div>
+
                             </div>
                         </td>
                         <td>
-                            <p class="detail" @click="gotoLink(item.game_id,item.match_id)">详情</p>
+                            <p :class="['detail',{disable: parseInt(item.game_id) === 3 || item.match_status === '未开始'}]" 
+                                @click="gotoLink(item.game_id,item.match_id,item.match_status)"
+                            >详情</p>
                         </td>
                     </tr>
                 </tbody>
@@ -41,6 +53,7 @@
 </template>
 
 <script>
+    
     import { useRouter } from "vue-router"
     import { defineComponent } from 'vue'
 
@@ -57,27 +70,39 @@
         },
         setup(props,ctx) {
             const router = useRouter()
-            const gotoLink = (gameId,matchId) => {
+            const gotoLink = (gameId,matchId,status) => {
+                if(parseInt(gameId) !== 3 && status !== '未开始') {
+                    router.push({
+                        path: '/match/game',
+                        query: {
+                            gameId: gameId,
+                            matchId: matchId
+                        }
+                    })
+                }
+            }
+            const gotoMean = (teamId) => {
                 router.push({
-                    path: '/match/game',
+                    path: '/mean/detail',
                     query: {
-                        gameId: gameId,
-                        matchId: matchId
+                        teamId: teamId
                     }
                 })
             }
             return {
-                gotoLink
+                gotoLink,
+                gotoMean
             }
-        },
-        components: {
-
         }
     })
 </script>
 
 <style lang="less" scoped>
+    @green: #01FE9B;
     .table-event {
+        .green {
+            color: @green;
+        }
         table {
             width: 100%;
             text-align: center;
@@ -123,6 +148,7 @@
             }
         }
         .team {
+            cursor: pointer;
             img {
                 width: 35px;
                 height: 35px;
@@ -147,6 +173,10 @@
             border-radius: 2px;
             text-align: center;
             background: #B29873;
+            &.disable {
+                cursor: not-allowed;
+                background-color: #ccc;
+            }
         }
     }
 </style>

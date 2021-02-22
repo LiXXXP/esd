@@ -3,12 +3,12 @@
         <Breadcrumb :breadLink="breadLink" />
         <TeamDetail />
         <div class="page-content">
-            <TitleLine :titleName="titleName.playerName"/>
+            <TitleLine :titleName="titleName.playerName" v-if="players.length>0"/>
             <PlayerDetail />
-            <TitleLine :titleName="titleName.teamName" />
+            <!-- <TitleLine :titleName="titleName.teamName" />
             <TeamEvent :className="'mean'" />
             <TitleLine :titleName="titleName.matchName" />
-            <AllEvent :className="'mean'" />
+            <AllEvent :className="'mean'" /> -->
         </div>
     </div>
 </template>
@@ -49,7 +49,8 @@
                         link: `/mean/detail?teamId=${route.query.teamId}`
                     }
                 ],
-                teamsDetail: {}
+                teamsDetail: {},
+                players: []
             })
             const getTeamDetail = () => {
                 let params = {
@@ -58,6 +59,7 @@
                 teamDetail(params).then(res => {
                     if(res.code === 200) {
                         detailData.teamsDetail = res.data
+                        detailData.players = res.data.players
                     }
                 })
             }
