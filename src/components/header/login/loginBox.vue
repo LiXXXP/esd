@@ -35,9 +35,9 @@
             const logout = (() => {
                 userLogout().then(res => {
                     if(res.code === 200) {
-                        email.value = 0
                         localStorage.removeItem('userToken')
                         ElMessage.success(res.message)
+                        window.location.href = '/home'
                     } else {
                         ElMessage.error(res.message)
                     }
