@@ -1,7 +1,7 @@
 <template>
     <div class="play-teams">
-        <TitleView :titleName="teamsName" v-if="battleId" />
-        <div class="detail" v-if="battleId">
+        <TitleView :titleName="teamsName" v-if="battleInfo !== null" />
+        <div class="detail" v-if="battleInfo !== null">
             <div class="team flex flex_between" v-if="teamInfo.length>0">
                 <div class="flex flex_only_center">
                     <img :src="teamInfo[0].team_image">
@@ -102,7 +102,7 @@
     import Progress from '@/components/common/progress/progress.vue'        // 进度条
 
     import { useRoute } from "vue-router"
-    import { battleDetailByLOL } from "@/scripts/request"
+    import { battleDetail } from "@/scripts/request"
     import { formatSeconds, formatNumber } from '@/scripts/utils'
     import { defineComponent, reactive, toRefs, inject, watch, computed } from 'vue'
 
@@ -221,7 +221,7 @@
                     width: 13
                 },
                 battleId: 0,
-                battleInfo: {},
+                battleInfo: null,
                 teamInfo: [],
                 factions: []
             })
@@ -230,26 +230,28 @@
                     game_id: parseInt(route.query.gameId),
                     battle_id: battleId,
                 }
-                battleDetailByLOL(params).then(res => {
+                battleDetail(params).then(res => {
                     if(res.code === 200) {
-                        if(res.data.battle_detail.factions[0].faction !== 'blue') {
-                            res.data.battle_detail.factions.reverse()
+                        if(res.data.length !== 0) {
+                            teamsData.battleInfo = res.data
+                            teamsData.teamInfo = res.data.team_info
+                            teamsData.factions = res.data.battle_detail.factions
+                            if(res.data.battle_detail.factions[0].faction !== 'blue') {
+                                teamsData.factions.reverse()
+                            }
+                            if(res.data.battle_detail.factions[0].team_id !== res.data.team_info[0].team_id) {
+                                teamsData.teamInfo.reverse()
+                            }
+                            battleDatas()
                         }
-                        if(res.data.battle_detail.factions[0].team_id !== res.data.team_info[0].team_id) {
-                            res.data.team_info.reverse()
-                        }
-                        teamsData.battleInfo = res.data
-                        teamsData.teamInfo = res.data.team_info
-                        teamsData.factions = res.data.battle_detail.factions
-                        battleDatas()
                     }
                 })
             }
             const battleDatas = () => {
                 teamsData.list.forEach( e => {
                     let field = e.type
-                    e.blue = teamsData.battleInfo.battle_detail.factions[0][field] || 0
-                    e.red = teamsData.battleInfo.battle_detail.factions[1][field] || 0
+                    e.blue = teamsData.factions[0][field] || 0
+                    e.red = teamsData.factions[1][field] || 0
                     for(let key of e.imgs) {
                         let type = key.type
                         if(teamsData.battleInfo.battle_detail.first_events[type] !== null) {

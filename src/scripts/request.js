@@ -216,10 +216,10 @@ function matchDetail(params) {
 
 /**
  *
- * battle详情--LOL
+ * battle详情
  * @param {*} params
  */
-function battleDetailByLOL(params) {
+function battleDetail(params) {
     return postRequest('/battle/battle_detail', params)
 }
 
@@ -236,6 +236,6 @@ export {
     teamList,
     teamDetail,
     matchDetail,
-    battleDetailByLOL
+    battleDetail
 }
 

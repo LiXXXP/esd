@@ -8,7 +8,10 @@
                     <img :src="masterTeam.team_image">
                     <p class="beyond-ellipsis">{{masterTeam.team_name}}</p>
                 </div>
-                <div class="score blue">{{masterTeam.team_score}}</div>
+                <div :class="['score',{
+                    blue: gameId === 2,
+                    ct: gameId === 1
+                }]">{{masterTeam.team_score}}</div>
             </div>
             <div class="info">
                 <p>{{playData.scheduled_begin_at}}</p>
@@ -17,7 +20,10 @@
                 <p>{{playData.status}}</p>
             </div>
             <div class="flex flex_only_center">
-                <div class="score red">{{guestTeam.team_score}}</div>
+                <div :class="['score',{
+                    red: gameId === 2,
+                    yellow: gameId === 1
+                }]">{{guestTeam.team_score}}</div>
                 <div class="team" 
                     :title="guestTeam.team_name"
                     @click="gotoLink(guestTeam.team_id)">
@@ -38,8 +44,10 @@
             const playData = ref({})
             const masterTeam = ref({})
             const guestTeam = ref({})
+            const gameId = ref(0)
             const gameData = inject('detail')
             watch(gameData, () => {
+                gameId.value = gameData.gameId
                 playData.value = gameData.gameDetail
                 masterTeam.value = gameData.gameDetail.teams_info.master_team_info
                 guestTeam.value = gameData.gameDetail.teams_info.guest_team_info
@@ -57,6 +65,7 @@
                 playData,
                 masterTeam,
                 guestTeam,
+                gameId,
                 gameData,
                 gotoLink
             }
@@ -67,6 +76,8 @@
 <style lang="less" scoped>
     @blue: #467CF3;
     @red: #C0200D;
+    @ct: #008CD5;
+    @yellow: #F6B600;
     .play-game {
         width: 100%;
         height: 180px;
@@ -102,6 +113,12 @@
             }
             &.red {
                 background-color: @red;
+            }
+            &.yellow {
+                background-color: @yellow;
+            }
+            &.ct {
+                background-color: @ct;
             }
         }
         .info {

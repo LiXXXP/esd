@@ -29,6 +29,8 @@
                 userInfo().then(res => {
                     if(res.code === 200) {
                         email.value = res.data.email
+                    } else {
+                        localStorage.removeItem('userToken')
                     }
                 })
             })

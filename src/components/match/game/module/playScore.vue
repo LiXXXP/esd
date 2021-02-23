@@ -10,8 +10,14 @@
                 <p class="beyond-ellipsis">{{masterTeam.team_name}}</p>
             </div>
 
-            <div class="vs">
-                {{masterTeam.team_score}} : {{guestTeam.team_score}}
+            <div class="flex flex_center">
+                <slot name="csgo_ct"></slot>
+
+                <div class="vs">
+                    {{masterTeam.team_score}} : {{guestTeam.team_score}}
+                </div>
+
+                <slot name="csgo_t"></slot>
             </div>
 
             <div class="team flex flex_only_center" 
@@ -89,6 +95,7 @@
                 }
             }
             .vs {
+                margin: 0 18px;
                 font-size: 30px;
                 font-weight: 600;
             }

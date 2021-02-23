@@ -1,7 +1,7 @@
 <template>
     <div class="play-analy">
-        <TitleView :titleName="analyName" />
-        <div class="analy flex flex_only_center flex_wrap">
+        <TitleView :titleName="analyName" v-if="battleList.length>0" />
+        <div class="analy flex flex_only_center flex_wrap" v-if="battleList.length>0">
             <div :class="['nav flex flex_center',{active: currentIndex === index}]" 
                 v-for="(item,index) in battleList" 
                 :key="item.battle_id"
