@@ -2,11 +2,15 @@
     <div class="csgo-game">
         <PlayGame />
         <play-score>
-            <template v-slot:csgo_ct>
-                <div class="bar"></div>
+            <template v-slot:csgo_ct v-if="list.length>0">
+                <div :class="['bar',{win: masterTeamId === item.winner_team_id}]"
+                    v-for="item in list" :key="item.battle_id"
+                ></div>
             </template>
-            <template v-slot:csgo_t>
-                <div class="bar"></div>
+            <template v-slot:csgo_t v-if="list.length>0">
+                <div :class="['bar',{win: guestTeamId === item.winner_team_id}]"
+                    v-for="item in list" :key="item.battle_id"
+                ></div>
             </template>
         </play-score>
         <PlayMap />
@@ -30,11 +34,15 @@
             const battle = reactive({
                 list: []
             })
+            const masterTeamId = ref(0)
+            const guestTeamId = ref(0)
             const gameData = inject('detail')
             watch(gameData, () => {
                 if(gameData.gameDetail.battle_info.length > 0) {
-                    // battle.list = gameData.gameDetail.battle_info
+                    battle.list = gameData.gameDetail.battle_info
                     battleId.value = gameData.gameDetail.battle_info[0].battle_id
+                    masterTeamId.value = gameData.gameDetail.teams_info.master_team_info.team_id
+                    guestTeamId.value = gameData.gameDetail.teams_info.guest_team_info.team_id
                 }
             })
             const getBattleId = (val) => {
@@ -45,7 +53,9 @@
                 battleId,
                 ...toRefs(battle),
                 gameData,
-                getBattleId
+                getBattleId,
+                masterTeamId,
+                guestTeamId
             }
         },
         components: {
@@ -66,6 +76,9 @@
             margin: 0 2.5px;
             border-radius: 1px;
             background-color: #999;
+            &.win {
+                background-color: #333;
+            }
         }
     }
 </style>

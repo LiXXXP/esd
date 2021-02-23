@@ -3,7 +3,7 @@
         <TitleView :titleName="teamsName" v-if="battleInfo !== null" />
         <div class="detail" v-if="battleInfo !== null">
             <div class="team flex flex_between" v-if="teamInfo.length>0">
-                <div class="flex flex_only_center">
+                <div class="flex flex_only_center" @click="gotoLink(teamInfo[0].team_id)">
                     <img :src="teamInfo[0].team_image">
                     <p class="beyond-ellipsis" :title="teamInfo[0].team_name">
                         {{teamInfo[0].team_name}}
@@ -13,7 +13,7 @@
                     <i class="iconfont icon-shijian"></i>
                     <span>{{durationTime(battleInfo.duration)}}</span>
                 </div>
-                <div class="flex flex_only_center">
+                <div class="flex flex_only_center" @click="gotoLink(teamInfo[1].team_id)">
                     <p class="beyond-ellipsis" :title="teamInfo[1].team_name">
                         {{teamInfo[1].team_name}}
                     </p>
@@ -101,7 +101,7 @@
     import TitleView from '@/components/common/title/title.vue'             // 页面标题
     import Progress from '@/components/common/progress/progress.vue'        // 进度条
 
-    import { useRoute } from "vue-router"
+    import { useRoute, useRouter } from "vue-router"
     import { battleDetail } from "@/scripts/request"
     import { formatSeconds, formatNumber } from '@/scripts/utils'
     import { defineComponent, reactive, toRefs, inject, watch, computed } from 'vue'
@@ -276,12 +276,24 @@
                     return formatNumber(num)
                 }
             })
+
+            const router = useRouter()
+            const gotoLink = (id) => {
+                router.push({
+                    path: '/mean/detail',
+                    query: {
+                        teamId: id
+                    }
+                })
+            }
+
             return {
                 ...toRefs(teamsData),
                 getbattleDetail,
                 battleDatas,
                 durationTime,
-                thousands
+                thousands,
+                gotoLink
             }
         },
         components: {
