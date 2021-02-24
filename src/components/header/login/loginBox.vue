@@ -39,7 +39,7 @@
                     if(res.code === 200) {
                         localStorage.removeItem('userToken')
                         ElMessage.success(res.message)
-                        window.location.href = '/home'
+                        window.location.href = '/'
                     } else {
                         ElMessage.error(res.message)
                     }

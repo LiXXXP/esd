@@ -5,12 +5,17 @@
         </div>
         <div class="search-page" v-if="isShowSearch" @click="openSearch">
             <div class="page" @click.stop>
-                <div class="page-input flex flex_center">
-                    <input type="text" placeholder="输入搜索内容">
-                    <select>
-                        <option value ="volvo">赛事</option>
-                        <option value ="saab">战队</option>
-                        <option value="opel">选手</option>
+                <div class="page-input flex flex_only_center">
+                    <input type="text" 
+                        placeholder="输入搜索内容" 
+                        v-model="searchInput" 
+                        @keyup.enter="search" 
+                        @input="search($event)"
+                    >
+                    <select v-model="selectVal" @change="getSelected">
+                        <option value ="match" selected>赛事</option>
+                        <option value ="team">战队</option>
+                        <option value="player">选手</option>
                     </select>
                 </div>
                 <SearchResult />
@@ -23,16 +28,83 @@
 <script>
     import SearchResult from '@/components/header/search/searchResult.vue'   // 搜索结果
 
-    import { defineComponent, ref } from 'vue'
+    import { tournamentSearch, teamSearch, playerSearch } from "@/scripts/request"
+    import { defineComponent, ref, reactive, toRefs, provide } from 'vue'
+
     export default defineComponent({
         setup(props,ctx) {
             let isShowSearch = ref(false)
+            const searchData = reactive({
+                page: {
+                    current: 1,
+                    limit: 5,
+                    count: 0
+                },
+                searchInput: '',
+                selectVal: '',
+                searchList: []
+            })
+
             const openSearch = () => {
                 isShowSearch.value = !isShowSearch.value
             }
+
+            const search = (event) => {
+                switch (searchData.selectVal) {
+                    case 'match':
+                        getSearchInfo(searchData.searchInput, tournamentSearch)
+                    break
+                    case 'team':
+                        getSearchInfo(searchData.searchInput, teamSearch)
+                    break
+                    case 'player':
+                        getSearchInfo(searchData.searchInput, playerSearch)
+                    break
+                    default:
+                    break
+                }
+            }
+
+            const getSelected = () => {
+                searchData.searchInput = ''
+                searchData.searchList = []
+            }
+
+            provide('selectData',searchData)
+
+            const getSearchInfo = ((val, searchName) => {
+                let params = {
+                    search_info: val,
+                    page: searchData.page.current,
+                    limit: searchData.page.limit
+                }
+                searchName(params).then(res => {
+                    if(res.code === 200) {
+                        switch (searchData.selectVal) {
+                            case 'match':
+                                searchData.searchList = res.data.match_list
+                            break
+                            case 'team':
+                                searchData.searchList = res.data.team_list
+                            break
+                            case 'player':
+                                searchData.searchList = res.data.player_list
+                            break
+                            default:
+                            break
+                        }
+                        searchData.page.count = res.data.count
+                    }
+                })
+            })
+
             return {
                 isShowSearch,
-                openSearch
+                ...toRefs(searchData),
+                openSearch,
+                search,
+                getSelected,
+                getSearchInfo
             }
         },
         components: {
@@ -59,7 +131,8 @@
             height: 100%;
             z-index: 999;
             font-size: 18px;
-            padding: 200px 0;
+            padding: 100px 0;
+            overflow-y :scroll;
             box-sizing: border-box;
             transition: opacity .3s;
             background-color: rgba(0,0,0, .85);
@@ -95,10 +168,12 @@
                         text-align: center;
                         text-align-last: center;
                         border-radius: 0 2px 2px 0;
-                        background: url("") no-repeat right center #B29873;
+                        background: url('../../../assets/imgs/sj.png') no-repeat 70% center #B29873;
                         option {
+                            color: #666;
                             cursor: pointer;
                             padding: 10px 0;
+                            background-color: #fff;
                         }
                     }
                 }

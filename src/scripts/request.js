@@ -223,6 +223,33 @@ function battleDetail(params) {
     return postRequest('/battle/battle_detail', params)
 }
 
+/**
+ *
+ * 赛事搜索
+ * @param {*} params
+ */
+function tournamentSearch(params) {
+    return postRequest('/tournament/search_info', params)
+}
+
+/**
+ *
+ * 战队搜索
+ * @param {*} params
+ */
+function teamSearch(params) {
+    return postRequest('/team/search_info', params)
+}
+
+/**
+ *
+ * 选手搜索
+ * @param {*} params
+ */
+function playerSearch(params) {
+    return postRequest('/player/search_info', params)
+}
+
 export {
     userRegister,
     userLogin,
@@ -236,6 +263,9 @@ export {
     teamList,
     teamDetail,
     matchDetail,
-    battleDetail
+    battleDetail,
+    tournamentSearch,
+    teamSearch,
+    playerSearch
 }
 
