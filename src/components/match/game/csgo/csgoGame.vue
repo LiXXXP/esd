@@ -15,7 +15,7 @@
         </play-score>
         <PlayMap />
         <PlayAnaly @getBattleId="getBattleId" />
-        <PlayKill v-if="battleId" />
+        <PlayKill />
     </div>
 </template>
 

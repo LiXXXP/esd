@@ -14,7 +14,7 @@
 
     import { useRoute } from "vue-router"
     import { matchDetail } from "@/scripts/request"
-    import { defineComponent, reactive, toRefs, provide, onMounted, onUnmounted } from 'vue'
+    import { defineComponent, reactive, toRefs, provide, onMounted } from 'vue'
 
     export default defineComponent({
         name: 'game',
@@ -32,8 +32,7 @@
                     }
                 ],
                 gameDetail: {},
-                gameId: parseInt(route.query.gameId),
-                timer: null, // 定义的轮询
+                gameId: parseInt(route.query.gameId)
             })
             const getMatchDetail = () => {
                 let params = {
@@ -42,21 +41,12 @@
                 matchDetail(params).then(res => {
                     if(res.code === 200) {
                         gameData.gameDetail = res.data
-                        // if(res.data.status !== '比赛进行中') {
-                        //     clearInterval(gameData.timer)
-                        // }
                     }
                 })
             }
             provide('detail',gameData)
             onMounted(() => {
                 getMatchDetail()
-                // gameData.timer = setInterval( () => {
-                //     getMatchDetail()
-                // }, 5000)
-            })
-            onUnmounted(() => {
-                // clearInterval(gameData.timer)
             })
             return {
                 ...toRefs(gameData),
