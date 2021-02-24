@@ -1,7 +1,7 @@
 <template>
     <div class="page-result flex flex_column flex_center">
         <div v-if="searchList.length>0" >
-            <table>
+            <table v-for="item in searchList" :key="item.team_id || item.match_id || item.player_id">
                 <thead>
                     <th v-for="item in theadList" :key="item.head">{{item.head}}</th>
                     <th>相关</th>
