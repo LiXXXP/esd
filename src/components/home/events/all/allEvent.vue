@@ -38,13 +38,13 @@
                 ],
                 navList: [
                     {
-                        tab: '已结束'
-                    },
-                    {
                         tab: '进行中'
                     },
                     {
                         tab: '未开始'
+                    },
+                    {
+                        tab: '已结束'
                     }
                 ],
                 page: {
@@ -53,7 +53,7 @@
                     current: 1   // 当前页
                 },
                 screenList: [],
-                val: 'completed'
+                val: 'ongoing'
             })
             const getMatchScreen = ((val) => {
                 let params = {
@@ -70,13 +70,13 @@
             })
             const getStatus = (val) => {
                 if(val === 0) {
-                    selectData.val = 'completed'
-                }
-                if(val === 1) {
                     selectData.val = 'ongoing'
                 }
-                if(val === 2) {
+                if(val === 1) {
                     selectData.val = 'upcoming'
+                }
+                if(val === 2) {
+                    selectData.val = 'completed'
                 }
                 getMatchScreen(selectData.val)
             }
