@@ -5,7 +5,7 @@
                 <p class="rhombus"></p>
                 <p>赛事筛选</p>
             </div>
-            <SelectView :selectList="selectList" :size="'small'" class="selectBox" />
+            <!-- <SelectView :selectList="selectList" :size="'small'" class="selectBox" /> -->
         </div>
         <TabLine :navList="navList" @status="getStatus" />
         <TableEvent :className="'home'" :screenList="screenList" />
