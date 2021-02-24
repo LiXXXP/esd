@@ -104,7 +104,7 @@
     import { useRoute, useRouter } from "vue-router"
     import { battleDetail } from "@/scripts/request"
     import { formatSeconds, formatNumber } from '@/scripts/utils'
-    import { defineComponent, reactive, toRefs, inject, watch, computed } from 'vue'
+    import { defineComponent, reactive, toRefs, inject, watch, computed, onUnmounted } from 'vue'
 
     export default defineComponent({
         setup(props,ctx) {
@@ -223,7 +223,8 @@
                 battleId: 0,
                 battleInfo: null,
                 teamInfo: [],
-                factions: []
+                factions: [],
+                timer: null
             })
             const getbattleDetail = (battleId) => {
                 let params = {
@@ -243,6 +244,9 @@
                                 teamsData.teamInfo.reverse()
                             }
                             battleDatas()
+                        }
+                        if(res.data.status !== 'ongoing') {
+                            clearInterval(teamsData.timer)
                         }
                     }
                 })
@@ -265,6 +269,13 @@
             watch(battleid, () => {
                 teamsData.battleId = battleid
                 getbattleDetail(teamsData.battleId)
+                teamsData.timer = setInterval( () => {
+                    getbattleDetail(teamsData.battleId)
+                }, 5000)
+
+            })
+            onUnmounted(() => {
+                clearInterval(teamsData.timer)
             })
             const durationTime = computed(() => {
                 return function(sec) {

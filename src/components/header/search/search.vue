@@ -6,7 +6,7 @@
         <div class="search-page" v-if="isShowSearch" @click="openSearch">
             <div class="page" @click.stop>
                 <div class="page-input flex flex_only_center">
-                    <input type="text" 
+                    <input type="text"
                         placeholder="输入搜索内容" 
                         v-model="searchInput" 
                         @keyup.enter="search" 
