@@ -14,7 +14,7 @@
 
     import { useRoute } from "vue-router"
     import { matchDetail } from "@/scripts/request"
-    import { defineComponent, reactive, toRefs, provide, onMounted } from 'vue'
+    import { defineComponent, reactive, toRefs, provide, onMounted, onUnmounted } from 'vue'
 
     export default defineComponent({
         name: 'game',
@@ -34,6 +34,10 @@
                 gameDetail: {},
                 gameId: parseInt(route.query.gameId)
             })
+            const timerData = reactive({
+                timer: null,
+                battleInfo: []
+            })
             const getMatchDetail = () => {
                 let params = {
                     match_id: parseInt(route.query.matchId),
@@ -45,11 +49,31 @@
                 })
             }
             provide('detail',gameData)
+            
             onMounted(() => {
                 getMatchDetail()
+                timerData.timer = setInterval( () => {
+                    let params = {
+                        match_id: parseInt(route.query.matchId),
+                    }
+                    matchDetail(params).then(res => {
+                        if(res.code === 200) {
+                            timerData.battleInfo = res.data.battle_info
+                            if(res.data.status !== '比赛进行中') {
+                                clearInterval(timerData.timer)
+                            }
+                        }
+                    })
+                }, 5000)
             })
+            provide('battle',timerData)
+
+            onUnmounted(() => {
+                clearInterval(timerData.timer)
+            })
+
             return {
-                ...toRefs(gameData),
+                ...toRefs(gameData,timerData),
                 getMatchDetail
             }
         },

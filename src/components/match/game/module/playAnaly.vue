@@ -26,9 +26,9 @@
                 currentIndex: 0,
                 battleList: []
             })
-            const gameData = inject('detail')
-            watch(gameData, () => {
-                battleDate.battleList = gameData.gameDetail.battle_info
+            const battleData = inject('battle')
+            watch(battleData, () => {
+                battleDate.battleList = battleData.battleInfo
             })
             const getBattleId = (index,battleId) => {
                 battleDate.currentIndex = index

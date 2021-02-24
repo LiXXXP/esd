@@ -1,172 +1,174 @@
 <template>
     <div class="play-kill">
-        <TitleView :titleName="mapName" />
-        <div class="map flex flex_center" v-if="teamsData.length>0">
+        <div v-if="battleId">
+            <TitleView :titleName="mapName" />
+            <div class="map flex flex_center" v-if="teamsData.length>0">
 
-            <div class="arms flex flex_center">
-                <div v-for="item in armsList" 
-                    :key="item.type" 
-                    :class="{back: detailData[item.type].team_id !== teamsData[0].team_id}">
-                    <img :src="item.url" v-if="detailData[item.type].team_id === teamsData[0].team_id">
+                <div class="arms flex flex_center">
+                    <div v-for="item in armsList" 
+                        :key="item.type" 
+                        :class="{back: detailData[item.type].team_id !== teamsData[0].team_id}">
+                        <img :src="item.url" v-if="detailData[item.type].team_id === teamsData[0].team_id">
+                    </div>
                 </div>
-            </div>
 
-            <div class="sign flex flex_column flex_around">
-                <div class="flex flex_only_center">
-                    <span>{{teamsData[0].first_half_score}}</span>
-                    <span class="side ct">CT</span>
+                <div class="sign flex flex_column flex_around">
+                    <div class="flex flex_only_center">
+                        <span>{{teamsData[0].first_half_score}}</span>
+                        <span class="side ct">CT</span>
+                    </div>
+                    <div class="flex flex_only_center">
+                        <span>{{teamsData[0].second_half_score}}</span>
+                        <span class="side t">T</span>
+                    </div>
                 </div>
-                <div class="flex flex_only_center">
-                    <span>{{teamsData[0].second_half_score}}</span>
-                    <span class="side t">T</span>
+
+                <div class="score flex flex_center">
+                    <p>{{teamsData[0].score}}</p>
+                    <img :src="mapInfo.map_thumbnail" :title="mapInfo.map_name">
+                    <p>{{teamsData[1].score}}</p>
                 </div>
-            </div>
 
-            <div class="score flex flex_center">
-                <p>{{teamsData[0].score}}</p>
-                <img :src="mapInfo.map_thumbnail" :title="mapInfo.map_name">
-                <p>{{teamsData[1].score}}</p>
-            </div>
-
-            <div class="sign flex flex_column flex_around">
-                <div class="flex flex_only_center">
-                    <span class="side t">T</span>
-                    <span>{{teamsData[1].first_half_score}}</span>
+                <div class="sign flex flex_column flex_around">
+                    <div class="flex flex_only_center">
+                        <span class="side t">T</span>
+                        <span>{{teamsData[1].first_half_score}}</span>
+                    </div>
+                    <div class="flex flex_only_center">
+                        <span class="side ct">CT</span>
+                        <span>{{teamsData[1].second_half_score}}</span>
+                    </div>
                 </div>
-                <div class="flex flex_only_center">
-                    <span class="side ct">CT</span>
-                    <span>{{teamsData[1].second_half_score}}</span>
+
+                <div class="arms flex flex_center">
+                    <div v-for="item in armsList"
+                        :key="item.type" 
+                        :class="{back: detailData[item.type].team_id !== teamsData[1].team_id}">
+                        <img :src="item.url" v-if="detailData[item.type].team_id === teamsData[1].team_id">
+                    </div>
                 </div>
+
             </div>
 
-            <div class="arms flex flex_center">
-                <div v-for="item in armsList"
-                    :key="item.type" 
-                    :class="{back: detailData[item.type].team_id !== teamsData[1].team_id}">
-                    <img :src="item.url" v-if="detailData[item.type].team_id === teamsData[1].team_id">
+            <div class="kill">
+                <table cellspacing="0" cellpadding="0">
+                    <tbody>
+                        <tr>
+                            <td></td>
+                            <td v-for="item in roundDetail" :key="item">
+                                <div class="bar">
+                                    <p v-for="key in item.side[0].players" 
+                                        :key="key.player_id"
+                                        :class="[{
+                                            ct: item.side[0].side === 'ct' && !key.is_died,
+                                            t: item.side[0].side === 'terrorist' && !key.is_died,
+                                            die: key.is_first_death
+                                    }]">
+                                        <i v-if="key.is_first_death && key.is_headshot"></i>
+                                    </p>
+                                </div>
+                            </td>
+                            <td v-for="item in (30 - roundDetail.length)" :key="item"></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="team flex flex_only_center" 
+                                    v-if="teamsData.length>0"
+                                    @click="gotoLink(teamsData[0].team_id)">
+                                    <img :src="teamsData[0].team_image">
+                                    <p class="beyond-ellipsis" :title="teamsData[0].team_name">
+                                        {{teamsData[0].team_name}}
+                                    </p>
+                                    <i class="win" v-if="teamsData[0].is_winner"></i>
+                                </div>
+                            </td>
+                            <td v-for="item in roundDetail" :key="item">
+                                <div class="icon">
+                                    <img src="../../../../assets/imgs/game/csgo/ct01.png" 
+                                    v-if="item.win_type === 'cts_win' && item.winner === item.side[0].team_id">
+                                    <img src="../../../../assets/imgs/game/csgo/ct02.png" 
+                                    v-if="item.win_type === 'bomb_defused' && item.winner === item.side[0].team_id">
+                                    <img src="../../../../assets/imgs/game/csgo/ct03.png" 
+                                    v-if="item.win_type === 'target_saved' && item.winner === item.side[0].team_id">
+                                    <img src="../../../../assets/imgs/game/csgo/t01.png" 
+                                    v-if="item.win_type === 'target_bombed' && item.winner === item.side[0].team_id">
+                                    <img src="../../../../assets/imgs/game/csgo/t02.png" 
+                                    v-if="item.win_type === 'terrorists_win' && item.winner === item.side[0].team_id">
+                                </div>
+                            </td>
+                            <td v-for="item in (30 - roundDetail.length)" :key="item"></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="team flex flex_only_center" 
+                                    v-if="teamsData.length>0"
+                                    @click="gotoLink(teamsData[1].team_id)">
+                                    <img :src="teamsData[1].team_image">
+                                    <p class="beyond-ellipsis" :title="teamsData[1].team_name">
+                                        {{teamsData[1].team_name}}
+                                    </p>
+                                    <i class="win" v-if="teamsData[1].is_winner"></i>
+                                </div>
+                            </td>
+                            <td v-for="item in roundDetail" :key="item">
+                                <div class="icon">
+                                    <img src="../../../../assets/imgs/game/csgo/ct01.png" 
+                                    v-if="item.win_type === 'cts_win' && item.winner === item.side[1].team_id">
+                                    <img src="../../../../assets/imgs/game/csgo/ct02.png" 
+                                    v-if="item.win_type === 'bomb_defused' && item.winner === item.side[1].team_id">
+                                    <img src="../../../../assets/imgs/game/csgo/ct03.png" 
+                                    v-if="item.win_type === 'target_saved' && item.winner === item.side[1].team_id">
+                                    <img src="../../../../assets/imgs/game/csgo/t01.png" 
+                                    v-if="item.win_type === 'target_bombed' && item.winner === item.side[1].team_id">
+                                    <img src="../../../../assets/imgs/game/csgo/t02.png" 
+                                    v-if="item.win_type === 'terrorists_win' && item.winner === item.side[1].team_id">
+                                </div>
+                            </td>
+                            <td v-for="item in (30 - roundDetail.length)" :key="item"></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td v-for="item in roundDetail" :key="item">
+                                <div class="bar">
+                                    <p v-for="key in item.side[1].players" 
+                                        :key="key.player_id"
+                                        :class="[{
+                                            ct: item.side[0].side === 'terrorist' && !key.is_died,
+                                            t: item.side[0].side === 'ct' && !key.is_died,
+                                            die: key.is_first_death
+                                    }]">
+                                        <i v-if="key.is_first_death && key.is_headshot"></i>
+                                    </p>
+                                </div>
+                            </td>
+                            <td v-for="item in (30 - roundDetail.length)" :key="item"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="info flex flex_end">
+                <div class="flex flex_center">
+                    <div>
+                        <p class="bar blue"></p>
+                        <p class="bar yellow"></p>
+                    </div>
+                    <p class="text">存活</p>
                 </div>
-            </div>
-
-        </div>
-
-        <div class="kill">
-            <table cellspacing="0" cellpadding="0">
-                <tbody>
-                    <tr>
-                        <td></td>
-                        <td v-for="item in roundDetail" :key="item">
-                            <div class="bar">
-                                <p v-for="key in item.side[0].players" 
-                                    :key="key.player_id"
-                                    :class="[{
-                                        ct: item.side[0].side === 'ct' && !key.is_died,
-                                        t: item.side[0].side === 'terrorist' && !key.is_died,
-                                        die: key.is_first_death
-                                }]">
-                                    <i v-if="key.is_first_death && key.is_headshot"></i>
-                                </p>
-                            </div>
-                        </td>
-                        <td v-for="item in (30 - roundDetail.length)" :key="item"></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="team flex flex_only_center" 
-                                v-if="teamsData.length>0"
-                                @click="gotoLink(teamsData[0].team_id)">
-                                <img :src="teamsData[0].team_image">
-                                <p class="beyond-ellipsis" :title="teamsData[0].team_name">
-                                    {{teamsData[0].team_name}}
-                                </p>
-                                <i class="win" v-if="teamsData[0].is_winner"></i>
-                            </div>
-                        </td>
-                        <td v-for="item in roundDetail" :key="item">
-                            <div class="icon">
-                                <img src="../../../../assets/imgs/game/csgo/ct01.png" 
-                                v-if="item.win_type === 'cts_win' && item.winner === teamsData[0].team_id">
-                                <img src="../../../../assets/imgs/game/csgo/ct02.png" 
-                                v-if="item.win_type === 'bomb_defused' && item.winner === teamsData[0].team_id">
-                                <img src="../../../../assets/imgs/game/csgo/ct03.png" 
-                                v-if="item.win_type === 'target_saved' && item.winner === teamsData[0].team_id">
-                                <img src="../../../../assets/imgs/game/csgo/t01.png" 
-                                v-if="item.win_type === 'target_bombed' && item.winner === teamsData[0].team_id">
-                                <img src="../../../../assets/imgs/game/csgo/t02.png" 
-                                v-if="item.win_type === 'terrorists_win' && item.winner === teamsData[0].team_id">
-                            </div>
-                        </td>
-                        <td v-for="item in (30 - roundDetail.length)" :key="item"></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="team flex flex_only_center" 
-                                v-if="teamsData.length>0"
-                                @click="gotoLink(teamsData[1].team_id)">
-                                <img :src="teamsData[1].team_image">
-                                <p class="beyond-ellipsis" :title="teamsData[1].team_name">
-                                    {{teamsData[1].team_name}}
-                                </p>
-                                <i class="win" v-if="teamsData[1].is_winner"></i>
-                            </div>
-                        </td>
-                        <td v-for="item in roundDetail" :key="item">
-                            <div class="icon">
-                                <img src="../../../../assets/imgs/game/csgo/ct01.png" 
-                                v-if="item.win_type === 'cts_win' && item.winner === teamsData[1].team_id">
-                                <img src="../../../../assets/imgs/game/csgo/ct02.png" 
-                                v-if="item.win_type === 'bomb_defused' && item.winner === teamsData[1].team_id">
-                                <img src="../../../../assets/imgs/game/csgo/ct03.png" 
-                                v-if="item.win_type === 'target_saved' && item.winner === teamsData[1].team_id">
-                                <img src="../../../../assets/imgs/game/csgo/t01.png" 
-                                v-if="item.win_type === 'target_bombed' && item.winner === teamsData[1].team_id">
-                                <img src="../../../../assets/imgs/game/csgo/t02.png" 
-                                v-if="item.win_type === 'terrorists_win' && item.winner === teamsData[1].team_id">
-                            </div>
-                        </td>
-                        <td v-for="item in (30 - roundDetail.length)" :key="item"></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td v-for="item in roundDetail" :key="item">
-                            <div class="bar">
-                                <p v-for="key in item.side[1].players" 
-                                    :key="key.player_id"
-                                    :class="[{
-                                        ct: item.side[0].side === 'terrorist' && !key.is_died,
-                                        t: item.side[0].side === 'ct' && !key.is_died,
-                                        die: key.is_first_death
-                                }]">
-                                    <i v-if="key.is_first_death && key.is_headshot"></i>
-                                </p>
-                            </div>
-                        </td>
-                        <td v-for="item in (30 - roundDetail.length)" :key="item"></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <div class="info flex flex_end">
-            <div class="flex flex_center">
-                <div>
-                    <p class="bar blue"></p>
-                    <p class="bar yellow"></p>
+                <div class="flex flex_center">
+                    <p class="bar"></p>
+                    <p class="text">阵亡</p>
                 </div>
-                <p class="text">存活</p>
+                <div class="flex flex_center">
+                    <p class="bar black"></p>
+                    <p class="text black">首个阵亡</p>
+                </div>
+                <div class="flex flex_center">
+                    <p class="bar red"></p>
+                    <p class="text red">被爆头</p>
+                </div>
+                <div class="hide">隐藏阵亡详情</div>
             </div>
-            <div class="flex flex_center">
-                <p class="bar"></p>
-                <p class="text">阵亡</p>
-            </div>
-            <div class="flex flex_center">
-                <p class="bar black"></p>
-                <p class="text black">首个阵亡</p>
-            </div>
-            <div class="flex flex_center">
-                <p class="bar red"></p>
-                <p class="text red">被爆头</p>
-            </div>
-            <div class="hide">隐藏阵亡详情</div>
         </div>
     </div>
 </template>
@@ -238,10 +240,13 @@
                             }
 
                             for(let item of killData.roundDetail.slice(15,30)) {
-                                if(item.side[1].side !== 'ct') {
+                                if(item.side[0].side !== 'terrorist') {
                                     item.side.reverse()
                                 }
                             }
+                        } 
+                        else {
+                            clearInterval(killData.timer)
                         }
                         if(res.data.status !== 'ongoing') {
                             clearInterval(killData.timer)
@@ -254,9 +259,9 @@
             watch(battleid, () => {
                 killData.battleId = battleid
                 getbattleDetail(killData.battleId)
-                killData.timer = setInterval( () => {
-                    getbattleDetail(killData.battleId)
-                }, 5000)
+                // killData.timer = setInterval( () => {
+                //     getbattleDetail(killData.battleId)
+                // }, 5000)
             })
 
             onUnmounted(() => {

@@ -245,7 +245,7 @@
                             }
                             battleDatas()
                         }
-                        if(res.data.status !== 'ongoing') {
+                        if(res.data.status !== 'ongoing' || res.data.length === 0) {
                             clearInterval(teamsData.timer)
                         }
                     }
@@ -269,9 +269,9 @@
             watch(battleid, () => {
                 teamsData.battleId = battleid
                 getbattleDetail(teamsData.battleId)
-                teamsData.timer = setInterval( () => {
-                    getbattleDetail(teamsData.battleId)
-                }, 5000)
+                // teamsData.timer = setInterval( () => {
+                //     getbattleDetail(teamsData.battleId)
+                // }, 5000)
             })
 
             onUnmounted(() => {
