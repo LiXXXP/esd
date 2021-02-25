@@ -23,13 +23,13 @@
                 </div>
                 <div class="block email">
                     <div class="title">联系我们</div>
-                    <!-- <p>邮箱：ahfohapw99@yig.com</p> -->
+                    <p></p>
                 </div>
             </div>
         </div>
         <div class="bottom">
-            <!-- <p>体育数据版权所有 Copyright © 2002-2020</p>
-            <p> 经营许可证： 粤B1.B2-20060628粤ICP备09088851号 粤公网安备 44120202000185号</p> -->
+            <p></p>
+            <p></p>
         </div>
     </div>
 </template>
