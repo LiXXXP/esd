@@ -1,16 +1,19 @@
 <template>
     <div class="game page-content">
         <Breadcrumb :breadLink="breadLink" />
-        <!-- gameId：1 为 csgo， 2 为 lol -->
+        <!-- gameId：1 为 csgo， 2 为 lol，3 为 dota -->
         <CSGOGame v-if="gameId === 1"></CSGOGame>
         <LOLGame v-if="gameId === 2"></LOLGame>
+        <DatoGame v-if="gameId === 3"></DatoGame>
     </div>
 </template>
 
 <script>
     import Breadcrumb from '@/components/common/breadcrumb/breadcrumb.vue'    // 面包屑导航
-    import LOLGame from '@/components/match/game/lol/lolGame.vue'             // lol 比赛详情
     import CSGOGame from '@/components/match/game/csgo/csgoGame.vue'          // csgo 比赛详情
+    import LOLGame from '@/components/match/game/lol/lolGame.vue'             // lol 比赛详情
+    import DatoGame from '@/components/match/game/dato/dotaGame.vue'          // dota 比赛详情
+    
 
     import { useRoute, onBeforeRouteUpdate } from "vue-router"
     import { matchDetail } from "@/scripts/request"
@@ -102,7 +105,8 @@
         components: {
             Breadcrumb,
             LOLGame,
-            CSGOGame
+            CSGOGame,
+            DatoGame
         }
     })
 </script>

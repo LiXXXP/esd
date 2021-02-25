@@ -7,12 +7,12 @@
                 </div>
                 <div class="block">
                     <div class="title">友情链接</div>
-                    <a href="http://39.106.24.22:8087/#/index" class="els" target="_blank">
+                    <!-- <a href="http://39.106.24.22:8087/#/index" class="els" target="_blank">
                         <img src="../../assets/imgs/footer/els.png">
                     </a>
                     <a href="http://47.95.177.25/#/main" class="api" target="_blank">
                         <img src="../../assets/imgs/footer/api.png">
-                    </a>
+                    </a> -->
                 </div>
                 <div class="block apis">
                     <div class="title">API</div>
@@ -23,15 +23,13 @@
                 </div>
                 <div class="block email">
                     <div class="title">联系我们</div>
-                    <p>邮箱：ahfohapw99@yig.com</p>
-                    <p>邮箱：ahfohapw99@yig.com</p>
-                    <p>邮箱：ahfohapw99@yig.com</p>
+                    <!-- <p>邮箱：ahfohapw99@yig.com</p> -->
                 </div>
             </div>
         </div>
         <div class="bottom">
-            <p>体育数据版权所有 Copyright © 2002-2020</p>
-            <p> 经营许可证： 粤B1.B2-20060628粤ICP备09088851号 粤公网安备 44120202000185号</p>
+            <!-- <p>体育数据版权所有 Copyright © 2002-2020</p>
+            <p> 经营许可证： 粤B1.B2-20060628粤ICP备09088851号 粤公网安备 44120202000185号</p> -->
         </div>
     </div>
 </template>
