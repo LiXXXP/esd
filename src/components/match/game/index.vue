@@ -59,9 +59,11 @@
                     matchDetail(params).then(res => {
                         if(res.code === 200) {
                             timerData.battleInfo = res.data.battle_info
-                            if(res.data.status !== '比赛进行中') {
+                            if(res.data.status !== '比赛进行中' || res.data.length === 0) {
                                 clearInterval(timerData.timer)
                             }
+                        } else {
+                            clearInterval(timerData.timer)
                         }
                     })
                 }, 5000)

@@ -178,7 +178,7 @@
 
     import { useRoute, useRouter } from "vue-router"
     import { battleDetail } from "@/scripts/request"
-    import { defineComponent, reactive, toRefs, ref, inject, watch } from 'vue'
+    import { defineComponent, reactive, toRefs, inject, watch, onUnmounted } from 'vue'
 
     export default defineComponent({
         setup(props,ctx) {
@@ -203,7 +203,8 @@
                 detailData: {},
                 mapInfo: {},
                 teamsData: [],
-                roundDetail: []
+                roundDetail: [],
+                timer: null
             })
             const getbattleDetail = (battleId) => {
                 let params = {
@@ -243,7 +244,16 @@
                                     item.side.reverse()
                                 }
                             }
+
+                            if(res.data.status !== 'ongoing' ) {
+                                clearInterval(killData.timer)
+                            }
+                            
+                        } else {
+                            clearInterval(killData.timer)
                         }
+                    } else {
+                        clearInterval(killData.timer)
                     }
                 })
             }
@@ -252,6 +262,13 @@
             watch(battleid, () => {
                 killData.battleId = battleid
                 getbattleDetail(killData.battleId)
+                killData.timer = setInterval( () => {
+                    getbattleDetail(killData.battleId)
+                }, 5000)
+            })
+
+            onUnmounted(() => {
+                clearInterval(killData.timer)
             })
 
             const router = useRouter()

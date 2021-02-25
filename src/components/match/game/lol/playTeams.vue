@@ -21,7 +21,7 @@
                 </div>
             </div>
             <div class="hero" v-if="factions.length>0">
-                <div class="flex flex_between flex_only_center">
+                <div class="flex flex_between flex_only_center" v-if="factions[0].ban.length>0">
                     <div class="small flex flex_only_center">
                         <img v-for="item in factions[0].ban" 
                             :key="item.champion_name"
@@ -38,7 +38,7 @@
                         >
                     </div>
                 </div>
-                <div class="flex flex_between flex_only_center">
+                <div class="flex flex_between flex_only_center" v-if="factions[0].pick.length>0">
                     <div class="big flex flex_only_center">
                         <img v-for="item in factions[0].pick" 
                             :key="item.champion_name"
@@ -104,7 +104,7 @@
     import { useRoute, useRouter } from "vue-router"
     import { battleDetail } from "@/scripts/request"
     import { formatSeconds, formatNumber } from '@/scripts/utils'
-    import { defineComponent, reactive, toRefs, inject, watch, computed } from 'vue'
+    import { defineComponent, reactive, toRefs, inject, watch, computed, onUnmounted } from 'vue'
 
     export default defineComponent({
         setup(props,ctx) {
@@ -223,7 +223,8 @@
                 battleId: 0,
                 battleInfo: null,
                 teamInfo: [],
-                factions: []
+                factions: [],
+                timer: null
             })
             const getbattleDetail = (battleId) => {
                 let params = {
@@ -243,7 +244,14 @@
                                 teamsData.teamInfo.reverse()
                             }
                             battleDatas()
+                            if(res.data.status !== 'ongoing' ) {
+                                clearInterval(teamsData.timer)
+                            }
+                        } else {
+                            clearInterval(teamsData.timer)
                         }
+                    } else {
+                        clearInterval(teamsData.timer)
                     }
                 })
             }
@@ -265,6 +273,13 @@
             watch(battleid, () => {
                 teamsData.battleId = battleid
                 getbattleDetail(teamsData.battleId)
+                teamsData.timer = setInterval( () => {
+                    getbattleDetail(teamsData.battleId)
+                }, 5000)
+            })
+
+            onUnmounted(() => {
+                clearInterval(teamsData.timer)
             })
             
             const durationTime = computed(() => {

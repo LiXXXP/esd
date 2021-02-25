@@ -1,34 +1,64 @@
 <template>
     <div class="page-result flex flex_column flex_center">
-        <div v-if="searchList.length>0" >
+        <div>
             <table v-for="item in searchList" :key="item.team_id || item.match_id || item.player_id">
                 <thead>
                     <th v-for="item in theadList" :key="item.head">{{item.head}}</th>
-                    <th>相关</th>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>第一局</td>
-                        <td>2020全球总决赛</td>
-                        <td>季后赛 第十七天</td>
-                        <td>2020-8-15</td>
                         <td>
-                            <div class="flex flex_center">
-                                <div class="team flex flex_center">
-                                    <img src="">
-                                    <span>dd</span>
+                            <span v-if="type === 'match'">{{item.match_status}}</span>
+                            <img v-if="type === 'team'" :src="item.image" class="team-logo">
+                            <img v-if="type === 'player'" :src="item.player_image" class="player-logo">
+                        </td>
+                        <td style="width: 200px;">
+                            <span v-if="type === 'match'">{{item.tournament_name}}</span>
+                            <span v-if="type === 'team'">{{item.team_name}}</span>
+                            <span v-if="type === 'player'">{{item.nick_name}}</span>
+                        </td>
+                        <td>
+                            <span v-if="type === 'match'">{{item.scheduled_begin_at}}</span>
+                            <div v-if="type === 'team'" class="flex flex_center">
+                                <img :src="item.game_image" class="team-logo">
+                            </div>
+                            <span v-if="type === 'player'">{{item.player_name}}</span>
+                        </td>
+                        <td>
+                            <div class="flex flex_center" v-if="type === 'match'">
+                                <div class="team flex flex_center"
+                                    @click="gotoMean(item.teams_info.master_team_info.team_id)">
+                                    <img :src="item.teams_info.master_team_info.team_image">
+                                    <span>{{item.teams_info.master_team_info.team_name}}</span>
                                 </div>
                                 <div class="vs">
-                                    1:2
+                                    {{item.teams_info.master_team_info.team_score}} : {{item.teams_info.guest_team_info.team_score}}
                                 </div>
-                                <div class="team flex flex_center">
-                                    <span>dd</span>
-                                    <img src="">
+                                <div class="team flex flex_center"
+                                    @click="gotoMean(item.teams_info.guest_team_info.team_id)">
+                                    <span>{{item.teams_info.guest_team_info.team_name}}</span>
+                                    <img :src="item.teams_info.guest_team_info.team_image">
                                 </div>
+                            </div>
+                            <div v-if="type === 'team'" class="flex flex_center">
+                                <img :src="item.team_country" class="country-logo">
+                            </div>
+                            <div v-if="type === 'player'" class="flex flex_center">
+                                <img :src="item.game_image" class="team-logo">
                             </div>
                         </td>
                         <td>
-                            <p class="detail">详情</p>
+                            <p :class="['detail',{disable: parseInt(item.game_id) === 3 || item.match_status === '比赛未开始'}]"
+                                v-if="type === 'match' || type === 'team'"
+                                @click="gotoLink(item.game_id,item.match_id,item.team_id,item.match_status)"
+                            >详情</p>
+                            <div v-if="type === 'player'" class="flex flex_center">
+                                <img class="team-logo" 
+                                    :src="key.image" 
+                                    v-for="key in item.team" 
+                                    :key="key.team_id"
+                                    @click="gotoLink(item.game_id,item.match_id,key.team_id,item.match_status)">
+                            </div>
                         </td>
                     </tr>
                 </tbody>
@@ -38,9 +68,12 @@
 </template>
 
 <script>
+    import { useRouter } from "vue-router"
     import { defineComponent, reactive, toRefs, inject, watch } from 'vue'
+
     export default defineComponent({
         setup(props,ctx) {
+            const router = useRouter()
             const search = reactive({
                 type: '',
                 theadList: [],
@@ -59,13 +92,13 @@
                                 head: '赛事名称'
                             },
                             {
-                                head: '赛事阶段'
-                            },
-                            {
                                 head: '比赛时间'
                             },
                             {
                                 head: '对阵情况'
+                            },
+                            {
+                                head: '相关'
                             }
                         ]
                     break
@@ -78,13 +111,13 @@
                                 head: '战队名称'
                             },
                             {
-                                head: '赞助商'
-                            },
-                            {
                                 head: '游戏项目'
                             },
                             {
-                                head: '所属俱乐部'
+                                head: '所属城市'
+                            },
+                            {
+                                head: '相关'
                             }
                         ]
                     break
@@ -94,7 +127,7 @@
                                 head: '选手头像'
                             },
                             {
-                                head: '选手ID'
+                                head: '选手昵称'
                             },
                             {
                                 head: '选手姓名'
@@ -103,19 +136,54 @@
                                 head: '游戏项目'
                             },
                             {
-                                head: '所属俱乐部'
+                                head: '所属战队'
                             }
                         ]
                     break
                     default:
                     break
                 }
-
                 search.searchList = selectData.searchList
             })
+
+            const gotoLink = (gameId,matchId,teamId,status) => {
+                if(teamId) {
+                    router.push({
+                        path: '/mean/detail',
+                        query: {
+                            teamId: teamId
+                        }
+                    })
+                    ctx.emit('isShow', false)
+                } else {
+                    if(parseInt(gameId) !== 3 && status !== '比赛未开始') {
+                        router.push({
+                            path: '/match/game',
+                            query: {
+                                gameId: gameId,
+                                matchId: matchId
+                            }
+                        })
+                        ctx.emit('isShow', false)
+                    }
+                }
+            }
+
+            const gotoMean = (teamId) => {
+                ctx.emit('isShow', false)
+                router.push({
+                    path: '/mean/detail',
+                    query: {
+                        teamId: teamId
+                    }
+                })
+            }
+
             return {
                 ...toRefs(search),
-                selectData
+                selectData,
+                gotoLink,
+                gotoMean
             }
         },
     })
@@ -124,10 +192,13 @@
 <style lang="less" scoped>
     .page-result {
         table {
-            width: 1000px;
+            min-width: 1000px;
             margin: 50px;
             text-align: center;
             border-radius: 2px;
+            &:nth-child(3n) {
+                margin-bottom: 30px;
+            }
             thead {
                 color: #333;
                 font-size: 16px;
@@ -146,6 +217,19 @@
                 }
             }
         }
+        .team-logo,
+        .player-logo {
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+        }
+        .player-logo {
+            border-radius: 100%;
+        }
+        .country-logo {
+            width: 60px;
+            height: 50px;
+        }
         .team {
             cursor: pointer;
             img {
@@ -156,6 +240,11 @@
             span {
                 width: 80px;
             }
+        }
+        .vs {
+            margin: 0 25px;
+            font-size: 24px;
+            font-weight: 600;
         }
         .detail {
             width: 80px;

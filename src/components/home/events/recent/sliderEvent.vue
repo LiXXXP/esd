@@ -23,7 +23,8 @@
                         <div class="vs">
                             <p class="score">{{item.master_team_score}} : {{item.guest_team_score}}</p>
                             <p :class="['status',{
-                                    ongoing: item.match_feedback === '进入直播'
+                                    ongoing: item.match_feedback === '进入直播',
+                                    hope: item.match_feedback === '敬请期待'
                                 }]"
                                 @click="gotoLink(item.match_feedback,item.game_id,item.match_id)"
                             >{{item.match_feedback}}</p>
@@ -182,6 +183,9 @@
                                 &.ongoing {
                                     color: #fff;
                                     background-color: #B29873;
+                                }
+                                &.hope {
+                                    cursor: not-allowed;
                                 }
                             }
                         }

@@ -13,12 +13,13 @@
                         @input="search($event)"
                     >
                     <select v-model="selectVal" @change="getSelected">
-                        <option value ="match" selected>赛事</option>
+                        <option value ="match">赛事</option>
                         <option value ="team">战队</option>
                         <option value="player">选手</option>
                     </select>
                 </div>
-                <SearchResult />
+                <SearchResult @isShow="getIsShow" />
+                <Pagination :pageData="page" @currentPage="currentPage" v-if="searchList.length > 0" />
             </div>
         </div>
     </div>
@@ -27,6 +28,7 @@
 
 <script>
     import SearchResult from '@/components/header/search/searchResult.vue'   // 搜索结果
+    import Pagination from '@/components/common/pagination/pagination.vue' // 分页
 
     import { tournamentSearch, teamSearch, playerSearch } from "@/scripts/request"
     import { defineComponent, ref, reactive, toRefs, provide } from 'vue'
@@ -37,12 +39,17 @@
             const searchData = reactive({
                 page: {
                     current: 1,
-                    limit: 5,
+                    limit: 3,
                     count: 0
                 },
                 searchInput: '',
-                selectVal: '',
-                searchList: []
+                selectVal: 'match',
+                searchList: [],
+                page: {
+                    limit: 3,    // 条数
+                    count: 0,    // 总数
+                    current: 1   // 当前页
+                },
             })
 
             const openSearch = () => {
@@ -98,17 +105,29 @@
                 })
             })
 
+            const currentPage = (val) => {
+                searchData.page.current = val
+                search()
+            }
+
+            const getIsShow = (val) => {
+                isShowSearch.value = val
+            }
+
             return {
                 isShowSearch,
                 ...toRefs(searchData),
                 openSearch,
                 search,
                 getSelected,
-                getSearchInfo
+                getSearchInfo,
+                currentPage,
+                getIsShow
             }
         },
         components: {
-            SearchResult
+            SearchResult,
+            Pagination
         }
     })
 </script>
@@ -129,10 +148,9 @@
         .search-page {
             width: 100%;
             height: 100%;
-            z-index: 999;
+            z-index: 99999;
             font-size: 18px;
-            padding: 100px 0;
-            overflow-y :scroll;
+            padding: 80px 0;
             box-sizing: border-box;
             transition: opacity .3s;
             background-color: rgba(0,0,0, .85);
