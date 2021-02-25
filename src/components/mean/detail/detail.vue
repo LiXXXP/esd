@@ -21,9 +21,9 @@
     import TeamEvent from '@/components/home/events/datas/tableEvent.vue'     // 战队数据
     import AllEvent from '@/components/home/events/all/tableEvent.vue'        // 近期赛事
 
-    import { useRoute } from "vue-router"
+    import { useRoute, onBeforeRouteUpdate } from "vue-router"
     import { teamDetail } from "@/scripts/request"
-    import { defineComponent, reactive, toRefs, provide, onMounted } from 'vue'
+    import { defineComponent, reactive, toRefs, provide, onMounted, watch } from 'vue'
 
     export default defineComponent({
         name:'meanDetail',
@@ -52,9 +52,9 @@
                 teamsDetail: {},
                 players: []
             })
-            const getTeamDetail = () => {
+            const getTeamDetail = (teamId) => {
                 let params = {
-                    team_id: route.query.teamId,
+                    team_id: parseInt(teamId),
                 }
                 teamDetail(params).then(res => {
                     if(res.code === 200) {
@@ -65,8 +65,13 @@
             }
             provide('detail',detailData)
             onMounted(() => {
-                getTeamDetail()
+                getTeamDetail(route.query.teamId)
             })
+
+            onBeforeRouteUpdate((to) => {
+                getTeamDetail(to.query.teamId)
+            })
+
             return {
                 ...toRefs(detailData),
                 getTeamDetail

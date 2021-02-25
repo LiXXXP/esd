@@ -12,7 +12,7 @@
     import LOLGame from '@/components/match/game/lol/lolGame.vue'             // lol 比赛详情
     import CSGOGame from '@/components/match/game/csgo/csgoGame.vue'          // csgo 比赛详情
 
-    import { useRoute } from "vue-router"
+    import { useRoute, onBeforeRouteUpdate } from "vue-router"
     import { matchDetail } from "@/scripts/request"
     import { defineComponent, reactive, toRefs, provide, onMounted, onUnmounted } from 'vue'
 
@@ -38,9 +38,9 @@
                 timer: null,
                 battleInfo: []
             })
-            const getMatchDetail = () => {
+            const getMatchDetail = (matchId) => {
                 let params = {
-                    match_id: parseInt(route.query.matchId),
+                    match_id: parseInt(matchId),
                 }
                 matchDetail(params).then(res => {
                     if(res.code === 200) {
@@ -51,7 +51,7 @@
             provide('detail',gameData)
             
             onMounted(() => {
-                getMatchDetail()
+                getMatchDetail(route.query.matchId)
                 timerData.timer = setInterval( () => {
                     let params = {
                         match_id: parseInt(route.query.matchId),
@@ -72,6 +72,26 @@
 
             onUnmounted(() => {
                 clearInterval(timerData.timer)
+            })
+
+            onBeforeRouteUpdate((to) => {
+                gameData.gameId = parseInt(to.query.gameId)
+                getMatchDetail(to.query.matchId)
+                timerData.timer = setInterval( () => {
+                    let params = {
+                        match_id: parseInt(to.query.matchId),
+                    }
+                    matchDetail(params).then(res => {
+                        if(res.code === 200) {
+                            timerData.battleInfo = res.data.battle_info
+                            if(res.data.status !== '比赛进行中' || res.data.length === 0) {
+                                clearInterval(timerData.timer)
+                            }
+                        } else {
+                            clearInterval(timerData.timer)
+                        }
+                    })
+                }, 5000)
             })
 
             return {

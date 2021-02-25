@@ -19,7 +19,7 @@
                     </select>
                 </div>
                 <SearchResult @isShow="getIsShow" />
-                <Pagination :pageData="page" @currentPage="currentPage" v-if="searchList.length > 0" />
+                <Pagination :pageData="page" @currentPage="currentPage" v-if="searchList.length>0"/>
             </div>
         </div>
     </div>
@@ -37,11 +37,6 @@
         setup(props,ctx) {
             let isShowSearch = ref(false)
             const searchData = reactive({
-                page: {
-                    current: 1,
-                    limit: 3,
-                    count: 0
-                },
                 searchInput: '',
                 selectVal: 'match',
                 searchList: [],
@@ -54,6 +49,7 @@
 
             const openSearch = () => {
                 isShowSearch.value = !isShowSearch.value
+                searchData.searchList = []
             }
 
             const search = (event) => {
@@ -68,6 +64,7 @@
                         getSearchInfo(searchData.searchInput, playerSearch)
                     break
                     default:
+                        searchData.searchList = []
                     break
                 }
             }
@@ -87,20 +84,24 @@
                 }
                 searchName(params).then(res => {
                     if(res.code === 200) {
-                        switch (searchData.selectVal) {
-                            case 'match':
-                                searchData.searchList = res.data.match_list
-                            break
-                            case 'team':
-                                searchData.searchList = res.data.team_list
-                            break
-                            case 'player':
-                                searchData.searchList = res.data.player_list
-                            break
-                            default:
-                            break
+                        if(res.data.length !== 0) {
+                            switch (searchData.selectVal) {
+                                case 'match':
+                                    searchData.searchList = res.data.match_list
+                                break
+                                case 'team':
+                                    searchData.searchList = res.data.team_list
+                                break
+                                case 'player':
+                                    searchData.searchList = res.data.player_list
+                                break
+                                default:
+                                break
+                            }
+                            searchData.page.count = res.data.count
+                        } else {
+                            searchData.searchList = []
                         }
-                        searchData.page.count = res.data.count
                     }
                 })
             })

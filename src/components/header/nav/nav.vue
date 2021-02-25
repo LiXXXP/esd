@@ -11,7 +11,7 @@
 
 <script>
     import { defineComponent, ref } from 'vue'
-    import { onBeforeRouteUpdate } from "vue-router"
+    
     export default defineComponent({
         props: {
             navList: {
