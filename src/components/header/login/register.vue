@@ -173,7 +173,7 @@
                             _this.ruleForm.code = res.data
                             _this.interval = setInterval(()=>{
                                 _this.totalCount--
-                                if(_this.totalCount === 0){
+                                if(_this.totalCount < 1){
                                     clearInterval(_this.interval)
                                     _this.totalCount = 0
                                     _this.isClick = true
