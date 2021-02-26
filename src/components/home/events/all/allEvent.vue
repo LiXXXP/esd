@@ -5,7 +5,11 @@
                 <p class="rhombus"></p>
                 <p>赛事筛选</p>
             </div>
-            <!-- <SelectView :selectList="selectList" :size="'small'" class="selectBox" /> -->
+            <!-- <SelectView 
+                :size="'small'" 
+                class="selectBox" 
+                @getSelectIndex="getSelectIndex"
+            /> -->
         </div>
         <TabLine :navList="navList" @status="getStatus" />
         <TableEvent :className="'home'" :screenList="screenList" />
@@ -19,8 +23,8 @@
     import TableEvent from '@/components/home/events/all/tableEvent.vue'   // 赛事列表
     import Pagination from '@/components/common/pagination/pagination.vue' // 分页
 
-    import { matchScreen } from "@/scripts/request"
-    import { defineComponent, reactive, toRefs, onMounted } from 'vue'
+    import { matchScreen, gameList, tournamentList, teamList } from "@/scripts/request"
+    import { defineComponent, reactive, toRefs, provide, onMounted } from 'vue'
 
     export default defineComponent({
         setup(props,ctx) {
@@ -28,12 +32,18 @@
                 selectList: [
                     {
                         placeholder: '游戏',
+                        selectValue: '',
+                        list: []
                     },
                     {
-                        placeholder: '赛事'
+                        placeholder: '赛事',
+                        selectValue: '',
+                        list: []
                     },
                     {
-                        placeholder: '战队'
+                        placeholder: '战队',
+                        selectValue: '',
+                        list: []
                     }
                 ],
                 navList: [
@@ -55,6 +65,17 @@
                 screenList: [],
                 val: 'ongoing'
             })
+
+            // 游戏列表
+            const getGameList = (() => {
+                gameList().then(res => {
+                    if(res.code === 200) {
+                        selectData.selectList[0].list = res.data
+                    }
+                })
+            })
+
+            // 比赛列表
             const getMatchScreen = ((val) => {
                 let params = {
                     match_status: val,
@@ -68,6 +89,7 @@
                     }
                 })
             })
+            // 状态切换
             const getStatus = (val) => {
                 if(val === 0) {
                     selectData.val = 'ongoing'
@@ -80,17 +102,31 @@
                 }
                 getMatchScreen(selectData.val)
             }
+            // 分页
             const currentPage = (val) => {
                 selectData.page.current = val
                 getMatchScreen(selectData.val)
             }
+            // 生命周期
             onMounted(() => {
                 getMatchScreen(selectData.val)
             })
+
+            // 筛选 游戏 赛事 战队
+            const getSelectIndex = (val) => {
+                if(val === 0) {
+                    getGameList()
+                }
+            }
+
+            provide('selectData', selectData)
+
             return {
                 ...toRefs(selectData),
                 getStatus,
-                currentPage
+                currentPage,
+                getGameList,
+                getSelectIndex
             }
         },
         components: {

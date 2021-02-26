@@ -153,6 +153,15 @@ function mailSend(params) {
 
 /**
  *
+ * 邮箱验证码
+ * @param {*} params
+ */
+function identifyingCode(params) {
+    return postRequest('/user/identifying_code', params)
+}
+
+/**
+ *
  * 近期赛程
  * @param {*} params
  */
@@ -250,12 +259,22 @@ function playerSearch(params) {
     return postRequest('/player/search_info', params)
 }
 
+/**
+ *
+ * 游戏列表
+ * @param {*} params
+ */
+function gameList(params) {
+    return postRequest('/game/game_list', params)
+}
+
 export {
     userRegister,
     userLogin,
     userInfo,
     userLogout,
     mailSend,
+    identifyingCode,
     shortMatch,
     matchScreen,
     tournamentList,
@@ -266,6 +285,7 @@ export {
     battleDetail,
     tournamentSearch,
     teamSearch,
-    playerSearch
+    playerSearch,
+    gameList
 }
 

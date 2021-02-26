@@ -5,11 +5,13 @@
                 v-for="(item,index) in selectList"
                 :key="item.placeholder">
                 <div class="select" @click="openOption(index)">
-                    <input type="text" :placeholder="item.placeholder" v-model="selectValue" disabled="disabled">
+                    <input type="text" :placeholder="item.placeholder" v-model="item.selectValue" disabled="disabled">
                 </div>
                 <ul class="option" v-if="index === currentIndex">
-                    <li v-for="item in 3" :key="item" @click="selectOption(item)"
-                    >{{item}}</li>
+                    <li v-for="key in item.list" 
+                        :key="key.game_id" 
+                        @click="selectOption(key.name_cn,index)"
+                    >{{key.name_cn}}</li>
                 </ul>
             </div>
         </div>
@@ -18,11 +20,13 @@
                 v-for="(item,index) in selectList"
                 :key="item.placeholder">
                 <div class="select" @click="openOption(index)">
-                    <input type="text" :placeholder="item.placeholder" v-model="selectValue" disabled="disabled">
+                    <input type="text" :placeholder="item.placeholder" v-model="item.selectValue" disabled="disabled">
                 </div>
-                <ul class="option" v-show="index === currentIndex">
-                    <li v-for="item in 3" :key="item" @click="selectOption(item)"
-                    >{{item}}</li>
+                <ul class="option" v-if="index === currentIndex">
+                    <li v-for="key in item.list" 
+                        :key="key.game_id" 
+                        @click="selectOption(key.name_cn,index)"
+                    >{{key.name_cn}}</li>
                 </ul>
             </div>
         </div>
@@ -30,35 +34,37 @@
 </template>
 
 <script>
-    import { defineComponent, ref } from 'vue'
+    import { defineComponent, ref, inject, watch } from 'vue'
     export default defineComponent({
         props: {
             size: {         // 筛选框大小
                 type: String,
                 default: ''
-            },
-            selectList: {   // 筛选框个数
-                type: Array,
-                default: () => []
             }
         },
         setup(props,ctx) {
             let currentIndex = ref(-1)
-            let selectValue = ref('')
+            let selectList = ref([])
+            const list = inject('selectData')
+            watch(list, () => {
+                selectList.value = list.selectList
+            })
+
             const openOption = ((index) => {
                 if(currentIndex.value === index) {
                     currentIndex.value = -1
                 } else {
                     currentIndex.value = index
                 }
+                ctx.emit('getSelectIndex', currentIndex.value)
             })
-            const selectOption = ((val) => {
-                selectValue.value = val
+            const selectOption = ((val,index) => {
+                selectList.value[index].selectValue = val
                 currentIndex.value = -1
             })
             return {
                 currentIndex,
-                selectValue,
+                selectList,
                 openOption,
                 selectOption
             }

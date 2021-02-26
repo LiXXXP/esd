@@ -7,7 +7,7 @@
             <div class="page" @click.stop>
                 <div class="page-input flex flex_only_center">
                     <input type="text" 
-                        placeholder="输入搜索内容" 
+                        placeholder="输入 赛事/战队/选手 关键词" 
                         v-model="searchInput" 
                         @keyup.enter="search" 
                         @input="search($event)"
@@ -140,10 +140,11 @@
                 width: 180px;
                 height: 25px;
                 color: #fff;
+                cursor: pointer;
                 padding: 0 10px;
                 border-radius: 13px;
                 box-sizing: border-box;
-                background-color: #555555;
+                background: url('../../../assets/imgs/search.png') no-repeat 90% center #555;
             }
         }
         .search-page {

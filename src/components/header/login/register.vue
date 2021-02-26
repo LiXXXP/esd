@@ -65,7 +65,7 @@
 
 <script>
     import { transHtml } from '@/scripts/utils'
-    import { mailSend, userRegister } from '@/scripts/request'
+    import { mailSend, userRegister, identifyingCode } from '@/scripts/request'
 
     export default {
         data() {
@@ -154,7 +154,7 @@
         },
         computed: {
             btnText(){
-                return this.totalCount !==0? `${this.totalCount} s后获取`: "获取验证码"
+                return this.totalCount !==0? `${this.totalCount} s后再获取`: "获取验证码"
             }
         },
         methods: {
@@ -165,10 +165,12 @@
                     email: _this.ruleForm.email
                 }
                 if(_this.isClick) {
-                    mailSend(params).then(res => {
+                    // mailSend
+                    identifyingCode(params).then(res => {
                         if(res.code === 200) {
                             _this.isClick = false
                             _this.totalCount = 60
+                            _this.ruleForm.code = res.data
                             _this.interval = setInterval(()=>{
                                 _this.totalCount--
                                 if(_this.totalCount === 0){
