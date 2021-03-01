@@ -25,7 +25,7 @@
                                 <div class="team flex flex_center" 
                                     @click="gotoMean(item.match_situation.master_team_id)">
                                     <img :src="item.match_situation.master_team_logo">
-                                    <span>{{item.match_situation.master_team_name}}</span>
+                                    <p>{{item.match_situation.master_team_name}}</p>
                                 </div>
 
                                 <div class="vs">
@@ -34,7 +34,7 @@
 
                                 <div class="team flex flex_center" 
                                     @click="gotoMean(item.match_situation.guest_team_id)">
-                                    <span>{{item.match_situation.guest_team_name}}</span>
+                                    <p>{{item.match_situation.guest_team_name}}</p>
                                     <img :src="item.match_situation.guest_team_logo">
                                 </div>
 
@@ -152,10 +152,10 @@
             img {
                 width: 35px;
                 height: 35px;
-                margin: 0 5px;
+                margin: 0 10px;
             }
-            span {
-                width: 80px;
+            p {
+                width: 100px;
             }
         }
         .vs {

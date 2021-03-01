@@ -277,6 +277,15 @@ function liveStreaming(params) {
     return postRequest('/match/live_streaming', params)
 }
 
+/**
+ *
+ * CSGO指定battle选手数据
+ * @param {*} params
+ */
+function csgoPlayerInfo(params) {
+    return postRequest('/battle/csgo_battle_player_info', params)
+}
+
 export {
     userRegister,
     userLogin,
@@ -296,6 +305,7 @@ export {
     teamSearch,
     playerSearch,
     gameList,
-    liveStreaming
+    liveStreaming,
+    csgoPlayerInfo
 }
 
