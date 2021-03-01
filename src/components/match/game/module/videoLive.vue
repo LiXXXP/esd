@@ -1,34 +1,50 @@
 <template>
     <div class="video-live">
-        <div>
+        <div v-if="list.length > 0">
             <div class="flex flex_start flex_wrap flex_wrap_reverse">
-                <div class="item flex flex_start" v-for="item in 3" :key="item">
-                    <p>视频标题</p>
+                <div :class="['item flex flex_start',{active: index === currentIndex}]" 
+                    v-for="(item,index) in list" 
+                    :key="item.stream_id"
+                    @click="tabStream(item.embed_url,index)">
+                    <p>{{item.title}}</p>
                 </div>
             </div>
             <div class="video">
-                <iframe src="" frameborder="0"></iframe>
+                <iframe :src="embedUrl" frameborder="0"></iframe>
             </div>
         </div>
-        <!-- <div class="none">
+        <div class="none" v-else>
             暂无视频直播内容呢！
-        </div> -->
+        </div>
     </div>
 </template>
 
 <script>
 
-    import { defineComponent, reactive, toRefs } from 'vue'
+    import { defineComponent, reactive, toRefs, inject, watch } from 'vue'
 
     export default defineComponent({
         setup(props,ctx) {
-            
-            return {
-                
+            const streamData = reactive({
+                list: [],
+                embedUrl: '',
+                currentIndex: 0
+            })
+            const stream = inject('streamList')
+            watch(stream, () => {
+                streamData.embedUrl = stream.streamList[0].embed_url
+                streamData.list = stream.streamList
+            })
+
+            const tabStream = (url,index) => {
+                streamData.embedUrl = url
+                streamData.currentIndex = index
             }
-        },
-        components: {
-            
+            return {
+                ...toRefs(streamData),
+                stream,
+                tabStream
+            }
         }
     })
 </script>

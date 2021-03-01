@@ -268,6 +268,15 @@ function gameList(params) {
     return postRequest('/game/game_list', params)
 }
 
+/**
+ *
+ * 比赛视频直播
+ * @param {*} params
+ */
+function liveStreaming(params) {
+    return postRequest('/match/live_streaming', params)
+}
+
 export {
     userRegister,
     userLogin,
@@ -286,6 +295,7 @@ export {
     tournamentSearch,
     teamSearch,
     playerSearch,
-    gameList
+    gameList,
+    liveStreaming
 }
 

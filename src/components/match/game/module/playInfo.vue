@@ -1,17 +1,12 @@
 <template>
     <div class="play-info">
         <TitleView :titleName="infoName" />
-        <div class="info">
-            <p>轮次：轮次名称 / 第23轮</p>
-            <p>比赛地点：北京五棵松体育馆</p>
-            <p>描述：这里是比赛的其他相关信息…</p>
-        </div>
         <div class="tab flex flex_center">
             <p class="active">视频直播</p>
-            <p>图文直播</p>
+            <!-- <p>图文直播</p> -->
         </div>
-        <!-- <VideoLive /> -->
-        <MapLive />
+        <VideoLive />
+        <!-- <MapLive /> -->
     </div>
 </template>
 
@@ -20,15 +15,37 @@
     import VideoLive from '@/components/match/game/module/videoLive.vue'    // 视频直播
     import MapLive from '@/components/match/game/lol/live/mapLive.vue'      // 图文直播
 
-    import { defineComponent, reactive, toRefs } from 'vue'
+    import { useRoute } from "vue-router"
+    import { liveStreaming } from "@/scripts/request"
+    import { defineComponent, reactive, toRefs, provide, onMounted } from 'vue'
 
     export default defineComponent({
         setup(props,ctx) {
-            const titleName = reactive({
+            const route = useRoute()
+            const infoData = reactive({
                 infoName: '比赛信息',
+                streamList: []
             })
+
+            const getLiving = (matchId) => {
+                let params = {
+                    match_id: parseInt(matchId),
+                }
+                liveStreaming(params).then(res => {
+                    if(res.code === 200) {
+                        infoData.streamList = res.data.stream_list
+                    }
+                })
+            }
+
+            onMounted(() => {
+                getLiving(route.query.matchId)
+            })
+
+            provide('streamList',infoData)
+
             return {
-                ...toRefs(titleName)
+                ...toRefs(infoData),
             }
         },
         components: {

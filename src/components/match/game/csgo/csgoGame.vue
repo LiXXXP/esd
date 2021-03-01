@@ -1,6 +1,7 @@
 <template>
     <div class="csgo-game">
         <PlayGame />
+        <PlayInfo />
         <play-score>
             <template v-slot:csgo_ct v-if="list.length>0">
                 <div :class="['bar',{win: masterTeamId === item.winner_team_id}]"
@@ -21,6 +22,7 @@
 
 <script>
     import PlayGame from '@/components/match/game/module/playGame.vue'    // 对局
+    import PlayInfo from '@/components/match/game/module/playInfo.vue'    // 比赛信息
     import PlayScore from '@/components/match/game/module/playScore.vue'  // 当前比分
     import PlayAnaly from '@/components/match/game/module/playAnaly.vue'  // 对战分析
     import PlayMap from '@/components/match/game/csgo/playMap.vue'        // 地图信息
@@ -60,6 +62,7 @@
         },
         components: {
             PlayGame,
+            PlayInfo,
             PlayScore,
             PlayMap,
             PlayAnaly,

@@ -1,7 +1,7 @@
 <template>
     <div class="play-map">
-        <TitleView :titleName="mapName" />
-        <div class="info">
+        <TitleView :titleName="mapName" v-if="mapInfo.length>0" />
+        <div class="info" v-if="mapInfo.length>0">
 
             <div class="map-tab flex flex_end">
                 <div v-for="(item,index) in mapNav"
