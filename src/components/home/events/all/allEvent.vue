@@ -5,15 +5,18 @@
                 <p class="rhombus"></p>
                 <p>赛事筛选</p>
             </div>
-            <!-- <SelectView 
+            <SelectView 
                 :size="'small'" 
                 class="selectBox" 
                 @getSelectIndex="getSelectIndex"
-            /> -->
+                @getSelectIds="getSelectIds"
+                @getSelectAll="getSelectAll"
+            />
         </div>
         <TabLine :navList="navList" @status="getStatus" />
         <TableEvent :className="'home'" :screenList="screenList" />
-        <Pagination :pageData="page" @currentPage="currentPage" />
+        <Pagination :pageData="page" @currentPage="currentPage" v-if="screenList.length>0" />
+        <div v-else class="none">暂无数据</div>
     </div>
 </template>
 
@@ -24,7 +27,7 @@
     import Pagination from '@/components/common/pagination/pagination.vue' // 分页
 
     import { matchScreen, gameList, tournamentList, teamList } from "@/scripts/request"
-    import { defineComponent, reactive, toRefs, provide, onMounted } from 'vue'
+    import { defineComponent, ref, reactive, toRefs, provide, onMounted } from 'vue'
 
     export default defineComponent({
         setup(props,ctx) {
@@ -75,10 +78,39 @@
                 })
             })
 
-            // 比赛列表
-            const getMatchScreen = ((val) => {
+            // 赛事列表
+            const getTournamentList = (() => {
                 let params = {
-                    match_status: val,
+                    game_id: selectGameId.value,
+                    limit: 15
+                }
+                tournamentList(params).then(res => {
+                    if(res.code === 200) {
+                        selectData.selectList[1].list = res.data.tournament_list
+                    }
+                })
+            })
+
+            // 战队列表
+            const getTeamList = (() => {
+                let params = {
+                    game_id: selectGameId.value,
+                    limit: 15
+                }
+                teamList(params).then(res => {
+                    if(res.code === 200) {
+                        selectData.selectList[2].list = res.data.team_list
+                    }
+                })
+            })
+
+            // 比赛列表
+            const getMatchScreen = (() => {
+                let params = {
+                    match_status: selectData.val,
+                    game_id: selectGameId.value,
+                    tournament_id: selectTournamentId.value,
+                    team_id: selectTeamId.value,
                     page: selectData.page.current,
                     limit: selectData.page.limit
                 }
@@ -107,17 +139,48 @@
                 selectData.page.current = val
                 getMatchScreen(selectData.val)
             }
-            // 生命周期
-            onMounted(() => {
-                getMatchScreen(selectData.val)
-            })
 
             // 筛选 游戏 赛事 战队
+            let selectGameId = ref()
+            let selectTournamentId = ref()
+            let selectTeamId = ref()
+
+            const getSelectIds = (gameId,tournamentId,teamId) => {
+                selectGameId.value = gameId
+                selectTournamentId.value = tournamentId
+                selectTeamId.value = teamId
+                getMatchScreen()
+            }
+
             const getSelectIndex = (val) => {
                 if(val === 0) {
                     getGameList()
                 }
+                if(val === 1) {
+                    getTournamentList()
+                }
+                if(val === 2) {
+                    getTeamList()
+                }
             }
+
+            const getSelectAll = (index) => {
+                if(index === 0) {
+                    selectGameId.value = undefined
+                }
+                if(index === 1) {
+                    selectTournamentId.value = undefined
+                }
+                if(index === 2) {
+                    selectTeamId.value = undefined
+                }
+                getMatchScreen()
+            }
+
+            // 生命周期
+            onMounted(() => {
+                getMatchScreen()
+            })
 
             provide('selectData', selectData)
 
@@ -126,7 +189,13 @@
                 getStatus,
                 currentPage,
                 getGameList,
-                getSelectIndex
+                getTournamentList,
+                getTeamList,
+                selectGameId,
+                selectTournamentId,
+                getSelectIndex,
+                getSelectIds,
+                getSelectAll
             }
         },
         components: {
@@ -150,6 +219,11 @@
         }
         .selectBox {
             margin-left: 20px;
+        }
+        .none {
+            font-size: 16px;
+            padding-top: 20px;
+            text-align: center;
         }
     }
 </style>

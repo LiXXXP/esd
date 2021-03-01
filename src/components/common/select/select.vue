@@ -9,9 +9,10 @@
                 </div>
                 <ul class="option" v-if="index === currentIndex">
                     <li v-for="key in item.list" 
-                        :key="key.game_id" 
-                        @click="selectOption(key.name_cn,index)"
-                    >{{key.name_cn}}</li>
+                        :key="key.game_id || key.tournament_id || key.team_id"
+                        :title="key.name_cn || key.tournament_name || key.team_name"
+                        @click="selectOption(key.name_cn,key.tournament_name,key.team_name,key.game_id,key.tournament_id,key.team_id,index)"
+                    >{{key.name_cn || key.tournament_name || key.team_name}}</li>
                 </ul>
             </div>
         </div>
@@ -20,13 +21,20 @@
                 v-for="(item,index) in selectList"
                 :key="item.placeholder">
                 <div class="select" @click="openOption(index)">
-                    <input type="text" :placeholder="item.placeholder" v-model="item.selectValue" disabled="disabled">
+                    <input type="text" 
+                        :placeholder="item.placeholder" 
+                        v-model="item.selectValue"
+                        :title="item.selectValue"
+                        disabled="disabled">
                 </div>
                 <ul class="option" v-if="index === currentIndex">
-                    <li v-for="key in item.list" 
-                        :key="key.game_id" 
-                        @click="selectOption(key.name_cn,index)"
-                    >{{key.name_cn}}</li>
+                    <li @click="selectOptionAll(item.placeholder,index)">全部</li>
+                    <li class="beyond-ellipsis"
+                        v-for="key in item.list" 
+                        :key="key.game_id === key.game_id ? key.tournament_id || key.team_id : key.game_id" 
+                        :title="key.name_cn || key.tournament_name || key.team_name"
+                        @click="selectOption(key.name_cn,key.tournament_name,key.team_name,key.game_id,key.tournament_id,key.team_id,index)"
+                    >{{key.name_cn || key.tournament_name || key.team_name}}</li>
                 </ul>
             </div>
         </div>
@@ -34,7 +42,7 @@
 </template>
 
 <script>
-    import { defineComponent, ref, inject, watch } from 'vue'
+    import { defineComponent, reactive, toRefs, inject, watch } from 'vue'
     export default defineComponent({
         props: {
             size: {         // 筛选框大小
@@ -43,30 +51,41 @@
             }
         },
         setup(props,ctx) {
-            let currentIndex = ref(-1)
-            let selectList = ref([])
+            const select = reactive({
+                currentIndex: -1,
+                selectList: []
+            })
             const list = inject('selectData')
             watch(list, () => {
-                selectList.value = list.selectList
+                select.selectList = list.selectList
             })
 
             const openOption = ((index) => {
-                if(currentIndex.value === index) {
-                    currentIndex.value = -1
+                if(select.currentIndex === index) {
+                    select.currentIndex = -1
                 } else {
-                    currentIndex.value = index
+                    select.currentIndex = index
                 }
-                ctx.emit('getSelectIndex', currentIndex.value)
+                ctx.emit('getSelectIndex', select.currentIndex)
             })
-            const selectOption = ((val,index) => {
-                selectList.value[index].selectValue = val
-                currentIndex.value = -1
+
+            const selectOption = ((gameName,tournamentName,teamName,gameId,tournamentId,teamId,index) => {
+                select.selectList[index].selectValue = gameName || tournamentName || teamName
+                select.currentIndex = -1
+                ctx.emit('getSelectIds', gameId,tournamentId,teamId)
             })
+
+            const selectOptionAll = ((placeholder,index) => {
+                select.selectList[index].selectValue = placeholder
+                select.currentIndex = -1
+                ctx.emit('getSelectAll', index)
+            })
+
             return {
-                currentIndex,
-                selectList,
+                ...toRefs(select),
                 openOption,
-                selectOption
+                selectOption,
+                selectOptionAll
             }
         }
     })
