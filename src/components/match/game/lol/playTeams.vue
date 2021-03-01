@@ -62,7 +62,7 @@
                         <div class="blue flex flex_end flex_only_center">
                             <div class="flex flex_start" v-if="item.imgs">
                                 <div class="imgs" v-for="key in item.imgs" :key="key.type">
-                                    <img v-if="key.faction === 'blue'" :src="key.url" :title="durationTime(key.ingame)">
+                                    <img v-if="key.faction === 'blue'" :src="key.url" :title="`${key.info}(${durationTime(key.ingame)})`">
                                 </div>
                             </div>
                             <div class="flex flex_only_center">
@@ -86,7 +86,7 @@
                             </div>
                             <div class="flex flex_start" v-if="item.imgs">
                                 <div class="imgs" v-for="key in item.imgs" :key="key.type">
-                                    <img v-if="key.faction === 'red'" :src="key.url" :title="durationTime(key.ingame)">
+                                    <img v-if="key.faction === 'red'" :src="key.url" :title="`${key.info}(${durationTime(key.ingame)})`">
                                 </div>
                             </div>
                         </div>
@@ -121,18 +121,21 @@
                             {
                                 ingame: 0,
                                 faction: '',
+                                info: '十杀',
                                 type: 'first_to_10_kills',
                                 url: require('../../../../assets/imgs/game/lol/kills01.png')
                             },
                             {
                                 ingame: 0,
                                 faction: '',
+                                info: '五杀',
                                 type: 'first_to_5_kills',
                                 url: require('../../../../assets/imgs/game/lol/kills02.png')
                             },
                             {
                                 ingame: 0,
                                 faction: '',
+                                info: '一血',
                                 type: 'first_blood',
                                 url: require('../../../../assets/imgs/game/lol/kills03.png')
                             }
@@ -154,6 +157,7 @@
                             {
                                 ingame: 0,
                                 faction: '',
+                                info: '首塔',
                                 type: 'first_turret',
                                 url: require('../../../../assets/imgs/game/lol/kills04.png')
                             }
@@ -168,6 +172,7 @@
                             {
                                 ingame: 0,
                                 faction: '',
+                                info: '首水晶',
                                 type: 'first_inhibitor',
                                 url: require('../../../../assets/imgs/game/lol/kills05.png')
                             }
@@ -182,6 +187,7 @@
                             {
                                 ingame: 0,
                                 faction: '',
+                                info: '首峡谷先锋',
                                 type: 'first_rift_herald',
                                 url: require('../../../../assets/imgs/game/lol/kills06.png')
                             }
@@ -196,6 +202,7 @@
                             {
                                 ingame: 0,
                                 faction: '',
+                                info: '首元素巨龙',
                                 type: 'first_dragon',
                                 url: require('../../../../assets/imgs/game/lol/kills07.png')
                             }
@@ -210,6 +217,7 @@
                             {
                                 ingame: 0,
                                 faction: '',
+                                info: '首纳什男爵',
                                 type: 'first_baron_nashor',
                                 url: require('../../../../assets/imgs/game/lol/kills08.png')
                             }

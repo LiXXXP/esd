@@ -65,7 +65,7 @@
 
 <script>
     import { transHtml } from '@/scripts/utils'
-    import { mailSend, userRegister, identifyingCode } from '@/scripts/request'
+    import { mailSend, userRegister } from '@/scripts/request'
 
     export default {
         data() {
@@ -166,11 +166,11 @@
                 }
                 if(_this.isClick) {
                     // mailSend
-                    identifyingCode(params).then(res => {
+                    mailSend(params).then(res => {
                         if(res.code === 200) {
                             _this.isClick = false
                             _this.totalCount = 60
-                            _this.ruleForm.code = res.data
+                            this.$message.success(res.message)
                             _this.interval = setInterval(()=>{
                                 _this.totalCount--
                                 if(_this.totalCount < 1){
