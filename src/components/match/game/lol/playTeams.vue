@@ -245,16 +245,21 @@
                             teamsData.battleInfo = res.data
                             teamsData.teamInfo = res.data.team_info
                             teamsData.factions = res.data.battle_detail.factions
+
                             if(res.data.battle_detail.factions[0].faction !== 'blue') {
                                 teamsData.factions.reverse()
                             }
+
                             if(res.data.battle_detail.factions[0].team_id !== res.data.team_info[0].team_id) {
                                 teamsData.teamInfo.reverse()
                             }
+
                             battleDatas()
-                            if(res.data.status !== 'completed' ) {
+
+                            if(res.data.status !== 'ongoing' ) {
                                 clearInterval(teamsData.timer)
                             }
+                            
                         } else {
                             clearInterval(teamsData.timer)
                         }
