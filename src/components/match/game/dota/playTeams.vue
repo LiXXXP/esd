@@ -4,6 +4,7 @@
         <div class="detail" v-if="battleInfo !== null">
             <div class="team flex flex_between" v-if="teamInfo.length>0">
                 <div class="flex flex_only_center" @click="gotoLink(teamInfo[0].team_id)">
+                    <span class="green">R</span>
                     <img :src="teamInfo[0].team_image">
                     <p class="beyond-ellipsis" :title="teamInfo[0].team_name">
                         {{teamInfo[0].team_name}}
@@ -18,40 +19,41 @@
                         {{teamInfo[1].team_name}}
                     </p>
                     <img :src="teamInfo[1].team_image">
+                    <span class="red">D</span>
                 </div>
             </div>
             <div class="hero" v-if="factions.length>0">
                 <div class="flex flex_between flex_only_center" v-if="factions[0].ban.length>0">
                     <div class="small flex flex_only_center">
                         <img v-for="item in factions[0].ban" 
-                            :key="item.champion_name"
-                            :src="item.champion_image" 
-                            :title="item.champion_name"
+                            :key="item.hero_name"
+                            :src="item.hero_image" 
+                            :title="item.hero_name"
                         >
                     </div>
                     <p>BAN</p>
                     <div class="small flex flex_end">
                         <img v-for="item in factions[1].ban" 
-                            :key="item.champion_name"
-                            :src="item.champion_image" 
-                            :title="item.champion_name"
+                            :key="item.hero_name"
+                            :src="item.hero_image" 
+                            :title="item.hero_name"
                         >
                     </div>
                 </div>
                 <div class="flex flex_between flex_only_center" v-if="factions[0].pick.length>0">
                     <div class="big flex flex_only_center">
                         <img v-for="item in factions[0].pick" 
-                            :key="item.champion_name"
-                            :src="item.champion_image" 
-                            :title="item.champion_name"
+                            :key="item.hero_name"
+                            :src="item.hero_image" 
+                            :title="item.hero_name"
                         >
                     </div>
                     <p>PICK</p>
                     <div class="big flex flex_end">
                         <img v-for="item in factions[1].pick" 
-                            :key="item.champion_name"
-                            :src="item.champion_image" 
-                            :title="item.champion_name"
+                            :key="item.hero_name"
+                            :src="item.hero_image" 
+                            :title="item.hero_name"
                         >
                     </div>
                 </div>
@@ -59,18 +61,18 @@
             <div class="data">
                 <div class="bar" v-for="item in list" :key="item.type">
                     <div class="flex flex_between flex_only_center">
-                        <div class="blue flex flex_end flex_only_center">
+                        <div class="green flex flex_end flex_only_center">
                             <div class="flex flex_start" v-if="item.imgs">
                                 <div class="imgs" v-for="key in item.imgs" :key="key.type">
-                                    <img v-if="key.faction === 'blue'" :src="key.url" :title="`${key.info}(${durationTime(key.ingame)})`">
+                                    <img v-if="key.faction === 'radiant'" :src="key.url" :title="`${key.info}(${durationTime(key.ingame)})`">
                                 </div>
                             </div>
                             <div class="flex flex_only_center">
-                                <span>{{thousands(item.blue)}}</span>
+                                <span>{{thousands(item.green)}}</span>
                                 <Progress 
                                     class="progress" 
                                     :progressData="progressData" 
-                                    :rateData="parseInt(item.blue/(item.blue+item.red)*100 || 0)" 
+                                    :rateData="parseInt(item.green/(item.green+item.red)*100 || 0)" 
                                 />
                             </div>
                         </div>
@@ -80,13 +82,13 @@
                                 <Progress 
                                     class="progress" 
                                     :progressData="progressData" 
-                                    :rateData="parseInt(item.red/(item.blue+item.red)*100 || 0)"
+                                    :rateData="parseInt(item.red/(item.green+item.red)*100 || 0)"
                                 />
                                 <span>{{thousands(item.red)}}</span>
                             </div>
                             <div class="flex flex_start" v-if="item.imgs">
                                 <div class="imgs" v-for="key in item.imgs" :key="key.type">
-                                    <img v-if="key.faction === 'red'" :src="key.url" :title="`${key.info}(${durationTime(key.ingame)})`">
+                                    <img v-if="key.faction === 'dire'" :src="key.url" :title="`${key.info}(${durationTime(key.ingame)})`">
                                 </div>
                             </div>
                         </div>
@@ -115,7 +117,7 @@
                     {
                         text: '击杀',
                         type: 'kills',
-                        blue: 0,
+                        green: 0,
                         red: 0,
                         imgs: [
                             {
@@ -142,84 +144,61 @@
                         ]
                     },
                     {
-                        text: '经济',
-                        type: 'gold',
-                        blue: 0,
+                        text: '财产',
+                        type: 'net_worth',
+                        green: 0,
                         red: 0,
                         imgs: []
                     },
                     {
                         text: '防御塔',
-                        type: 'turret_kills',
-                        blue: 0,
+                        type: 'tower_kills',
+                        green: 0,
                         red: 0,
                         imgs: [
                             {
                                 ingame: 0,
                                 faction: '',
                                 info: '首塔',
-                                type: 'first_turret',
+                                type: 'first_tower',
                                 url: require('../../../../assets/imgs/game/lol/kills04.png')
                             }
                         ]
                     },
                     {
-                        text: '水晶',
-                        type: 'inhibitor_kills',
-                        blue: 0,
+                        text: '近战兵营',
+                        type: 'melee_barrack_kills',
+                        green: 0,
                         red: 0,
                         imgs: [
                             {
                                 ingame: 0,
                                 faction: '',
-                                info: '首水晶',
-                                type: 'first_inhibitor',
+                                info: '首兵营',
+                                type: 'first_barracks',
                                 url: require('../../../../assets/imgs/game/lol/kills05.png')
                             }
                         ]
                     },
                     {
-                        text: '峡谷先锋',
-                        type: 'rift_herald_kills',
-                        blue: 0,
+                        text: '远战兵营',
+                        type: 'ranged_barrack_kills',
+                        green: 0,
                         red: 0,
-                        imgs: [
-                            {
-                                ingame: 0,
-                                faction: '',
-                                info: '首峡谷先锋',
-                                type: 'first_rift_herald',
-                                url: require('../../../../assets/imgs/game/lol/kills06.png')
-                            }
-                        ]
+                        imgs: []
                     },
                     {
-                        text: '元素巨龙',
-                        type: 'dragon_kills',
-                        blue: 0,
+                        text: '肉山',
+                        type: 'roshan_kills',
+                        green: 0,
                         red: 0,
                         imgs: [
                             {
                                 ingame: 0,
                                 faction: '',
-                                info: '首元素巨龙',
-                                type: 'first_dragon',
-                                url: require('../../../../assets/imgs/game/lol/kills07.png')
-                            }
-                        ]
-                    },
-                    {
-                        text: '纳什男爵',
-                        type: 'baron_nashor_kills',
-                        blue: 0,
-                        red: 0,
-                        imgs: [
-                            {
-                                ingame: 0,
-                                faction: '',
-                                info: '首纳什男爵',
-                                type: 'first_baron_nashor',
-                                url: require('../../../../assets/imgs/game/lol/kills08.png')
+                                info: '首肉山',
+                                type: 'first_roshan',
+                                url: require('../../../../assets/imgs/game/dota/kills09.png')
                             }
                         ]
                     }
@@ -245,7 +224,7 @@
                             teamsData.battleInfo = res.data
                             teamsData.teamInfo = res.data.team_info
                             teamsData.factions = res.data.battle_detail.factions
-                            if(res.data.battle_detail.factions[0].faction !== 'blue') {
+                            if(res.data.battle_detail.factions[0].faction !== 'radiant') {
                                 teamsData.factions.reverse()
                             }
                             if(res.data.battle_detail.factions[0].team_id !== res.data.team_info[0].team_id) {
@@ -266,11 +245,11 @@
             const battleDatas = () => {
                 teamsData.list.forEach( e => {
                     let field = e.type
-                    e.blue = teamsData.factions[0][field] || 0
+                    e.green = teamsData.factions[0][field] || 0
                     e.red = teamsData.factions[1][field] || 0
                     for(let key of e.imgs) {
                         let type = key.type
-                        if(teamsData.battleInfo.battle_detail.first_events[type] !== null) {
+                        if(teamsData.battleInfo.battle_detail.first_events[type] != null) {
                             key.ingame = parseInt(teamsData.battleInfo.battle_detail.first_events[type].ingame_timestamp) || 0
                             key.faction = teamsData.battleInfo.battle_detail.first_events[type].faction || ''
                         }
@@ -328,6 +307,8 @@
 </script>
 
 <style lang="less" scoped>
+    @green: #1FA262;
+    @red: #DE5347;
     .play-teams {
         .detail {
             .team {
@@ -348,6 +329,24 @@
                 }
                 i {
                     margin-right: 9px;
+                }
+                .green,
+                .red {
+                    width: 25px;
+                    height: 25px;
+                    color: #fff;
+                    font-size: 14px;
+                    line-height: 25px;
+                    text-align: center;
+                    border-radius: 100%;
+                    &.green {
+                        margin-right: 5px;
+                        background-color: @green;
+                    }
+                    &.red {
+                        margin-left: 5px;
+                        background-color: @red;
+                    }
                 }
             }
             .hero {
@@ -396,11 +395,11 @@
                         color: #666;
                         font-size: 18px;
                     }
-                    .blue {
+                    .green {
                         width: 535px;
                         span {
                             padding: 0 10px;
-                            color: #457CF4;
+                            color: @green;
                         }
                         .progress {
                             transform:rotate(180deg);
@@ -410,7 +409,7 @@
                         width: 535px;
                         span {
                             padding: 0 10px;
-                            color: #FF4645;
+                            color: @red;
                         }
                     }
                     .imgs {
@@ -438,14 +437,14 @@
         .el-progress-bar__inner {
             border-radius: 0 100px 100px 0;
         }
-        .blue {
+        .green {
             .el-progress-bar__inner {
-                background: linear-gradient(270deg, #457CF4 0%, #4597F4 100%);
+                background: linear-gradient(270deg, #44b47d 0%, #1fa262 100%);
             }
         }
         .red {
             .el-progress-bar__inner {
-                background: linear-gradient(90deg, #FF4645 0%, #FF4571 100%);
+                background: linear-gradient(90deg, #de5347 0%, #de5947 100%);
             }
         }
     }

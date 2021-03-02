@@ -10,7 +10,8 @@
                 </div>
                 <div :class="['score',{
                     blue: gameId === 2,
-                    ct: gameId === 1
+                    ct: gameId === 1,
+                    radiant: gameId === 3
                 }]">{{masterTeam.team_score}}</div>
             </div>
             <div class="info">
@@ -22,7 +23,8 @@
             <div class="flex flex_only_center">
                 <div :class="['score',{
                     red: gameId === 2,
-                    yellow: gameId === 1
+                    yellow: gameId === 1,
+                    dire: gameId === 3
                 }]">{{guestTeam.team_score}}</div>
                 <div class="team" 
                     :title="guestTeam.team_name"
@@ -78,6 +80,8 @@
     @red: #C0200D;
     @ct: #008CD5;
     @yellow: #F6B600;
+    @radiant: #1FA262;
+    @dire: #DE5347;
     .play-game {
         width: 100%;
         height: 180px;
@@ -119,6 +123,12 @@
             }
             &.ct {
                 background-color: @ct;
+            }
+            &.radiant {
+                background-color: @radiant;
+            }
+            &.dire {
+                background-color: @dire;
             }
         }
         .info {

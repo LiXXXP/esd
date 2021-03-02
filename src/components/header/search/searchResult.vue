@@ -48,7 +48,7 @@
                             </div>
                         </td>
                         <td>
-                            <p :class="['detail',{disable: (type === 'match' && parseInt(item.game_id) === 3) || item.match_status === '比赛未开始'}]"
+                            <p :class="['detail',{disable: item.match_status === '比赛未开始'}]"
                                 v-if="type === 'match' || type === 'team'"
                                 @click="gotoLink(item.game_id,item.match_id,item.team_id,item.match_status)"
                             >详情</p>
@@ -148,7 +148,7 @@
 
             const gotoLink = (gameId,matchId,teamId,status) => {
                 if(matchId) {
-                    if(parseInt(gameId) !== 3 && status !== '比赛未开始') {
+                    if(status !== '比赛未开始') {
                         router.push({
                             path: '/match/game',
                             query: {

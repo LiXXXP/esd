@@ -32,8 +32,10 @@
             })
             const stream = inject('streamList')
             watch(stream, () => {
-                streamData.embedUrl = stream.streamList[0].embed_url
                 streamData.list = stream.streamList
+                if(stream.streamList.length>0) {
+                    streamData.embedUrl = stream.streamList[0].embed_url
+                }
             })
 
             const tabStream = (url,index) => {

@@ -1,7 +1,7 @@
 <template>
     <div class="lol-game">
         <PlayGame />
-        <!-- <PlayInfo /> -->
+        <PlayInfo />
         <PlayScore />
         <PlayAnaly @getBattleId="getBattleId" />
         <!-- <PlayBattle /> -->
@@ -15,7 +15,7 @@
     import PlayScore from '@/components/match/game/module/playScore.vue'  // 当前比分
     import PlayAnaly from '@/components/match/game/module/playAnaly.vue'  // 对战分析
     import PlayBattle from '@/components/match/game/lol/playBattle.vue'   // 阵容分析
-    import PlayTeams from '@/components/match/game/lol/playTeams.vue'     // 队伍对局详情
+    import PlayTeams from '@/components/match/game/dota/playTeams.vue'    // 队伍对局详情
 
     import { defineComponent, ref, provide, inject, watch } from 'vue'
 

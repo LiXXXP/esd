@@ -57,6 +57,7 @@
                 getMatchDetail(route.query.matchId)
                 timerData.timer = setInterval( () => {
                     let params = {
+                        game_id: parseInt(route.query.gameId),
                         match_id: parseInt(route.query.matchId),
                     }
                     matchDetail(params).then(res => {

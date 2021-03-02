@@ -41,7 +41,7 @@
                             </div>
                         </td>
                         <td>
-                            <p :class="['detail',{disable: parseInt(item.game_id) === 3 || item.match_status === '未开始'}]" 
+                            <p :class="['detail',{disable: item.match_status === '未开始'}]" 
                                 @click="gotoLink(item.game_id,item.match_id,item.match_status)"
                             >详情</p>
                         </td>
@@ -71,7 +71,7 @@
         setup(props,ctx) {
             const router = useRouter()
             const gotoLink = (gameId,matchId,status) => {
-                if(parseInt(gameId) !== 3 && status !== '未开始') {
+                if(status !== '未开始') {
                     router.push({
                         path: '/match/game',
                         query: {
