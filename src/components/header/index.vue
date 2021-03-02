@@ -1,10 +1,12 @@
 <template>
     <div class="head">
-        <div class="page-content flex flex_end flex_only_center">
+        <div class="page-content flex flex_between flex_only_center">
             <NavView :navList="navList" />
-            <SearchView />
-            <LoginView />
-            <!-- <LangView /> -->
+            <div class="flex flex_center">
+                <SearchView />
+                <LoginView />
+                <!-- <LangView /> -->
+            </div>
         </div>
     </div>
 </template>
@@ -33,14 +35,6 @@
                     {
                         title: '资料库',
                         path: '/mean'
-                    },
-                    {
-                        title: '    ',
-                        path: '/'
-                    },
-                    {
-                        title: '    ',
-                        path: '/'
                     }
                 ]
             })

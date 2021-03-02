@@ -5,21 +5,25 @@
         </div>
         <div class="search-page" v-if="isShowSearch" @click="openSearch">
             <div class="page" @click.stop>
-                <div class="page-input flex flex_only_center">
-                    <input type="text" 
-                        placeholder="输入 赛事/战队/选手 关键词" 
-                        v-model="searchInput" 
-                        @keyup.enter="search" 
-                        @input="search($event)"
-                    >
-                    <select v-model="selectVal" @change="getSelected">
-                        <option value ="match">赛事</option>
-                        <option value ="team">战队</option>
-                        <option value="player">选手</option>
-                    </select>
+                <div class="page-input">
+                    <div class="flex flex_only_center">
+                        <input type="text" 
+                            placeholder="输入 赛事/战队/选手 关键词" 
+                            v-model="searchInput" 
+                            @keyup.enter="search" 
+                            @input="search"
+                        >
+                        <select v-model="selectVal" @change="getSelected">
+                            <option value ="match">赛事</option>
+                            <option value ="team">战队</option>
+                            <option value="player">选手</option>
+                        </select>
+                    </div>
+                    <i class="iconfont icon-soushuo" @click="search"></i>
                 </div>
                 <SearchResult @isShow="getIsShow" />
-                <Pagination :pageData="page" @currentPage="currentPage" v-if="searchList.length>0"/>
+                <Pagination :pageData="page" @currentPage="currentPage" v-if="searchList.length>0" />
+                <div class="none" v-else>{{searchInfo}}</div>
             </div>
         </div>
     </div>
@@ -40,6 +44,7 @@
                 searchInput: '',
                 selectVal: 'match',
                 searchList: [],
+                searchInfo: '',
                 page: {
                     limit: 3,    // 条数
                     count: 0,    // 总数
@@ -50,9 +55,10 @@
             const openSearch = () => {
                 isShowSearch.value = !isShowSearch.value
                 searchData.searchList = []
+                searchData.searchInfo = ''
             }
 
-            const search = (event) => {
+            const search = () => {
                 switch (searchData.selectVal) {
                     case 'match':
                         getSearchInfo(searchData.searchInput, tournamentSearch)
@@ -72,6 +78,7 @@
             const getSelected = () => {
                 searchData.searchInput = ''
                 searchData.searchList = []
+                searchData.searchInfo = ''
             }
 
             provide('selectData',searchData)
@@ -101,6 +108,12 @@
                             searchData.page.count = res.data.count
                         } else {
                             searchData.searchList = []
+                        }
+                        if( !searchData.searchList.length ) {
+                            searchData.searchInfo = '未找到搜索内容'
+                            if( !val ) {
+                                searchData.searchInfo = '请输入搜索内容'
+                            }
                         }
                     }
                 })
@@ -165,6 +178,17 @@
                 width: 800px;
                 margin: 0 auto;
                 .page-input {
+                    position: relative;
+                    .iconfont {
+                        display: block;
+                        font-size: 26px;
+                        color: #B29873;
+                        cursor: pointer;
+                        position: absolute;
+                        top: 50%;
+                        right: 21%;
+                        transform: translate(0, -50%);
+                    }
                     input {
                         width: 650px;
                         height: 55px;
@@ -197,6 +221,10 @@
                         }
                     }
                 }
+            }
+            .none {
+                padding-top: 100px;
+                text-align: center;
             }
         }
     }

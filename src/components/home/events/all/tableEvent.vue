@@ -29,7 +29,7 @@
                                 </div>
 
                                 <div class="vs">
-                                    {{item.match_situation.master_team_score}}:{{item.match_situation.guest_team_score}}
+                                    {{item.match_situation.master_team_score}} : {{item.match_situation.guest_team_score}}
                                 </div>
 
                                 <div class="team flex flex_center" 
