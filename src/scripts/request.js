@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { sparkUrl } from './config'
-import { Message } from 'element-plus'
+import { ElMessage } from 'element-plus'
 
 const TIMEOUT = 30000 // 设置请求超时时间
 
@@ -27,7 +27,7 @@ service.interceptors.request.use(
         return config
     },
     error => {
-        Message.error('数据请求失败，请刷新页面')
+        ElMessage.error('数据请求失败，请刷新页面')
         return Promise.reject(err)
     }
 );
@@ -46,7 +46,7 @@ service.interceptors.response.use(
     },
     // http请求状态出错提示,直接返回错误data
     error => {
-        Message.error('数据请求失败，请刷新页面')
+        ElMessage.error('数据请求失败，请刷新页面')
         return Promise.reject(error)
     }
 );

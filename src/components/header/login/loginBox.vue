@@ -18,12 +18,16 @@
 </template>
 
 <script>
+    
     import { userInfo, userLogout } from "@/scripts/request"
+    import { environmentType } from '@/scripts/config'
     import { defineComponent, ref, onMounted } from 'vue'
+    import { useRouter } from "vue-router"
     import { ElMessage } from 'element-plus'
 
     export default defineComponent({
         setup(props,ctx) {
+            const router = useRouter()
             const email = ref('')
             const getUserInfo = (() => {
                 userInfo().then(res => {
@@ -31,6 +35,9 @@
                         email.value = res.data.email
                     } else {
                         localStorage.removeItem('userToken')
+                        if(environmentType === '极速') {
+                            router.push({path: '/login'})
+                        }
                     }
                 })
             })
