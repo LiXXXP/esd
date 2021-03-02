@@ -1,6 +1,6 @@
 <template>
     <div class="game page-content">
-        <Breadcrumb :breadLink="breadLink" />
+        <Breadcrumb />
         <!-- gameId：1 为 csgo， 2 为 lol，3 为 dota -->
         <CSGOGame v-if="gameId === 1"></CSGOGame>
         <LOLGame v-if="gameId === 2"></LOLGame>
@@ -24,16 +24,6 @@
         setup(props,ctx) {
             const route = useRoute()
             const gameData = reactive({
-                breadLink: [
-                    {
-                        title: '首页',
-                        link: '/home'
-                    },
-                    {
-                        title: '比赛详情',
-                        link: `/match/game?gameId=${route.query.gameId}&matchId=${route.query.matchId}`
-                    }
-                ],
                 gameDetail: {},
                 gameId: parseInt(route.query.gameId)
             })

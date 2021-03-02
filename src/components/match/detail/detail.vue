@@ -1,7 +1,7 @@
 <template>
     <div class="detail">
         <div class="page-content">
-            <Breadcrumb :breadLink="breadLink" />
+            <Breadcrumb />
             <MatchDetail />
             <TitleLine :titleName="titleName.teamName" v-if="teams.length>0"/>
             <PlayerEvent :isText="false" />
@@ -37,20 +37,6 @@
                     teamName: '参赛队伍',
                     matchName: '焦点赛事'
                 },
-                breadLink: [
-                    {
-                        title: '首页',
-                        link: '/home'
-                    },
-                    {
-                        title: '电竞比赛',
-                        link: '/match'
-                    },
-                    {
-                        title: '赛事详情',
-                        link: `/match/detail?tournamentId=${route.query.tournamentId}`
-                    }
-                ],
                 tournamentDetail: {},
                 teams: []
             })

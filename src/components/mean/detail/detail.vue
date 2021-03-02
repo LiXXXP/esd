@@ -1,6 +1,6 @@
 <template>
     <div class="detail">
-        <Breadcrumb :breadLink="breadLink" />
+        <Breadcrumb />
         <TeamDetail />
         <div class="page-content">
             <TitleLine :titleName="titleName.playerName" v-if="players.length>0"/>
@@ -35,20 +35,6 @@
                     teamName: '战队数据',
                     matchName: '近期赛事'
                 },
-                breadLink: [
-                    {
-                        title: '首页',
-                        link: '/home'
-                    },
-                    {
-                        title: '资料库',
-                        link: '/mean'
-                    },
-                    {
-                        title: '战队详情',
-                        link: `/mean/detail?teamId=${route.query.teamId}`
-                    }
-                ],
                 teamsDetail: {},
                 players: []
             })

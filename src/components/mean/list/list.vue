@@ -1,7 +1,7 @@
 <template>
     <div class="list">
         <div class="page-content">
-            <Breadcrumb :breadLink="breadLink" />
+            <Breadcrumb />
             <div class="flex flex_only_center flex_wrap">
                 <div class="block flex flex_column flex_center" 
                     v-for="item in teamList" :key="item.team_id" @click="gotoLink(item.team_id)">
@@ -30,16 +30,6 @@
     export default defineComponent({
         setup(props,ctx) {
             const listData = reactive({
-                breadLink: [
-                    {
-                        title: '首页',
-                        link: '/home'
-                    },
-                    {
-                        title: '资料库',
-                        link: '/mean'
-                    }
-                ],
                 teamList: [],
                 page: {
                     limit: 12,    // 条数

@@ -1,7 +1,7 @@
 <template>
     <div class="list">
         <div class="page-content">
-            <Breadcrumb :breadLink="breadLink" />
+            <Breadcrumb />
             <div class="flex flex_only_center flex_wrap">
                 <div class="block" 
                     v-for="item in tournamentList" 
@@ -34,16 +34,6 @@
     export default defineComponent({
         setup(props,ctx) {
             const listData = reactive({
-                breadLink: [
-                    {
-                        title: '首页',
-                        link: '/home'
-                    },
-                    {
-                        title: '电竞比赛',
-                        link: '/match'
-                    }
-                ],
                 tournamentList: [],
                 page: {
                     limit: 9,    // 条数
