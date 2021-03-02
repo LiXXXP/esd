@@ -2,7 +2,7 @@
 import {createRouter, createWebHashHistory, createWebHistory} from "vue-router"
 
 /* 引入公共方法 */
-import { BASE_PATH } from '@/scripts/config'
+import { environmentType } from '@/scripts/config'
 
 const routes = [
     {
@@ -93,15 +93,19 @@ router.beforeEach((to, from, next) => {
     }
 
     // 路由拦截
-    if (to.matched.some(res => res.meta.requireAuth)) {
-        let tmpToken = localStorage.getItem('userToken')
-        if (tmpToken) {
-            next()
+    if(environmentType === '极速') { 
+        if (to.matched.some(res => res.meta.requireAuth)) {
+            let tmpToken = localStorage.getItem('userToken')
+            if (tmpToken) {
+                next()
+            } else {
+                next({
+                    path: '/login',
+                    redirect:  '/home'
+                })
+            }
         } else {
-            next({
-                path: '/login',     // 未登录则跳转至login页面
-                redirect:  '/home' // 登陆成功后回到当前页面，这里传值给login页面，to.fullPath为当前点击的页面
-            })
+            next()
         }
     } else {
         next()
