@@ -46,9 +46,9 @@
             })
             let currentIndex = ref(0)
             if(parseInt(getUrlParam('r'))) {
-                currentIndex = ref(1)
+                currentIndex.value = 1
             } else {
-                currentIndex = ref(0)
+                currentIndex.value = 0
             }
             return {
                 currentIndex,
@@ -58,9 +58,9 @@
         watch: {
             $route (to, from) {
                 if(parseInt(to.query.r)){
-                    this.currentIndex = ref(1)
+                    this.currentIndex = 1
                 } else {
-                    this.currentIndex = ref(0)
+                    this.currentIndex = 0
                 }
             }
         },

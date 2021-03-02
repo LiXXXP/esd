@@ -101,7 +101,7 @@ router.beforeEach((to, from, next) => {
             } else {
                 next({
                     path: '/login',
-                    redirect:  '/home'
+                    redirect: '/home'
                 })
             }
         } else {

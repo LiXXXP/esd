@@ -19,18 +19,24 @@
     import { matchDetail } from "@/scripts/request"
     import { defineComponent, reactive, toRefs, provide, onMounted, onUnmounted } from 'vue'
 
+    import * as echarts from 'echarts'
+
     export default defineComponent({
         name: 'game',
         setup(props,ctx) {
+
             const route = useRoute()
+
             const gameData = reactive({
                 gameDetail: {},
                 gameId: parseInt(route.query.gameId)
             })
+
             const timerData = reactive({
                 timer: null,
                 battleInfo: []
             })
+            
             const getMatchDetail = (matchId) => {
                 let params = {
                     match_id: parseInt(matchId),
@@ -41,7 +47,6 @@
                     }
                 })
             }
-            provide('detail',gameData)
             
             onMounted(() => {
                 getMatchDetail(route.query.matchId)
@@ -62,8 +67,7 @@
                     })
                 }, 5000)
             })
-            provide('battle',timerData)
-
+            
             onUnmounted(() => {
                 clearInterval(timerData.timer)
             })
@@ -87,6 +91,10 @@
                     })
                 }, 5000)
             })
+
+            provide('detail',gameData)
+            provide('battle',timerData)
+            provide('ec',echarts)
 
             return {
                 ...toRefs(gameData,timerData),
