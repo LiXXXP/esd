@@ -7,12 +7,12 @@
                     <div class="tab flex flex_start">
                         <p v-for="(item,index) in tabTitle"
                             :key="item.title"
-                            :class="{active: index === currentIndex}"
-                            @click="currentIndex = index"
+                            :class="{active: index === currentIndexRef}"
+                            @click="currentIndexRef = index"
                         >{{item.title}}</p>
                     </div>
-                    <LoginBox v-if="currentIndex === 0" />
-                    <RegisterBox v-if="currentIndex === 1" />
+                    <LoginBox v-if="currentIndexRef === 0" />
+                    <RegisterBox v-if="currentIndexRef === 1" />
                 </div>
             </div>
         </div>
@@ -44,23 +44,23 @@
                     }
                 ]
             })
-            let currentIndex = ref(0)
+            let currentIndexRef = ref(0)
             if(parseInt(getUrlParam('r'))) {
-                currentIndex.value = 1
+                currentIndexRef.value = 1
             } else {
-                currentIndex.value = 0
+                currentIndexRef.value = 0
             }
             return {
-                currentIndex,
+                currentIndexRef,
                 ...toRefs(tabData)
             }
         },
         watch: {
             $route (to, from) {
                 if(parseInt(to.query.r)){
-                    this.currentIndex = 1
+                    this.currentIndexRef = 1
                 } else {
-                    this.currentIndex = 0
+                    this.currentIndexRef = 0
                 }
             }
         },
