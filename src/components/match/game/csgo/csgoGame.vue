@@ -1,7 +1,7 @@
 <template>
     <div class="csgo-game">
         <PlayGame />
-        <PlayInfo />
+        <PlayInfo v-if="statusRef === '比赛进行中'" />
         <play-score>
             <template v-slot:csgo_ct v-if="list.length>0">
                 <div :class="['bar',{win: masterTeamId === item.winner_team_id}]"
@@ -37,6 +37,7 @@
     export default defineComponent({
         setup(props,ctx) {
             const battleId = ref(0)
+            const statusRef = ref('')
             const battle = reactive({
                 list: []
             })
@@ -44,6 +45,7 @@
             const guestTeamId = ref(0)
             const gameData = inject('detail')
             watch(gameData, () => {
+                statusRef.value = gameData.gameDetail.status
                 if(gameData.gameDetail.battle_info.length > 0) {
                     battle.list = gameData.gameDetail.battle_info
                     battleId.value = gameData.gameDetail.battle_info[0].battle_id
@@ -57,6 +59,7 @@
             provide('battleid',battleId)
             return {
                 battleId,
+                statusRef,
                 ...toRefs(battle),
                 gameData,
                 getBattleId,

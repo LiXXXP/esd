@@ -1,7 +1,7 @@
 <template>
     <div class="lol-game">
         <PlayGame />
-        <PlayInfo />
+        <PlayInfo v-if="statusRef === '比赛进行中'" />
         <PlayScore />
         <PlayAnaly @getBattleId="getBattleId" />
         <!-- <PlayBattle /> -->
@@ -22,8 +22,10 @@
     export default defineComponent({
         setup(props,ctx) {
             const battleId = ref(0)
+            const statusRef = ref('')
             const gameData = inject('detail')
             watch(gameData, () => {
+                statusRef.value = gameData.gameDetail.status
                 if(gameData.gameDetail.battle_info.length > 0) {
                     battleId.value = gameData.gameDetail.battle_info[0].battle_id
                 }
@@ -34,6 +36,7 @@
             provide('battleid',battleId)
             return {
                 battleId,
+                statusRef,
                 gameData,
                 getBattleId
             }
