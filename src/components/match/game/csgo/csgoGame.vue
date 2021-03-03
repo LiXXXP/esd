@@ -18,6 +18,7 @@
         <PlayAnaly @getBattleId="getBattleId" />
         <PlayKill />
         <PlayerData />
+        <PlayTable />
     </div>
 </template>
 
@@ -29,6 +30,7 @@
     import PlayMap from '@/components/match/game/csgo/playMap.vue'        // 地图信息
     import PlayKill from '@/components/match/game/csgo/playKill.vue'      // 对局详情
     import PlayerData from '@/components/match/game/csgo/playerData.vue'  // 选手数据
+    import PlayTable from '@/components/match/game/csgo/playTable.vue'    // 数据统计
 
     import { defineComponent, reactive, toRefs, ref, provide, inject, watch } from 'vue'
 
@@ -69,7 +71,8 @@
             PlayMap,
             PlayAnaly,
             PlayKill,
-            PlayerData
+            PlayerData,
+            PlayTable
         }
     })
 </script>
