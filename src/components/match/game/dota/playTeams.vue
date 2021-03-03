@@ -1,7 +1,7 @@
 <template>
     <div class="play-teams">
-        <TitleView :titleName="teamsName" v-if="battleInfo !== null" />
-        <div class="detail" v-if="battleInfo !== null">
+        <TitleView :titleName="teamsName" v-if="battleInfo != null" />
+        <div class="detail" v-if="battleInfo != null">
             <div class="team flex flex_between" v-if="teamInfo.length>0">
                 <div class="flex flex_only_center" @click="gotoLink(teamInfo[0].team_id)">
                     <span class="green">R</span>
@@ -96,6 +96,7 @@
                 </div>
             </div>
         </div>
+        <div class="none" v-else>暂无对局内容</div>
     </div>
 </template>
 
@@ -241,9 +242,11 @@
                             
                         } else {
                             clearInterval(teamsData.timer)
+                            teamsData.battleInfo = null
                         }
                     } else {
                         clearInterval(teamsData.timer)
+                        teamsData.battleInfo = null
                     }
                 })
             }
@@ -429,6 +432,11 @@
                     }
                 }
             }
+        }
+        .none {
+            font-size: 16px;
+            padding-top: 20px;
+            text-align: center;
         }
     }
 </style>

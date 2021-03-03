@@ -66,7 +66,7 @@
             }
         }
         .tab {
-            margin-bottom: 10px;
+            margin-bottom: 20px;
             p {
                 width: 120px;
                 height: 30px;
