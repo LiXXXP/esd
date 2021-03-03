@@ -70,6 +70,7 @@
                                 <Progress 
                                     class="progress" 
                                     :progressData="progressData" 
+                                    :progressColor="''"
                                     :rateData="parseInt(item.blue/(item.blue+item.red)*100 || 0)" 
                                 />
                             </div>
@@ -80,6 +81,7 @@
                                 <Progress 
                                     class="progress" 
                                     :progressData="progressData" 
+                                    :progressColor="''"
                                     :rateData="parseInt(item.red/(item.blue+item.red)*100 || 0)"
                                 />
                                 <span>{{thousands(item.red)}}</span>

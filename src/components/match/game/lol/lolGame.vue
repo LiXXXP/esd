@@ -8,6 +8,7 @@
         <PlayTeams />
         <div class="flex flex_between">
             <PlayDiff />
+            <PlayRank />
         </div>
     </div>
 </template>
@@ -19,7 +20,8 @@
     import PlayAnaly from '@/components/match/game/module/playAnaly.vue'  // 对战分析
     import PlayBattle from '@/components/match/game/lol/playBattle.vue'   // 阵容分析
     import PlayTeams from '@/components/match/game/lol/playTeams.vue'     // 队伍对局详情
-    import PlayDiff from '@/components/match/game/lol/playDiff.vue'     // 经济差/经验差
+    import PlayDiff from '@/components/match/game/lol/playDiff.vue'       // 经济差/经验差
+    import PlayRank from '@/components/match/game/lol/playRank.vue'       // 数据排行
 
     import { defineComponent, ref, provide, inject, watch } from 'vue'
 
@@ -49,7 +51,8 @@
             PlayAnaly,
             PlayBattle,
             PlayTeams,
-            PlayDiff
+            PlayDiff,
+            PlayRank
         }
     })
 </script>

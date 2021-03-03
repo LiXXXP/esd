@@ -295,6 +295,15 @@ function lolGoldDiff(params) {
     return postRequest('/battle/lol_gold_and_experience_diff', params)
 }
 
+/**
+ *
+ * LOL数据排行
+ * @param {*} params
+ */
+function lolDataRank(params) {
+    return postRequest('/battle/lol_data_ranking', params)
+}
+
 export {
     userRegister,
     userLogin,
@@ -316,6 +325,7 @@ export {
     gameList,
     liveStreaming,
     csgoPlayerInfo,
-    lolGoldDiff
+    lolGoldDiff,
+    lolDataRank
 }
 

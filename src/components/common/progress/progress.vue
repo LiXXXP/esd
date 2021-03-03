@@ -5,12 +5,13 @@
             :show-text="progressData.showText"
             :stroke-width="progressData.width"
             :percentage="rateData"
+            :color="progressColor"
         ></el-progress>
     </div>
 </template>
 
 <script>
-    import { defineComponent, ref } from 'vue'
+    import { defineComponent } from 'vue'
     export default defineComponent({
         props: {
             progressData: {
@@ -20,6 +21,10 @@
             rateData: {
                 type: Number,
                 default: 0
+            },
+            progressColor: {
+                type: String,
+                default: ''
             }
         },
         setup(props,ctx) {

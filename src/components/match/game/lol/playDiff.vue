@@ -103,8 +103,9 @@
 
 <style lang="less" scoped>
     .play-diff {
+        width: 890px;
         .chart {
-            width: 890px;
+            width: 100%;
             height: 400px;
             padding: 30px 60px;
             border-radius: 2px;
@@ -150,7 +151,7 @@
                 }
             }
             .cont {
-                height: 300px;
+                height: 350px;
                 margin-top: 20px;
             }
         }

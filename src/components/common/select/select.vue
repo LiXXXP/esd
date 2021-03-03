@@ -28,12 +28,12 @@
                         disabled="disabled">
                 </div>
                 <ul class="option" v-if="index === currentIndex">
-                    <li @click="selectOptionAll(item.placeholder,index)">全部</li>
+                    <li @click="selectOptionAll(item.placeholder,index)" v-if="item.placeholder !== '当前经济'">全部</li>
                     <li class="beyond-ellipsis"
                         v-for="key in item.list" 
                         :key="key.game_id === key.game_id ? key.tournament_id || key.team_id : key.game_id" 
                         :title="key.name_cn || key.tournament_name || key.team_name"
-                        @click="selectOption(key.name_cn,key.tournament_name,key.team_name,key.game_id,key.tournament_id,key.team_id,index)"
+                        @click="selectOption(key.name_cn,key.tournament_name,key.team_name,key.game_id,key.tournament_id,key.team_id,index,key.val)"
                     >{{key.name_cn || key.tournament_name || key.team_name}}</li>
                 </ul>
             </div>
@@ -69,10 +69,10 @@
                 ctx.emit('getSelectIndex', select.currentIndex)
             })
 
-            const selectOption = ((gameName,tournamentName,teamName,gameId,tournamentId,teamId,index) => {
+            const selectOption = ((gameName,tournamentName,teamName,gameId,tournamentId,teamId,index,val) => {
                 select.selectList[index].selectValue = gameName || tournamentName || teamName
                 select.currentIndex = -1
-                ctx.emit('getSelectIds', gameId,tournamentId,teamId)
+                ctx.emit('getSelectIds', gameId,tournamentId,teamId,val)
             })
 
             const selectOptionAll = ((placeholder,index) => {
@@ -126,6 +126,7 @@
                 }
             }
             .option {
+                z-index: 999;
                 padding: 10px;
                 border-radius: 1px;
                 box-sizing: border-box;
