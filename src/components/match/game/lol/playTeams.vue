@@ -109,7 +109,9 @@
 
     export default defineComponent({
         setup(props,ctx) {
+
             const route = useRoute()
+            
             const teamsData = reactive({
                 teamsName: '队伍对局详情',
                 list: [
@@ -235,6 +237,7 @@
                 factions: [],
                 timer: null
             })
+
             const getbattleDetail = (battleId) => {
                 let params = {
                     game_id: parseInt(route.query.gameId),
@@ -271,6 +274,7 @@
                     }
                 })
             }
+
             const battleDatas = () => {
                 teamsData.list.forEach( e => {
                     let field = e.type
@@ -285,6 +289,7 @@
                     }
                 })
             }
+
             const battleid = inject('battleid')
             watch(battleid, () => {
                 teamsData.battleId = battleid

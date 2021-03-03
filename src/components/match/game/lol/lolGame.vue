@@ -6,6 +6,7 @@
         <PlayAnaly @getBattleId="getBattleId" />
         <!-- <PlayBattle /> -->
         <PlayTeams />
+        <PlayTable />
     </div>
 </template>
 
@@ -16,6 +17,7 @@
     import PlayAnaly from '@/components/match/game/module/playAnaly.vue'  // 对战分析
     import PlayBattle from '@/components/match/game/lol/playBattle.vue'   // 阵容分析
     import PlayTeams from '@/components/match/game/lol/playTeams.vue'     // 队伍对局详情
+    import PlayTable from '@/components/match/game/lol/playTable.vue'     // 数据统计
 
     import { defineComponent, ref, provide, inject, watch } from 'vue'
 
@@ -44,7 +46,8 @@
             PlayScore,
             PlayAnaly,
             PlayBattle,
-            PlayTeams
+            PlayTeams,
+            PlayTable
         }
     })
 </script>

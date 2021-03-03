@@ -286,6 +286,15 @@ function csgoPlayerInfo(params) {
     return postRequest('/battle/csgo_battle_player_info', params)
 }
 
+/**
+ *
+ * LOL--battle附加数据
+ * @param {*} params
+ */
+function lolAddData(params) {
+    return postRequest('/battle/lol_additional_data', params)
+}
+
 export {
     userRegister,
     userLogin,
@@ -306,6 +315,7 @@ export {
     playerSearch,
     gameList,
     liveStreaming,
-    csgoPlayerInfo
+    csgoPlayerInfo,
+    lolAddData
 }
 
