@@ -18,6 +18,7 @@
                     </p>
                 </div>
             </div>
+            <div ref="echartRef" class="cont"></div>
         </div>
     </div>
 </template>
@@ -25,16 +26,15 @@
 <script>
     import TitleView from '@/components/common/title/title.vue'             // 页面标题
 
-    import { useRoute, } from "vue-router"
     import { lolGoldDiff } from "@/scripts/request"
-    import { defineComponent, reactive, toRefs, inject, watch } from 'vue'
+    import { defineComponent, ref, reactive, toRefs, inject, watch, onMounted } from 'vue'
 
     export default defineComponent({
         setup(props,ctx) {
-            const route = useRoute()
             const diffData = reactive({
                 name: '经济差/经验差',
                 battleId: 0,
+                goldDiffTimeline: []
             })
             
             const battleid = inject('battleid')
@@ -43,23 +43,56 @@
                 getLolGoldDiff(diffData.battleId)
             })
 
-            const echarts = inject('echarts')
-            console.log(echarts)
-
             const getLolGoldDiff = (battleId) => {
                 let params = {
                     battle_id: battleId
                 }
                 lolGoldDiff(params).then( res => {
                     if(res.code === 200) {
-                        
+                        diffData.goldDiffTimeline = res.data.gold_diff_timeline
                     }
                 })
             }
 
+            const echartRef = ref(null)
+            const echarts = inject('echarts')
+
+            onMounted( () => {
+                let myChart = echarts.init(echartRef.value)
+                // 绘制图表
+                myChart.setOption({
+                    xAxis: {
+                        data: ["12-3", "12-4", "12-5", "12-6", "12-7", "12-8"],
+                    },
+                    yAxis: {
+                        axisLine: {
+                            show: true
+                        }
+                    },
+                    series: [
+                        {
+                            name: "经济差",
+                            type: "line",
+                            data: [5, 20, 36, 10, 10, 20],
+                        },
+                        {
+                            name: "经验差",
+                            type: "line",
+                            data: [10, 20, 30, 40, 50, 60],
+                        }
+                    ],
+                    color: [ '#B29873', '#521DBD' ],
+                })
+                //自适应大小
+                window.onresize = function () {
+                    myChart.resize()
+                }
+            })
+
             return {
                 ...toRefs(diffData),
-                getLolGoldDiff
+                getLolGoldDiff,
+                echartRef
             }
         },
         components: {
@@ -115,6 +148,10 @@
                         background-color: #521DBD;
                     }
                 }
+            }
+            .cont {
+                height: 300px;
+                margin-top: 20px;
             }
         }
     }
