@@ -286,6 +286,15 @@ function csgoPlayerInfo(params) {
     return postRequest('/battle/csgo_battle_player_info', params)
 }
 
+/**
+ *
+ * LOL经济差和经验差
+ * @param {*} params
+ */
+function lolGoldDiff(params) {
+    return postRequest('/battle/lol_gold_and_experience_diff', params)
+}
+
 export {
     userRegister,
     userLogin,
@@ -306,6 +315,7 @@ export {
     playerSearch,
     gameList,
     liveStreaming,
-    csgoPlayerInfo
+    csgoPlayerInfo,
+    lolGoldDiff
 }
 

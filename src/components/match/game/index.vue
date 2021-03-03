@@ -92,7 +92,7 @@
 
             provide('detail',gameData)
             provide('battle',timerData)
-            provide('ec',echarts)
+            provide('echarts',echarts)
 
             return {
                 ...toRefs(gameData,timerData),

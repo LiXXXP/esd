@@ -3,7 +3,7 @@
         <TitleView :titleName="infoName" />
         <div class="tab flex flex_center">
             <p class="active">视频直播</p>
-            <!-- <p>图文直播</p> -->
+            <p>图文直播</p>
         </div>
         <VideoLive />
         <!-- <MapLive /> -->
