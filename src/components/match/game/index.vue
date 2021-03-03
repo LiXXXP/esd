@@ -17,7 +17,6 @@
     import { matchDetail } from "@/scripts/request"
     import { defineComponent, reactive, toRefs, provide, onMounted, onUnmounted } from 'vue'
     import { useRoute, onBeforeRouteUpdate } from "vue-router"
-    import * as echarts from 'echarts'
 
     export default defineComponent({
         name: 'game',
@@ -92,7 +91,6 @@
 
             provide('detail',gameData)
             provide('battle',timerData)
-            provide('ec',echarts)
 
             return {
                 ...toRefs(gameData,timerData),
