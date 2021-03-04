@@ -8,18 +8,18 @@
 </template>
 
 <script>
-    import SlideView from '@/components/home/slide/slide.vue'    // 导航栏
-    import EventsView from '@/components/home/events/events.vue' // 赛事
-    export default {
+
+    import { defineComponent, defineAsyncComponent } from 'vue'
+    export default defineComponent({
         name: 'home',
         setup(props,ctx) {
 
         },
         components: {
-            SlideView,
-            EventsView
+            SlideView: defineAsyncComponent(() => import('@/components/home/slide/slide')),   // 轮播图
+            EventsView: defineAsyncComponent(() => import('@/components/home/events/events')) // 赛事
         }
-    }
+    })
 </script>
 
 <style lang="less" scoped>

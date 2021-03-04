@@ -5,9 +5,9 @@
 </template>
 
 <script>
-    import SliderEvent from '@/components/home/events/recent/sliderEvent.vue'   // 赛事
+    
+    import { defineComponent, defineAsyncComponent, reactive, toRefs, onMounted } from 'vue'
     import { shortMatch } from "@/scripts/request"
-    import { defineComponent, reactive, toRefs, onMounted } from 'vue'
 
     export default defineComponent({
         setup(props,ctx) {
@@ -48,7 +48,7 @@
             }
         },
         components: {
-            SliderEvent
+            SliderEvent: defineAsyncComponent(() => import('@/components/home/events/recent/sliderEvent')) // 赛事
         }
     })
 </script>

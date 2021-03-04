@@ -31,11 +31,9 @@
 </template>
 
 <script>
-    import SearchResult from '@/components/header/search/searchResult.vue'   // 搜索结果
-    import Pagination from '@/components/common/pagination/pagination.vue' // 分页
 
+    import { defineComponent, defineAsyncComponent, ref, reactive, toRefs, provide } from 'vue'
     import { tournamentSearch, teamSearch, playerSearch } from "@/scripts/request"
-    import { defineComponent, ref, reactive, toRefs, provide } from 'vue'
 
     export default defineComponent({
         setup(props,ctx) {
@@ -140,8 +138,8 @@
             }
         },
         components: {
-            SearchResult,
-            Pagination
+            SearchResult: defineAsyncComponent(() => import('@/components/header/search/searchResult')), // 搜索结果
+            Pagination: defineAsyncComponent(() => import('@/components/common/pagination/pagination'))  // 分页
         }
     })
 </script>

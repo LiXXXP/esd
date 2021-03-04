@@ -5,16 +5,18 @@
 </template>
 
 <script>
-    import ListView from '@/components/match/list/list.vue'    // 赛事列表
-    export default {
+
+    import { defineComponent, defineAsyncComponent } from 'vue'
+    
+    export default defineComponent({
         name: 'match',
         setup(props,ctx) {
 
         },
         components: {
-            ListView
+            ListView: defineAsyncComponent(() => import('@/components/match/list/list')) // 赛事列表
         }
-    }
+    })
 </script>
 
 <style lang="less" scoped>

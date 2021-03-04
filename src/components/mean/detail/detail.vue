@@ -14,21 +14,18 @@
 </template>
 
 <script>
-    import Breadcrumb from '@/components/common/breadcrumb/breadcrumb.vue'    // 面包屑导航
-    import TeamDetail from '@/components/mean/detail/teamDetail.vue'          // 战队详情
-    import TitleLine from '@/components/common/title/titleLine.vue'               // 页面标题
-    import PlayerDetail from '@/components/mean/detail/playerDetail.vue'      // 现役成员
-    import TeamEvent from '@/components/home/events/datas/tableEvent.vue'     // 战队数据
-    import AllEvent from '@/components/home/events/all/tableEvent.vue'        // 近期赛事
 
+    
+    import { defineComponent, defineAsyncComponent, reactive, toRefs, provide, onMounted } from 'vue'
     import { useRoute, onBeforeRouteUpdate } from "vue-router"
     import { teamDetail } from "@/scripts/request"
-    import { defineComponent, reactive, toRefs, provide, onMounted, watch } from 'vue'
 
     export default defineComponent({
         name:'meanDetail',
         setup(props,ctx) {
+
             const route = useRoute()
+            
             const detailData= reactive({
                 titleName :{
                     playerName: '现役成员',
@@ -38,6 +35,7 @@
                 teamsDetail: {},
                 players: []
             })
+
             const getTeamDetail = (teamId) => {
                 let params = {
                     team_id: parseInt(teamId),
@@ -49,7 +47,7 @@
                     }
                 })
             }
-            provide('detail',detailData)
+            
             onMounted(() => {
                 getTeamDetail(route.query.teamId)
             })
@@ -58,18 +56,20 @@
                 getTeamDetail(to.query.teamId)
             })
 
+            provide('detail',detailData)
+
             return {
                 ...toRefs(detailData),
                 getTeamDetail
             }
         },
         components: {
-            Breadcrumb,
-            TeamDetail,
-            TitleLine,
-            PlayerDetail,
-            TeamEvent,
-            AllEvent
+            Breadcrumb: defineAsyncComponent(() => import('@/components/common/breadcrumb/breadcrumb')), // 面包屑导航
+            TeamDetail: defineAsyncComponent(() => import('@/components/mean/detail/teamDetail')),       // 战队详情
+            TitleLine: defineAsyncComponent(() => import('@/components/common/title/titleLine')),        // 页面标题
+            PlayerDetail: defineAsyncComponent(() => import('@/components/mean/detail/playerDetail')),   // 现役成员
+            TeamEvent: defineAsyncComponent(() => import('@/components/home/events/datas/tableEvent')),  // 战队数据
+            AllEvent: defineAsyncComponent(() => import('@/components/home/events/all/tableEvent'))      // 近期赛事
         }
     })
 </script>

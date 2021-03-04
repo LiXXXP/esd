@@ -21,13 +21,9 @@
 </template>
 
 <script>
-    import SelectView from '@/components/common/select/select.vue'         // 下拉框
-    import TabLine from '@/components/common/tab/tabLine.vue'              // 切换页
-    import TableEvent from '@/components/home/events/all/tableEvent.vue'   // 赛事列表
-    import Pagination from '@/components/common/pagination/pagination.vue' // 分页
 
+    import { defineComponent, defineAsyncComponent, ref, reactive, toRefs, provide, onMounted } from 'vue'
     import { matchScreen, gameList, tournamentList, teamList } from "@/scripts/request"
-    import { defineComponent, ref, reactive, toRefs, provide, onMounted } from 'vue'
 
     export default defineComponent({
         setup(props,ctx) {
@@ -199,10 +195,10 @@
             }
         },
         components: {
-            SelectView,
-            TabLine,
-            TableEvent,
-            Pagination
+            SelectView: defineAsyncComponent(() => import('@/components/common/select/select')),         // 下拉框
+            TabLine: defineAsyncComponent(() => import('@/components/common/tab/tabLine')),              // 切换页
+            TableEvent: defineAsyncComponent(() => import('@/components/home/events/all/tableEvent')),   // 赛事列表
+            Pagination: defineAsyncComponent(() => import('@/components/common/pagination/pagination')), // 分页
         }
     })
 </script>

@@ -101,13 +101,11 @@
 </template>
 
 <script>
-    import TitleView from '@/components/common/title/title.vue'             // 页面标题
-    import Progress from '@/components/common/progress/progress.vue'        // 进度条
 
+    import { defineComponent, defineAsyncComponent, reactive, toRefs, inject, watch, computed, onUnmounted } from 'vue'
     import { useRoute, useRouter } from "vue-router"
     import { battleDetail } from "@/scripts/request"
     import { formatSeconds, formatNumber } from '@/scripts/utils'
-    import { defineComponent, reactive, toRefs, inject, watch, computed, onUnmounted } from 'vue'
 
     export default defineComponent({
         setup(props,ctx) {
@@ -331,8 +329,8 @@
             }
         },
         components: {
-            TitleView,
-            Progress
+            TitleView: defineAsyncComponent(() => import('@/components/common/title/title')),     // 页面标题
+            Progress: defineAsyncComponent(() => import('@/components/common/progress/progress')) // 进度条
         }
     })
 </script>

@@ -24,12 +24,9 @@
 </template>
 
 <script>
-    import HeaderView from '@/components/header/index.vue'          // 导航栏
-    import LoginBox from '@/components/header/login/login'          // 登录
-    import RegisterBox from '@/components/header/login/register'    // 注册
 
-    import { getUrlParam } from '@/scripts/utils'  // 获取页面参数方法
-    import { defineComponent, reactive, toRefs, ref } from 'vue'
+    import { defineComponent, defineAsyncComponent, reactive, toRefs, ref } from 'vue'
+    import { getUrlParam } from '@/scripts/utils'
 
     export default defineComponent({
         name: 'login',
@@ -65,9 +62,9 @@
             }
         },
         components: {
-            HeaderView,
-            LoginBox,
-            RegisterBox
+            HeaderView: defineAsyncComponent(() => import('@/components/header/index')),          // 导航栏
+            LoginBox: defineAsyncComponent(() => import('@/components/header/login/login')),      // 登录
+            RegisterBox: defineAsyncComponent(() => import('@/components/header/login/register')) // 注册
         }
     })
 </script>

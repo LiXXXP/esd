@@ -7,20 +7,19 @@
 </template>
 
 <script>
-    import RecentEvent from '@/components/home/events/recent/recentEvent.vue'    // 近期赛事
-    import AllEvent from '@/components/home/events/all/allEvent.vue'             // 赛事筛选
-    import DataEvent from '@/components/home/events/datas/dataEvent.vue'         // 数据分析
 
-    export default {
+    import { defineComponent, defineAsyncComponent } from 'vue'
+
+    export default defineComponent({
         setup(props,ctx) {
             
         },
         components: {
-            RecentEvent,
-            AllEvent,
-            DataEvent
+            RecentEvent: defineAsyncComponent(() => import('@/components/home/events/recent/recentEvent')), // 近期赛事
+            AllEvent: defineAsyncComponent(() => import('@/components/home/events/all/allEvent')),          // 赛事筛选
+            DataEvent: defineAsyncComponent(() => import('@/components/home/events/datas/dataEvent'))       // 数据分析
         }
-    }
+    })
 </script>
 
 <style lang="less" scoped>

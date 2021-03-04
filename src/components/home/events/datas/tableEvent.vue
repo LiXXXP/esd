@@ -61,9 +61,7 @@
 
 <script>
 
-    import Pagination from '@/components/common/pagination/pagination.vue'     // 分页
-
-    import { defineComponent, reactive, toRefs } from 'vue'
+    import { defineComponent, defineAsyncComponent, reactive, toRefs } from 'vue'
 
     export default defineComponent({
         props: {
@@ -89,7 +87,7 @@
             }
         },
         components: {
-            Pagination
+            Pagination: defineAsyncComponent(() => import('@/components/common/pagination/pagination')) // 分页
         }
     })
 </script>

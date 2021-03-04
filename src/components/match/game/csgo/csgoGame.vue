@@ -22,15 +22,8 @@
 </template>
 
 <script>
-    import PlayGame from '@/components/match/game/module/playGame.vue'    // 对局
-    import PlayInfo from '@/components/match/game/module/playInfo.vue'    // 比赛信息
-    import PlayScore from '@/components/match/game/module/playScore.vue'  // 当前比分
-    import PlayAnaly from '@/components/match/game/module/playAnaly.vue'  // 对战分析
-    import PlayMap from '@/components/match/game/csgo/playMap.vue'        // 地图信息
-    import PlayKill from '@/components/match/game/csgo/playKill.vue'      // 对局详情
-    import PlayerData from '@/components/match/game/csgo/playerData.vue'  // 选手数据
 
-    import { defineComponent, reactive, toRefs, ref, provide, inject, watch } from 'vue'
+    import { defineComponent, defineAsyncComponent, reactive, toRefs, ref, provide, inject, watch } from 'vue'
 
     export default defineComponent({
         setup(props,ctx) {
@@ -63,13 +56,13 @@
             }
         },
         components: {
-            PlayGame,
-            PlayInfo,
-            PlayScore,
-            PlayMap,
-            PlayAnaly,
-            PlayKill,
-            PlayerData
+            PlayGame: defineAsyncComponent(() => import('@/components/match/game/module/playGame')),   // 对局
+            PlayInfo: defineAsyncComponent(() => import('@/components/match/game/module/playInfo')),   // 比赛信息
+            PlayScore: defineAsyncComponent(() => import('@/components/match/game/module/playScore')), // 当前比分
+            PlayAnaly: defineAsyncComponent(() => import('@/components/match/game/module/playAnaly')), // 对战分析
+            PlayMap: defineAsyncComponent(() => import('@/components/match/game/csgo/playMap')),       // 地图信息
+            PlayKill: defineAsyncComponent(() => import('@/components/match/game/csgo/playKill')),     // 对局详情
+            PlayerData: defineAsyncComponent(() => import('@/components/match/game/csgo/playerData'))  // 选手数据
         }
     })
 </script>

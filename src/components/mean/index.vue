@@ -5,16 +5,18 @@
 </template>
 
 <script>
-    import ListView from '@/components/mean/list/list.vue'    // 详情
-    export default {
+
+    import { defineComponent, defineAsyncComponent } from 'vue'
+
+    export default defineComponent({
         name: 'mean',
         setup(props,ctx) {
 
         },
         components: {
-            ListView
+            ListView: defineAsyncComponent(() => import('@/components/mean/list/list')) // 详情
         }
-    }
+    })
 </script>
 
 <style lang="less" scoped>

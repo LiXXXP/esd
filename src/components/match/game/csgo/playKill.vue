@@ -174,11 +174,10 @@
 </template>
 
 <script>
-    import TitleView from '@/components/common/title/title.vue'    // 页面标题
 
+    import { defineComponent, defineAsyncComponent, reactive, toRefs, inject, watch, onUnmounted } from 'vue'
     import { useRoute, useRouter } from "vue-router"
     import { battleDetail } from "@/scripts/request"
-    import { defineComponent, reactive, toRefs, inject, watch, onUnmounted } from 'vue'
 
     export default defineComponent({
         setup(props,ctx) {
@@ -289,7 +288,7 @@
             }
         },
         components: {
-            TitleView
+            TitleView: defineAsyncComponent(() => import('@/components/common/title/title')) // 页面标题
         }
     })
 </script>

@@ -33,10 +33,8 @@
 </template>
 
 <script>
-    import TitleView from '@/components/common/title/title.vue'      // 页面标题
-    import SelectView from '@/components/common/select/select.vue'   // 下拉框
 
-    import { defineComponent, reactive, toRefs, ref } from 'vue'
+    import { defineComponent, defineAsyncComponent, reactive, toRefs, ref } from 'vue'
 
     export default defineComponent({
         setup(props,ctx) {
@@ -87,8 +85,8 @@
             }
         },
         components: {
-            TitleView,
-            SelectView
+            TitleView: defineAsyncComponent(() => import('@/components/common/title/title')),   // 页面标题
+            SelectView: defineAsyncComponent(() => import('@/components/common/select/select')) // 下拉框
         }
     })
 </script>

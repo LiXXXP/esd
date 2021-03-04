@@ -14,12 +14,8 @@
 </template>
 
 <script>
-    import SelectView from '@/components/common/select/select.vue'              // 下拉框
-    import TabLine from '@/components/common/tab/tabLine.vue'                   // 切换页
-    import PlayerEvent from '@/components/home/events/datas/playerEvent.vue'    // 选手数据
-    import TableEvent from '@/components/home/events/datas/tableEvent.vue'      // 数据统计
 
-    import { defineComponent, reactive, toRefs, provide, ref } from 'vue'
+    import { defineComponent, defineAsyncComponent, reactive, toRefs, provide, ref } from 'vue'
 
     export default defineComponent({
         setup(props,ctx) {
@@ -50,10 +46,10 @@
             }
         },
         components: {
-            SelectView,
-            TabLine,
-            PlayerEvent,
-            TableEvent
+            SelectView: defineAsyncComponent(() => import('@/components/common/select/select')),           // 下拉框
+            TabLine: defineAsyncComponent(() => import('@/components/common/tab/tabLine')),                // 切换页
+            PlayerEvent: defineAsyncComponent(() => import('@/components/home/events/datas/playerEvent')), // 选手数据
+            TableEvent: defineAsyncComponent(() => import('@/components/home/events/datas/tableEvent'))    // 数据统计
         }
     })
 </script>

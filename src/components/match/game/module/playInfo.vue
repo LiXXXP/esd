@@ -11,13 +11,10 @@
 </template>
 
 <script>
-    import TitleView from '@/components/common/title/title.vue'             // 页面标题
-    import VideoLive from '@/components/match/game/module/videoLive.vue'    // 视频直播
-    import MapLive from '@/components/match/game/lol/live/mapLive.vue'      // 图文直播
 
+    import { defineComponent, defineAsyncComponent, reactive, toRefs, provide, onMounted } from 'vue'
     import { useRoute } from "vue-router"
     import { liveStreaming } from "@/scripts/request"
-    import { defineComponent, reactive, toRefs, provide, onMounted } from 'vue'
 
     export default defineComponent({
         setup(props,ctx) {
@@ -49,9 +46,9 @@
             }
         },
         components: {
-            TitleView,
-            VideoLive,
-            MapLive
+            TitleView: defineAsyncComponent(() => import('@/components/common/title/title')),          // 页面标题
+            VideoLive: defineAsyncComponent(() => import('@/components/match/game/module/videoLive')), // 视频直播
+            MapLive: defineAsyncComponent(() => import('@/components/match/game/lol/live/mapLive'))    // 图文直播
         }
     })
 </script>

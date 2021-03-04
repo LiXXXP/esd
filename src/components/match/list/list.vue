@@ -25,11 +25,10 @@
 </template>
 
 <script>
-    import Breadcrumb from '@/components/common/breadcrumb/breadcrumb.vue'    // 面包屑导航
-    import Pagination from '@/components/common/pagination/pagination.vue'    // 分页
-    import { tournamentList } from "@/scripts/request"
+
+    import { defineComponent, defineAsyncComponent, reactive, toRefs, onMounted } from 'vue'
     import { useRouter } from "vue-router"
-    import { defineComponent, reactive, toRefs, onMounted } from 'vue'
+    import { tournamentList } from "@/scripts/request"
 
     export default defineComponent({
         setup(props,ctx) {
@@ -76,8 +75,8 @@
             }
         },
         components: {
-            Breadcrumb,
-            Pagination
+            Breadcrumb: defineAsyncComponent(() => import('@/components/common/breadcrumb/breadcrumb')), // 面包屑导航
+            Pagination: defineAsyncComponent(() => import('@/components/common/pagination/pagination'))  // 分页
         }
     })
 </script>

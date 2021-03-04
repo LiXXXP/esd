@@ -1,4 +1,4 @@
-// import Router from 'vue-router'
+import { defineAsyncComponent } from 'vue'
 import {createRouter, createWebHashHistory, createWebHistory} from "vue-router"
 
 /* 引入公共方法 */
@@ -13,7 +13,7 @@ const routes = [
             title: '首页',
             requireAuth: true
         },
-        component: () => import('@/components/index'),
+        component: defineAsyncComponent(() => import('@/components/index')),
         children: [
             {
                 path: '/home',
@@ -22,7 +22,7 @@ const routes = [
                     title: '首页',
                     requireAuth: true
                 },
-                component: () => import('@/components/home/index'),
+                component: defineAsyncComponent(() => import('@/components/home/index'))
             },
             {
                 path: '/match',
@@ -31,7 +31,7 @@ const routes = [
                     title: '电竞比赛',
                     requireAuth: true
                 },
-                component: () => import('@/components/match/index')
+                component: defineAsyncComponent(() => import('@/components/match/index'))
             },
             {
                 path: '/match/detail',
@@ -40,7 +40,7 @@ const routes = [
                     title: '赛事详情',
                     requireAuth: true
                 },
-                component: () => import('@/components/match/detail/detail')
+                component: defineAsyncComponent(() => import('@/components/match/detail/detail'))
             },
             {
                 path: '/match/game',
@@ -49,7 +49,7 @@ const routes = [
                     title: '比赛详情',
                     requireAuth: true
                 },
-                component: () => import('@/components/match/game/index')
+                component: defineAsyncComponent(() => import('@/components/match/game/index'))
             },
             {
                 path: '/mean',
@@ -58,7 +58,7 @@ const routes = [
                     title: '资料库',
                     requireAuth: true
                 },
-                component: () => import('@/components/mean/index')
+                component: defineAsyncComponent(() => import('@/components/mean/index'))
             },
             {
                 path: '/mean/detail',
@@ -67,7 +67,7 @@ const routes = [
                     title: '战队详情',
                     requireAuth: true
                 },
-                component: () => import('@/components/mean/detail/detail')
+                component: defineAsyncComponent(() => import('@/components/mean/detail/detail'))
             }
         ]
     },
@@ -77,7 +77,7 @@ const routes = [
         meta: {
             title: '用户登录注册',
         },
-        component: () => import('@/components/header/login/index')
+        component: defineAsyncComponent(() => import('@/components/header/login/index'))
     },
 ]
 

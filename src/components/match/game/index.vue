@@ -9,14 +9,10 @@
 </template>
 
 <script>
-    import Breadcrumb from '@/components/common/breadcrumb/breadcrumb.vue'    // 面包屑导航
-    import CSGOGame from '@/components/match/game/csgo/csgoGame.vue'          // csgo 比赛详情
-    import LOLGame from '@/components/match/game/lol/lolGame.vue'             // lol 比赛详情
-    import DotaGame from '@/components/match/game/dota/dotaGame.vue'          // dota 比赛详情
     
-    import { matchDetail } from "@/scripts/request"
-    import { defineComponent, reactive, toRefs, provide, onMounted, onUnmounted } from 'vue'
+    import { defineComponent, defineAsyncComponent, reactive, toRefs, provide, onMounted, onUnmounted } from 'vue'
     import { useRoute, onBeforeRouteUpdate } from "vue-router"
+    import { matchDetail } from "@/scripts/request"
     import * as echarts from 'echarts'
 
     export default defineComponent({
@@ -100,10 +96,10 @@
             }
         },
         components: {
-            Breadcrumb,
-            LOLGame,
-            CSGOGame,
-            DotaGame
+            Breadcrumb: defineAsyncComponent(() => import('@/components/common/breadcrumb/breadcrumb')), // 面包屑导航
+            CSGOGame: defineAsyncComponent(() => import('@/components/match/game/csgo/csgoGame')),       // csgo 比赛详情 1
+            LOLGame: defineAsyncComponent(() => import('@/components/match/game/lol/lolGame')),          // lol 比赛详情  2
+            DotaGame: defineAsyncComponent(() => import('@/components/match/game/dota/dotaGame'))        // dota 比赛详情 3
         }
     })
 </script>

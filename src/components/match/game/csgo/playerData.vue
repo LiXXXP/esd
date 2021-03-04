@@ -38,11 +38,10 @@
 </template>
 
 <script>
-    import TitleView from '@/components/common/title/title.vue'    // 页面标题
 
-    import { useRouter } from "vue-router"
     import { csgoPlayerInfo } from "@/scripts/request"
-    import { defineComponent, reactive, toRefs, inject, watch, onUnmounted } from 'vue'
+    import { defineComponent, defineAsyncComponent, reactive, toRefs, inject, watch } from 'vue'
+    import { useRouter } from "vue-router"
 
     export default defineComponent({
         setup(props,ctx) {
@@ -88,7 +87,7 @@
             }
         },
         components: {
-            TitleView
+            TitleView: defineAsyncComponent(() => import('@/components/common/title/title')) // 页面标题
         }
     })
 </script>

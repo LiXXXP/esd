@@ -25,8 +25,8 @@
     .title {
         padding: 35px 0 15px 0;
         .square {
-            width: 11px;
-            height: 11px;
+            width: 10px;
+            height: 10px;
             background-color: #B29873;
             transform: rotateZ(45deg)skew(20deg,20deg);
             box-shadow: 0px 3px 3px 0px rgba(255, 245, 227, 0.3);

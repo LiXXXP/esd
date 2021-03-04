@@ -24,10 +24,9 @@
 </template>
 
 <script>
-    import TitleView from '@/components/common/title/title.vue'             // 页面标题
 
+    import { defineComponent, defineAsyncComponent, ref, reactive, toRefs, inject, watch, onMounted } from 'vue'
     import { lolGoldDiff } from "@/scripts/request"
-    import { defineComponent, ref, reactive, toRefs, inject, watch, onMounted } from 'vue'
 
     export default defineComponent({
         setup(props,ctx) {
@@ -96,7 +95,7 @@
             }
         },
         components: {
-            TitleView
+            TitleView: defineAsyncComponent(() => import('@/components/common/title/title')) // 页面标题
         }
     })
 </script>

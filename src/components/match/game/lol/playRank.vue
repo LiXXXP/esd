@@ -18,12 +18,12 @@
                         red: item.faction === 'red'
                     }]">
                         <p>{{item.champion_name}}</p>
-                        <p>{{parseInt(item.count)}}</p>
+                        <p>{{parseInt(item.count) || 0}}</p>
                     </div>
                     <Progress 
                         :progressData="progressData"
                         :progressColor="item.faction === 'blue'?'#457CF4':'#FF4645'"
-                        :rateData="parseInt(item.count)>5000?parseInt(item.count)/200:parseInt(item.count)<11?parseInt(item.count)*5:parseInt(item.count)/10"
+                        :rateData="parseInt(item.count)>5000?parseInt(item.count)/200:parseInt(item.count)<20?parseInt(item.count)*5:parseInt(item.count)/20 || 0"
                     />
                 </div>
             </div>
@@ -32,12 +32,9 @@
 </template>
 
 <script>
-    import TitleView from '@/components/common/title/title.vue'             // 页面标题
-    import SelectView from '@/components/common/select/select.vue'          // 下拉框
-    import Progress from '@/components/common/progress/progress.vue'        // 进度条
 
+    import { defineComponent, defineAsyncComponent, reactive, toRefs, inject, watch, provide } from 'vue'
     import { lolDataRank } from "@/scripts/request"
-    import { defineComponent, reactive, toRefs, inject, watch, provide } from 'vue'
 
     export default defineComponent({
         setup(props,ctx) {
@@ -124,9 +121,9 @@
             }
         },
         components: {
-            TitleView,
-            SelectView,
-            Progress
+            TitleView: defineAsyncComponent(() => import('@/components/common/title/title')),    // 页面标题
+            SelectView: defineAsyncComponent(() => import('@/components/common/select/select')), // 下拉框
+            Progress: defineAsyncComponent(() => import('@/components/common/progress/progress')) // 进度条
         }
     })
 </script>

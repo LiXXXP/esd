@@ -36,12 +36,8 @@
 </template>
 
 <script>
-    import RoleView from '@/components/match/game/lol/live/map/role.vue'        // 角色
-    import PlayersView from '@/components/match/game/lol/live/map/players.vue'  // 选手
-    import CanvasView from '@/components/match/game/lol/live/map/canvas.vue'    // 地图
-    import LogsView from '@/components/match/game/lol/live/map/logs.vue'        // 日志
 
-    import { defineComponent, reactive, toRefs } from 'vue'
+    import { defineComponent, defineAsyncComponent, reactive, toRefs } from 'vue'
 
     export default defineComponent({
         setup(props,ctx) {
@@ -51,10 +47,10 @@
             }
         },
         components: {
-            RoleView,
-            PlayersView,
-            CanvasView,
-            LogsView
+            RoleView: defineAsyncComponent(() => import('@/components/match/game/lol/live/map/role')),       // 角色
+            PlayersView: defineAsyncComponent(() => import('@/components/match/game/lol/live/map/players')), // 选手
+            CanvasView: defineAsyncComponent(() => import('@/components/match/game/lol/live/map/canvas')),   // 地图
+            LogsView: defineAsyncComponent(() => import('@/components/match/game/lol/live/map/logs'))        // 日志
         }
     })
 </script>

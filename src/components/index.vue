@@ -8,15 +8,16 @@
 </template>
 
 <script>
-    import HeaderView from '@/components/header/index.vue' // 导航栏
-    import FooterView from '@/components/footer/index.vue' // 底部
-    export default {
+
+    import { defineComponent, defineAsyncComponent } from 'vue'
+
+    export default defineComponent({
         name: 'index',
         components: {
-            HeaderView,
-            FooterView
+            HeaderView: defineAsyncComponent(() => import('@/components/header/index')), // 导航栏
+            FooterView: defineAsyncComponent(() => import('@/components/footer/index')), // 底部
         }
-    }
+    })
 </script>
 
 <style lang="less" scoped>

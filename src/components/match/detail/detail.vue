@@ -5,28 +5,22 @@
             <MatchDetail />
             <TitleLine :titleName="titleName.teamName" v-if="teams.length>0"/>
             <PlayerEvent :isText="false" />
-            <!-- <TitleLine :titleName="titleName.matchName" />
-            <div class="tab flex flex_center">
+            <!-- <TitleLine :titleName="titleName.matchName" /> -->
+            <!-- <div class="tab flex flex_center">
                 <p class="active">预选赛</p>
                 <p>淘汰赛</p>
-            </div>
-            <AllEvent :className="'mean'" />
-            <OutDetail /> -->
+            </div> -->
+            <!-- <AllEvent :className="'mean'" /> -->
+            <!-- <OutDetail /> -->
         </div>
     </div>
 </template>
 
 <script>
-    import Breadcrumb from '@/components/common/breadcrumb/breadcrumb.vue'    // 面包屑导航
-    import MatchDetail from '@/components/match/detail/matchDetail.vue'       // 比赛详情
-    import TitleLine from '@/components/common/title/titleLine.vue'           // 页面标题
-    import PlayerEvent from '@/components/home/events/datas/playerEvent.vue'  // 选手数据
-    import AllEvent from '@/components/home/events/all/tableEvent.vue'        // 近期赛事
-    import OutDetail from '@/components/match/detail/outDetail.vue'           // 淘汰赛
 
-    import { tournamentDetail } from "@/scripts/request"
-    import { defineComponent, reactive, toRefs, provide, onMounted } from 'vue'
+    import { defineComponent, defineAsyncComponent, reactive, toRefs, provide, onMounted } from 'vue'
     import { useRoute } from "vue-router"
+    import { tournamentDetail } from "@/scripts/request"
 
     export default defineComponent({
         name: 'matchDetail',
@@ -61,12 +55,12 @@
             }
         },
         components: {
-            Breadcrumb,
-            MatchDetail,
-            TitleLine,
-            PlayerEvent,
-            AllEvent,
-            OutDetail
+            Breadcrumb: defineAsyncComponent(() => import('@/components/common/breadcrumb/breadcrumb')),   // 面包屑导航
+            MatchDetail: defineAsyncComponent(() => import('@/components/match/detail/matchDetail')),      // 比赛详情
+            TitleLine: defineAsyncComponent(() => import('@/components/common/title/titleLine')),          // 页面标题
+            PlayerEvent: defineAsyncComponent(() => import('@/components/home/events/datas/playerEvent')), // 选手数据
+            AllEvent: defineAsyncComponent(() => import('@/components/home/events/all/tableEvent')),       // 近期赛事
+            OutDetail: defineAsyncComponent(() => import('@/components/match/detail/outDetail'))           // 淘汰赛
         }
     })
 </script>

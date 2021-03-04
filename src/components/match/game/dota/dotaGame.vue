@@ -10,14 +10,8 @@
 </template>
 
 <script>
-    import PlayGame from '@/components/match/game/module/playGame.vue'    // 对局
-    import PlayInfo from '@/components/match/game/module/playInfo.vue'    // 比赛信息
-    import PlayScore from '@/components/match/game/module/playScore.vue'  // 当前比分
-    import PlayAnaly from '@/components/match/game/module/playAnaly.vue'  // 对战分析
-    import PlayBattle from '@/components/match/game/lol/playBattle.vue'   // 阵容分析
-    import PlayTeams from '@/components/match/game/dota/playTeams.vue'    // 队伍对局详情
 
-    import { defineComponent, ref, provide, inject, watch } from 'vue'
+    import { defineComponent, defineAsyncComponent, ref, provide, inject, watch } from 'vue'
 
     export default defineComponent({
         setup(props,ctx) {
@@ -39,12 +33,12 @@
             }
         },
         components: {
-            PlayGame,
-            PlayInfo,
-            PlayScore,
-            PlayAnaly,
-            PlayBattle,
-            PlayTeams
+            PlayGame: defineAsyncComponent(() => import('@/components/match/game/module/playGame')),   // 对局
+            PlayInfo: defineAsyncComponent(() => import('@/components/match/game/module/playInfo')),   // 比赛信息
+            PlayScore: defineAsyncComponent(() => import('@/components/match/game/module/playScore')), // 当前比分
+            PlayAnaly: defineAsyncComponent(() => import('@/components/match/game/module/playAnaly')), // 对战分析
+            PlayBattle: defineAsyncComponent(() => import('@/components/match/game/lol/playBattle')),  // 阵容分析
+            PlayTeams: defineAsyncComponent(() => import('@/components/match/game/dota/playTeams'))    // 队伍对局详情
         }
     })
 </script>
