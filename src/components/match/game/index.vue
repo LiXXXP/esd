@@ -9,6 +9,10 @@
 </template>
 
 <script>
+
+    import CSGOGame from '@/components/match/game/csgo/csgoGame' // csgo 比赛详情 1
+    import LOLGame from '@/components/match/game/lol/lolGame'    // lol  比赛详情 2
+    import DotaGame from '@/components/match/game/dota/dotaGame' // dota 比赛详情 3
     
     import { defineComponent, defineAsyncComponent, reactive, toRefs, provide, onMounted, onUnmounted } from 'vue'
     import { useRoute, onBeforeRouteUpdate } from "vue-router"
@@ -97,9 +101,9 @@
         },
         components: {
             Breadcrumb: defineAsyncComponent(() => import('@/components/common/breadcrumb/breadcrumb')), // 面包屑导航
-            CSGOGame: defineAsyncComponent(() => import('@/components/match/game/csgo/csgoGame')),       // csgo 比赛详情 1
-            LOLGame: defineAsyncComponent(() => import('@/components/match/game/lol/lolGame')),          // lol 比赛详情  2
-            DotaGame: defineAsyncComponent(() => import('@/components/match/game/dota/dotaGame'))        // dota 比赛详情 3
+            CSGOGame,
+            LOLGame,
+            DotaGame
         }
     })
 </script>

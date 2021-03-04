@@ -10,6 +10,7 @@
             <PlayDiff />
             <PlayRank />
         </div>
+        <PlayerData />
     </div>
 </template>
 
@@ -44,7 +45,8 @@
             PlayBattle: defineAsyncComponent(() => import('@/components/match/game/lol/playBattle')),  // 阵容分析
             PlayTeams: defineAsyncComponent(() => import('@/components/match/game/lol/playTeams')),    // 队伍对局详情
             PlayDiff: defineAsyncComponent(() => import('@/components/match/game/lol/playDiff')),      // 经济差/经验差
-            PlayRank: defineAsyncComponent(() => import('@/components/match/game/lol/playRank'))       // 数据排行
+            PlayRank: defineAsyncComponent(() => import('@/components/match/game/lol/playRank')),      // 数据排行
+            PlayerData: defineAsyncComponent(() => import('@/components/match/game/lol/playerData'))  // 选手对局详情
         }
     })
 </script>

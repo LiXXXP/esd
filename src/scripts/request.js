@@ -304,6 +304,15 @@ function lolDataRank(params) {
     return postRequest('/battle/lol_data_ranking', params)
 }
 
+/**
+ *
+ * LOL选手对局详情
+ * @param {*} params
+ */
+function lolPlayerBattle(params) {
+    return postRequest('/battle/lol_player_battle_detail', params)
+}
+
 export {
     userRegister,
     userLogin,
@@ -326,6 +335,7 @@ export {
     liveStreaming,
     csgoPlayerInfo,
     lolGoldDiff,
-    lolDataRank
+    lolDataRank,
+    lolPlayerBattle
 }
 
