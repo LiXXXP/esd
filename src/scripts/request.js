@@ -304,6 +304,15 @@ function csgoAddData(params) {
     return postRequest('/battle/csgo_additional_data', params)
 }
 
+/**
+ *
+ * CSGO--battle得分
+ * @param {*} params
+ */
+function csgoScore(params) {
+    return postRequest('/battle/csgo_battle_score', params)
+}
+
 export {
     userRegister,
     userLogin,
@@ -326,6 +335,7 @@ export {
     liveStreaming,
     csgoPlayerInfo,
     lolAddData,
-    csgoAddData
+    csgoAddData,
+    csgoScore
 }
 
