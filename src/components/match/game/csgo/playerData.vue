@@ -22,14 +22,14 @@
                 <tbody>
                     <tr v-for="key in item.players" :key="key.player_id">
                         <td>{{key.nick_name}}</td>
-                        <td>{{key.kills}}({{key.headshot_kills}})</td>
-                        <td>{{key.assists}}({{key.flash_assists}})</td>
-                        <td>{{key.deaths}}</td>
-                        <td>{{(key.kast*100).toFixed(2)}}%</td>
-                        <td>{{key.kills}}-{{key.deaths}}</td>
-                        <td>{{key.adr}}</td>
-                        <td>{{key.first_kills_diff}}</td>
-                        <td>{{key.rating}}</td>
+                        <td>{{key.kills || 0}}({{key.headshot_kills || 0}})</td>
+                        <td>{{key.assists || 0}}({{key.flash_assists || 0}})</td>
+                        <td>{{key.deaths || 0}}</td>
+                        <td>{{(key.kast*100).toFixed(2) || 0}}%</td>
+                        <td>{{parseInt(key.kills - key.deaths) || 0}}</td>
+                        <td>{{key.adr || 0}}</td>
+                        <td>{{key.first_kills_diff || 0}}</td>
+                        <td>{{key.rating || 0}}</td>
                     </tr>
                 </tbody>
             </table>
