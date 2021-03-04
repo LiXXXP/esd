@@ -19,11 +19,12 @@
                 default: () => []
             }
         },
-        setup(props,ctx) {
+        emits: ['status'],
+        setup(props,{ emit }) {
             let currentIndex = ref(0)
             const tab = (index) => {
                 currentIndex.value = index
-                ctx.emit('status',index)
+                emit('status',index)
             }
             return {
                 currentIndex,

@@ -50,7 +50,8 @@
                 default: ''
             }
         },
-        setup(props,ctx) {
+        emits: ['getSelectIndex', 'getSelectIds', 'getSelectAll'],
+        setup(props,{ emit }) {
             const select = reactive({
                 currentIndex: -1,
                 selectList: []
@@ -66,19 +67,19 @@
                 } else {
                     select.currentIndex = index
                 }
-                ctx.emit('getSelectIndex', select.currentIndex)
+                emit('getSelectIndex', select.currentIndex)
             })
 
             const selectOption = ((gameName,tournamentName,teamName,gameId,tournamentId,teamId,index,val) => {
                 select.selectList[index].selectValue = gameName || tournamentName || teamName
                 select.currentIndex = -1
-                ctx.emit('getSelectIds', gameId,tournamentId,teamId,val)
+                emit('getSelectIds', gameId,tournamentId,teamId,val)
             })
 
             const selectOptionAll = ((placeholder,index) => {
                 select.selectList[index].selectValue = placeholder
                 select.currentIndex = -1
-                ctx.emit('getSelectAll', index)
+                emit('getSelectAll', index)
             })
 
             return {

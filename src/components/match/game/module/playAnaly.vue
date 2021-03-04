@@ -19,7 +19,8 @@
     import { defineComponent, defineAsyncComponent, reactive, toRefs, inject, watch } from 'vue'
 
     export default defineComponent({
-        setup(props,ctx) {
+        emits: ['getBattleId'],
+        setup(props,{ emit }) {
             const battleDate = reactive({
                 analyName: '对战分析',
                 currentIndex: 0,
@@ -31,7 +32,7 @@
             })
             const getBattleId = (index,battleId) => {
                 battleDate.currentIndex = index
-                ctx.emit('getBattleId',battleId)
+                emit('getBattleId',battleId)
             }
             return {
                 ...toRefs(battleDate),

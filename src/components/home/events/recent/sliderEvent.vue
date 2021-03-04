@@ -57,9 +57,10 @@
                 default: () => []
             }
         },
-        setup(props,ctx) {
+        emits: ['cutData'],
+        setup(props,{ emit }) {
             const cut = (val) => {
-                ctx.emit('cutData',val)
+                emit('cutData',val)
             }
             const router = useRouter()
             const gotoLink = (status, gameId,matchId) => {

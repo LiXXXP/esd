@@ -72,7 +72,8 @@
     import { defineComponent, reactive, toRefs, inject, watch } from 'vue'
 
     export default defineComponent({
-        setup(props,ctx) {
+        emits: ['isShow'],
+        setup(props,{ emit }) {
             const router = useRouter()
             const search = reactive({
                 type: '',
@@ -156,7 +157,7 @@
                                 matchId: matchId
                             }
                         })
-                        ctx.emit('isShow', false)
+                        emit('isShow', false)
                     }
                 } else {
                     router.push({
@@ -165,12 +166,12 @@
                             teamId: teamId
                         }
                     })
-                    ctx.emit('isShow', false)
+                    emit('isShow', false)
                 }
             }
 
             const gotoMean = (teamId) => {
-                ctx.emit('isShow', false)
+                emit('isShow', false)
                 router.push({
                     path: '/mean/detail',
                     query: {

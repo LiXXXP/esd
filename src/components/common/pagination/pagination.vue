@@ -20,10 +20,11 @@
                 default: () => {}
             }
         },
-        setup(props,ctx) {
+        emits: ['currentPage'],
+        setup(props,{ emit }) {
             const currentPage = ref(1)
             const handleCurrentChange = (val) => {
-                ctx.emit('currentPage',val)
+                emit('currentPage',val)
             }
             return {
                 currentPage,
