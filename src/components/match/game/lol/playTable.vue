@@ -21,6 +21,33 @@
                 </tr>
             </tbody>
         </table>
+
+        <table v-if="teams != null">
+            <thead>
+                <th width="20%;"></th>
+                <th>最高个人击杀数</th>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <div class="team flex flex_only_center">
+                            <img :src="teams.master_team.team_image">
+                            <p>{{teams.master_team.team_name}}</p>
+                        </div>
+                    </td>
+                    <td>{{teams.master_team.max_player_kill || 0}}</td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="team flex flex_only_center">
+                            <img :src="teams.guest_team.team_image">
+                            <p>{{teams.guest_team.team_name}}</p>
+                        </div>
+                    </td>
+                    <td>{{teams.guest_team.max_player_kill || 0}}</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </template>
 
@@ -28,7 +55,7 @@
     import TitleView from '@/components/common/title/title.vue'             // 页面标题
 
     import { defineComponent, reactive, toRefs, inject, watch, onUnmounted, computed } from 'vue'
-    import { lolAddData } from "@/scripts/request"
+    import { lolAddData, lolTeam } from "@/scripts/request"
     import { formatSeconds } from '@/scripts/utils'
 
     export default defineComponent({
@@ -37,6 +64,7 @@
                 name: '数据统计',
                 battleId: 0,
                 datas: null,
+                teams: null,
                 timer: null
             })
 
@@ -62,6 +90,28 @@
                 })
             }
 
+            const getlolTeams = (battleId) => {
+                let params = {
+                    battle_id: battleId,
+                }
+                lolTeam(params).then(res => {
+                    if(res.code === 200) {
+                        if(res.data.length !== 0) {
+                            tableData.teams = res.data
+                            if(res.data.status !== 'ongoing' ) {
+                                clearInterval(tableData.timer)
+                            }
+                        } else {
+                            tableData.teams = null
+                            clearInterval(tableData.timer)
+                        }
+                    } else {
+                        tableData.teams = null
+                        clearInterval(tableData.timer)
+                    }
+                })
+            }
+
             const durationTime = computed(() => {
                 return function(sec) {
                     return formatSeconds(sec)
@@ -72,8 +122,10 @@
             watch(battleid, () => {
                 tableData.battleId = battleid
                 getlolAddData(tableData.battleId)
+                getlolTeams(tableData.battleId)
                 tableData.timer = setInterval( () => {
                     getlolAddData(tableData.battleId)
+                    getlolTeams(tableData.battleId)
                 }, 5000)
             })
 
@@ -84,6 +136,7 @@
             return {
                 ...toRefs(tableData),
                 getlolAddData,
+                getlolTeams,
                 durationTime
             }
         },
@@ -98,18 +151,26 @@
         table {
             width: 100%;
             font-size: 16px;
+            margin-bottom: 20px;
             box-sizing: border-box;
             background-color: #E3E5E8;
             th {
                 color: #333;
+                height: 50px;
                 font-weight: 400;
-                line-height: 50px;
             }
             td {
                 color: #666;
-                line-height: 50px;
+                height: 50px;
                 text-align: center;
                 border-top: 1px solid #D5D7DB;
+            }
+        }
+        .team {
+            img {
+                width: 35px;
+                height: 35px;
+                margin: 0 10px;
             }
         }
     }

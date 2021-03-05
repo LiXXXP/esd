@@ -65,7 +65,7 @@
 
         <table v-if="score">
             <thead>
-                <th></th>
+                <th width="10%;"></th>
                 <th>上半场得分</th>
                 <th>下半场得分</th>
                 <th>加时赛得分</th>
@@ -73,7 +73,7 @@
             </thead>
             <tbody>
                 <tr>
-                    <td width="10%;">
+                    <td>
                         <div class="team flex flex_only_center">
                             <img :src="score.master_team.team_image">
                             <p>{{score.master_team.team_name}}</p>
@@ -85,7 +85,7 @@
                     <td>{{score.master_team.score || 0}}</td>
                 </tr>
                 <tr>
-                    <td width="10%;">
+                    <td>
                         <div class="team flex flex_only_center">
                             <img :src="score.guest_team.team_image">
                             <p>{{score.guest_team.team_name}}</p>

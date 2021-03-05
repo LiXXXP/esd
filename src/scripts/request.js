@@ -297,6 +297,15 @@ function lolAddData(params) {
 
 /**
  *
+ * LOL--附加数据战队相关
+ * @param {*} params
+ */
+ function lolTeam(params) {
+    return postRequest('/battle/lol_battle_team', params)
+}
+
+/**
+ *
  * CSGO--battle附加数据
  * @param {*} params
  */
@@ -335,6 +344,7 @@ export {
     liveStreaming,
     csgoPlayerInfo,
     lolAddData,
+    lolTeam,
     csgoAddData,
     csgoScore
 }
