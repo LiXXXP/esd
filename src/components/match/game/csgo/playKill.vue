@@ -356,7 +356,7 @@
                     height: 30px;
                     color: #333;
                     font-size: 18px;
-                    line-height: 32px;
+                    line-height: 30px;
                     text-align: center;
                     &.side {
                         color: #fff;

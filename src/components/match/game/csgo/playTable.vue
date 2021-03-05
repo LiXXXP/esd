@@ -7,14 +7,58 @@
                 <th>最大首杀战队</th>
                 <th>最多助攻选手</th>
                 <th>最多伤害玩家</th>
-                <th>从第八到第九回合是否存在单人单回合出现击杀三人</th>
+                <th>存在单人单回合出现击杀三人的回合序号</th>
+                <th>刀杀回合序号</th>
             </thead>
             <tbody>
                 <tr>
                     <td>{{datas.max_first_kills_team}}</td>
                     <td>{{datas.max_assists_player_name}}</td>
                     <td>{{datas.max_adr_player_name}}</td>
-                    <td>{{datas.is_eigth_or_nine_threekill? '是' : '否'}}</td>
+                    <td>{{datas.three_kill_round}}</td>
+                    <td>{{datas.knife_kill_round || 0}}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <table v-if="datas">
+            <thead>
+                <th>第四回合爆头击杀数</th>
+                <th>第六回合爆头击杀数</th>
+                <th>第八回合爆头击杀数</th>
+                <th>第十回合爆头击杀数</th>
+                <th>第十二回合爆头击杀数</th>
+                <th>第十四回合爆头击杀数</th>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{datas.fourth_round_headshot_kill || 0}}</td>
+                    <td>{{datas.sixth_round_headshot_kill || 0}}</td>
+                    <td>{{datas.eighth_round_headshot_kill || 0}}</td>
+                    <td>{{datas.tenth_round_headshot_kill || 0}}</td>
+                    <td>{{datas.twelfth_round_headshot_kill || 0}}</td>
+                    <td>{{datas.fourteenth_round_headshot_kill || 0}}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <table v-if="datas">
+            <thead>
+                <th>第十八回合爆头击杀数</th>
+                <th>第二十回合爆头击杀数</th>
+                <th>第二十二回合爆头击杀数</th>
+                <th>第二十四回合爆头击杀数</th>
+                <th>第二十六回合爆头击杀数</th>
+                <th>第二十八回合爆头击杀数</th>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{datas.eighteenth_round_headshot_kill || 0}}</td>
+                    <td>{{datas.twentieth_round_headshot_kill || 0}}</td>
+                    <td>{{datas.twenty_second_round_headshot_kill || 0}}</td>
+                    <td>{{datas.twenty_fourth_round_headshot_kill || 0}}</td>
+                    <td>{{datas.twenty_sixth_round_headshot_kill || 0}}</td>
+                    <td>{{datas.twenty_eighth_round_headshot_kill || 0}}</td>
                 </tr>
             </tbody>
         </table>
@@ -155,12 +199,12 @@
             background-color: #E3E5E8;
             th {
                 color: #333;
+                height: 50px;
                 font-weight: 400;
-                line-height: 50px;
             }
             td {
                 color: #666;
-                line-height: 50px;
+                height: 50px;
                 text-align: center;
                 border-top: 1px solid #D5D7DB;
             }
