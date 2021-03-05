@@ -68,7 +68,7 @@
                                     </p>
                                 </div>
                             </td>
-                            <td v-for="item in (30 - roundDetail.length)" :key="item"></td>
+                            <td v-for="item in (30-roundDetail.length)>0?(30-roundDetail.length):0" :key="item"></td>
                         </tr>
                         <tr>
                             <td>
@@ -96,7 +96,7 @@
                                     v-if="item.win_type === 'terrorists_win' && item.winner === item.side[0].team_id">
                                 </div>
                             </td>
-                            <td v-for="item in (30 - roundDetail.length)" :key="item"></td>
+                            <td v-for="item in (30-roundDetail.length)>0?(30-roundDetail.length):0" :key="item"></td>
                         </tr>
                         <tr>
                             <td>
@@ -124,7 +124,7 @@
                                     v-if="item.win_type === 'terrorists_win' && item.winner === item.side[1].team_id">
                                 </div>
                             </td>
-                            <td v-for="item in (30 - roundDetail.length)" :key="item"></td>
+                            <td v-for="item in (30-roundDetail.length)>0?(30-roundDetail.length):0" :key="item"></td>
                         </tr>
                         <tr>
                             <td></td>
@@ -141,7 +141,7 @@
                                     </p>
                                 </div>
                             </td>
-                            <td v-for="item in (30 - roundDetail.length)" :key="item"></td>
+                            <td v-for="item in (30-roundDetail.length)>0?(30-roundDetail.length):0" :key="item"></td>
                         </tr>
                     </tbody>
                 </table>
