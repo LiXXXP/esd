@@ -55,8 +55,8 @@
                     <tbody>
                         <tr>
                             <td></td>
-                            <td v-for="item in roundDetail" :key="item">
-                                <div class="bar">
+                            <td v-for="item in roundDetail" :key="item.round_ordinal">
+                                <div class="bar" v-if="item.side.length>0">
                                     <p v-for="key in item.side[0].players" 
                                         :key="key.player_id"
                                         :class="[{
@@ -68,7 +68,7 @@
                                     </p>
                                 </div>
                             </td>
-                            <td v-for="item in (30 - roundDetail.length)" :key="item"></td>
+                            <td v-for="item in (30-roundDetail.length)>0?(30-roundDetail.length):0" :key="item"></td>
                         </tr>
                         <tr>
                             <td>
@@ -82,8 +82,8 @@
                                     <i class="win" v-if="teamsData[0].is_winner"></i>
                                 </div>
                             </td>
-                            <td v-for="item in roundDetail" :key="item">
-                                <div class="icon">
+                            <td v-for="item in roundDetail" :key="item.round_ordinal">
+                                <div class="icon" v-if="item.side.length>0">
                                     <img src="../../../../assets/imgs/game/csgo/ct01.png" 
                                     v-if="item.win_type === 'cts_win' && item.winner === item.side[0].team_id">
                                     <img src="../../../../assets/imgs/game/csgo/ct02.png" 
@@ -96,7 +96,7 @@
                                     v-if="item.win_type === 'terrorists_win' && item.winner === item.side[0].team_id">
                                 </div>
                             </td>
-                            <td v-for="item in (30 - roundDetail.length)" :key="item"></td>
+                            <td v-for="item in (30-roundDetail.length)>0?(30-roundDetail.length):0" :key="item"></td>
                         </tr>
                         <tr>
                             <td>
@@ -111,7 +111,7 @@
                                 </div>
                             </td>
                             <td v-for="item in roundDetail" :key="item">
-                                <div class="icon">
+                                <div class="icon" v-if="item.side.length>0">
                                     <img src="../../../../assets/imgs/game/csgo/ct01.png" 
                                     v-if="item.win_type === 'cts_win' && item.winner === item.side[1].team_id">
                                     <img src="../../../../assets/imgs/game/csgo/ct02.png" 
@@ -124,12 +124,12 @@
                                     v-if="item.win_type === 'terrorists_win' && item.winner === item.side[1].team_id">
                                 </div>
                             </td>
-                            <td v-for="item in (30 - roundDetail.length)" :key="item"></td>
+                            <td v-for="item in (30-roundDetail.length)>0?(30-roundDetail.length):0" :key="item"></td>
                         </tr>
                         <tr>
                             <td></td>
-                            <td v-for="item in roundDetail" :key="item">
-                                <div class="bar">
+                            <td v-for="item in roundDetail" :key="item.round_ordinal">
+                                <div class="bar" v-if="item.side.length>0">
                                     <p v-for="key in item.side[1].players" 
                                         :key="key.player_id"
                                         :class="[{
@@ -141,7 +141,7 @@
                                     </p>
                                 </div>
                             </td>
-                            <td v-for="item in (30 - roundDetail.length)" :key="item"></td>
+                            <td v-for="item in (30-roundDetail.length)>0?(30-roundDetail.length):0" :key="item"></td>
                         </tr>
                     </tbody>
                 </table>
