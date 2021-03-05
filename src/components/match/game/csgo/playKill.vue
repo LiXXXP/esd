@@ -56,6 +56,13 @@
                         <tr>
                             <td></td>
                             <td v-for="item in roundDetail" :key="item.round_ordinal">
+                                <p style="color:#777;margin-left:5px">{{item.round_ordinal}}</p>
+                            </td>
+                            <td v-for="item in (30-roundDetail.length)" :key="item"></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td v-for="item in roundDetail" :key="item.round_ordinal">
                                 <div class="bar" v-if="item.side.length>0">
                                     <p v-for="key in item.side[0].players" 
                                         :key="key.player_id"
@@ -68,7 +75,7 @@
                                     </p>
                                 </div>
                             </td>
-                            <td v-for="item in (30-roundDetail.length)>0?(30-roundDetail.length):0" :key="item"></td>
+                            <td v-for="item in (30-roundDetail.length)" :key="item"></td>
                         </tr>
                         <tr>
                             <td>
@@ -96,7 +103,7 @@
                                     v-if="item.win_type === 'terrorists_win' && item.winner === item.side[0].team_id">
                                 </div>
                             </td>
-                            <td v-for="item in (30-roundDetail.length)>0?(30-roundDetail.length):0" :key="item"></td>
+                            <td v-for="item in (30-roundDetail.length)" :key="item"></td>
                         </tr>
                         <tr>
                             <td>
@@ -124,7 +131,7 @@
                                     v-if="item.win_type === 'terrorists_win' && item.winner === item.side[1].team_id">
                                 </div>
                             </td>
-                            <td v-for="item in (30-roundDetail.length)>0?(30-roundDetail.length):0" :key="item"></td>
+                            <td v-for="item in (30-roundDetail.length)" :key="item"></td>
                         </tr>
                         <tr>
                             <td></td>
@@ -141,7 +148,7 @@
                                     </p>
                                 </div>
                             </td>
-                            <td v-for="item in (30-roundDetail.length)>0?(30-roundDetail.length):0" :key="item"></td>
+                            <td v-for="item in (30-roundDetail.length)" :key="item"></td>
                         </tr>
                     </tbody>
                 </table>
@@ -217,7 +224,7 @@
                             killData.detailData = res.data.battle_detail
                             killData.mapInfo = res.data.map_info
                             killData.teamsData = res.data.battle_detail.teams
-                            killData.roundDetail = res.data.battle_detail.round_detail
+                            killData.roundDetail = res.data.battle_detail.round_detail.slice(0,30)
 
                             if(res.data.battle_detail.teams[0].starting_side !== 'ct') {
                                 killData.teamsData.reverse()
@@ -376,7 +383,7 @@
             background-color: #E3E5E8;
             table {
                 width: 100%;
-                height: 150px;
+                height: 170px;
                 border-collapse: collapse;
                 tr {
                     border-bottom: 1px solid #CECECE;
@@ -397,6 +404,7 @@
             }
             .bar {
                 margin-left: 5px;
+                margin-top: 5px;
                 p {
                     width: 16px;
                     height: 2px;
