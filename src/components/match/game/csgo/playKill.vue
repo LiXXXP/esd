@@ -21,6 +21,10 @@
                         <span>{{teamsData[0].second_half_score}}</span>
                         <span class="side t">T</span>
                     </div>
+                    <div class="flex flex_only_center" v-if="teamsData[0].ot_score || teamsData[1].ot_score">
+                        <span>{{teamsData[0].ot_score}}</span>
+                        <span class="side ot">OT</span>
+                    </div>
                 </div>
 
                 <div class="score flex flex_center">
@@ -37,6 +41,10 @@
                     <div class="flex flex_only_center">
                         <span class="side ct">CT</span>
                         <span>{{teamsData[1].second_half_score}}</span>
+                    </div>
+                    <div class="flex flex_only_center" v-if="teamsData[0].ot_score || teamsData[1].ot_score">
+                        <span class="side ot">OT</span>
+                        <span>{{teamsData[1].ot_score}}</span>
                     </div>
                 </div>
 
@@ -296,6 +304,7 @@
 <style lang="less" scoped>
     @ct: #008CD5;
     @t: #F6B600;
+    @ot: #434343;
     @die: #303030;
     .play-kill {
         .map {
@@ -335,11 +344,11 @@
             .sign {
                 height: 130px;
                 span {
-                    width: 32px;
-                    height: 32px;
+                    width: 30px;
+                    height: 30px;
                     color: #333;
                     font-size: 18px;
-                    line-height: 32px;
+                    line-height: 30px;
                     text-align: center;
                     &.side {
                         color: #fff;
@@ -350,6 +359,9 @@
                         }
                         &.t {
                             background-color: @t;
+                        }
+                        &.ot {
+                            background-color: @ot;
                         }
                     }
                 }
