@@ -56,7 +56,7 @@
                         <tr>
                             <td></td>
                             <td v-for="item in roundDetail" :key="item.round_ordinal">
-                                <p style="color:#777;margin-left:5px">{{item.round_ordinal}}</p>
+                                <p class="order">{{item.round_ordinal}}</p>
                             </td>
                             <td v-for="item in (30-roundDetail.length)" :key="item"></td>
                         </tr>
@@ -505,6 +505,12 @@
                 border-radius: 13px;
                 background-color: #D2D2D2;
             }
+        }
+        .order {
+            width: 16px;
+            color: #777;
+            margin-left: 5px;
+            text-align: center;
         }
     }
 </style>
