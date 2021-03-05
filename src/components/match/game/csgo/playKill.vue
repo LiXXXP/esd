@@ -50,7 +50,7 @@
 
             </div>
 
-            <div class="kill">
+            <div class="kill" v-if="roundDetail.length>0">
                 <table cellspacing="0" cellpadding="0">
                     <tbody>
                         <tr>

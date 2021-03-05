@@ -6,12 +6,18 @@
                 <th>三杀</th>
                 <th>四杀</th>
                 <th>五杀</th>
+                <th>第一条元素龙名称</th>
+                <th>第二条元素龙名称</th>
+                <th>首峡谷先锋游戏内时间戳</th>
             </thead>
             <tbody>
                 <tr>
                     <td>{{datas.is_triple_kill?'是':'无'}}</td>
                     <td>{{datas.is_quadra_kill?'是':'无'}}</td>
                     <td>{{datas.is_penta_kill?'是':'无'}}</td>
+                    <td>{{datas.first_dragon_kill}}</td>
+                    <td>{{datas.second_dragon_kill}}</td>
+                    <td>{{durationTime(datas.first_rift_herald)}}</td>
                 </tr>
             </tbody>
         </table>
@@ -21,8 +27,9 @@
 <script>
     import TitleView from '@/components/common/title/title.vue'             // 页面标题
 
+    import { defineComponent, reactive, toRefs, inject, watch, onUnmounted, computed } from 'vue'
     import { lolAddData } from "@/scripts/request"
-    import { defineComponent, reactive, toRefs, inject, watch, onUnmounted } from 'vue'
+    import { formatSeconds } from '@/scripts/utils'
 
     export default defineComponent({
         setup(props,ctx) {
@@ -54,6 +61,12 @@
                     }
                 })
             }
+
+            const durationTime = computed(() => {
+                return function(sec) {
+                    return formatSeconds(sec)
+                }
+            })
             
             const battleid = inject('battleid')
             watch(battleid, () => {
@@ -70,7 +83,8 @@
 
             return {
                 ...toRefs(tableData),
-                getlolAddData
+                getlolAddData,
+                durationTime
             }
         },
         components: {
