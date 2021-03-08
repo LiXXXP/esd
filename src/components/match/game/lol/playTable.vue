@@ -12,9 +12,9 @@
             </thead>
             <tbody>
                 <tr>
-                    <td>{{datas.is_triple_kill?'是':'无'}}</td>
-                    <td>{{datas.is_quadra_kill?'是':'无'}}</td>
-                    <td>{{datas.is_penta_kill?'是':'无'}}</td>
+                    <td>{{datas.is_triple_kill?'是':datas.is_triple_kill == null ?'':'无'}}</td>
+                    <td>{{datas.is_quadra_kill?'是':datas.is_quadra_kill == null ?'':'无'}}</td>
+                    <td>{{datas.is_penta_kill?'是':datas.is_penta_kill == null ?'':'无'}}</td>
                     <td>{{datas.first_dragon_kill}}</td>
                     <td>{{datas.second_dragon_kill}}</td>
                     <td>{{durationTime(datas.first_rift_herald)}}</td>
