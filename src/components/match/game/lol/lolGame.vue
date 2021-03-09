@@ -6,7 +6,7 @@
         <PlayAnaly @getBattleId="getBattleId" />
         <!-- <PlayBattle /> -->
         <PlayTeams />
-        <div class="flex flex_between">
+        <div class="flex flex_between" v-if="battleId">
             <PlayDiff />
             <PlayRank />
         </div>
