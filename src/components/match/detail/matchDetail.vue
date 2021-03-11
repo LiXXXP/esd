@@ -20,7 +20,7 @@
                         <p>参赛队伍</p>
                     </div>
                     <div>
-                        <p class="title">{{detail.prize_bonus || `$0`}}</p>
+                        <p class="title">{{detail.prize_bonus || '暂无数据'}}</p>
                         <p>总奖金</p>
                     </div>
                 </div>
