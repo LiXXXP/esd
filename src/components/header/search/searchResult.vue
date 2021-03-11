@@ -12,12 +12,15 @@
                             <img v-if="type === 'team'" :src="item.image" class="team-logo">
                             <img v-if="type === 'player'" :src="item.player_image" class="player-logo">
                         </td>
-                        <td style="width: 200px;">
-                            <span v-if="type === 'match'">{{item.tournament_name}}</span>
+                        <td style="width: 260px;">
+                            <span style="cursor:pointer;"
+                                v-if="type === 'match'" 
+                                @click="gotoMatch(item.tournament_id)"
+                            >{{item.tournament_name}}</span>
                             <span v-if="type === 'team'">{{item.team_name}}</span>
                             <span v-if="type === 'player'">{{item.nick_name}}</span>
                         </td>
-                        <td>
+                        <td style="width:100px;">
                             <span v-if="type === 'match'">{{item.scheduled_begin_at}}</span>
                             <div v-if="type === 'team'" class="flex flex_center">
                                 <img :src="item.game_image" class="team-logo">
@@ -180,11 +183,22 @@
                 })
             }
 
+            const gotoMatch = (tournamentId) => {
+                emit('isShow', false)
+                router.push({
+                    path: '/match/detail',
+                    query: {
+                        tournamentId: tournamentId
+                    }
+                })
+            }
+
             return {
                 ...toRefs(search),
                 selectData,
                 gotoLink,
-                gotoMean
+                gotoMean,
+                gotoMatch
             }
         },
     })

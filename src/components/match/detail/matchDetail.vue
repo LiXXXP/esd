@@ -16,11 +16,11 @@
                         <p>举办方：{{detail.organizer}}</p>
                     </div>
                     <div>
-                        <p class="title">{{detail.number_of_teams}}</p>
+                        <p class="title">{{detail.number_of_teams || teamLength}}</p>
                         <p>参赛队伍</p>
                     </div>
                     <div>
-                        <p class="title">{{detail.prize_bonus || `$0`}}</p>
+                        <p class="title">{{detail.prize_bonus || '暂无数据'}}</p>
                         <p>总奖金</p>
                     </div>
                 </div>
@@ -35,13 +35,16 @@
     export default defineComponent({
         setup(props,ctx) {
             const detail = ref({})
+            const teamLength = ref(0)
             const tournament = inject('detail')
             watch(tournament, () => {
                 detail.value = tournament.tournamentDetail
+                teamLength.value = tournament.teams.length
             })
             return {
                 detail,
-                tournament
+                tournament,
+                teamLength
             }
         }
     })

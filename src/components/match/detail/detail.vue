@@ -19,13 +19,15 @@
 <script>
 
     import { defineComponent, defineAsyncComponent, reactive, toRefs, provide, onMounted } from 'vue'
-    import { useRoute } from "vue-router"
+    import { useRoute, onBeforeRouteUpdate } from "vue-router"
     import { tournamentDetail } from "@/scripts/request"
 
     export default defineComponent({
         name: 'matchDetail',
         setup(props,ctx) {
+
             const route = useRoute()
+
             const detailData= reactive({
                 titleName :{
                     teamName: '参赛队伍',
@@ -34,9 +36,10 @@
                 tournamentDetail: {},
                 teams: []
             })
-            const getTournamentDetail = () => {
+
+            const getTournamentDetail = (tournamentId) => {
                 let params = {
-                    tournament_id: route.query.tournamentId,
+                    tournament_id: parseInt(tournamentId),
                 }
                 tournamentDetail(params).then(res => {
                     if(res.code === 200) {
@@ -45,10 +48,17 @@
                     }
                 })
             }
-            provide('detail',detailData)
+
             onMounted(() => {
-                getTournamentDetail()
+                getTournamentDetail(route.query.tournamentId)
             })
+
+            onBeforeRouteUpdate((to) => {
+                getTournamentDetail(to.query.tournamentId)
+            })
+
+            provide('detail',detailData)
+
             return {
                 ...toRefs(detailData),
                 getTournamentDetail
