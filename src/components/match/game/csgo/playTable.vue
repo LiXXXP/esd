@@ -7,6 +7,7 @@
                 <th>最大首杀战队</th>
                 <th>最多助攻选手</th>
                 <th>最多伤害玩家</th>
+                <th>最多首杀选手</th>
                 <th>存在单人单回合出现击杀三人的回合序号</th>
                 <th>刀杀回合序号</th>
             </thead>
@@ -15,6 +16,7 @@
                     <td>{{datas.max_first_kills_team}}</td>
                     <td>{{datas.max_assists_player_name}}</td>
                     <td>{{datas.max_adr_player_name}}</td>
+                    <td>{{datas.max_first_kill_player_name}}</td>
                     <td>{{datas.three_kill_round}}</td>
                     <td>{{datas.knife_kill_round || 0}}</td>
                 </tr>
