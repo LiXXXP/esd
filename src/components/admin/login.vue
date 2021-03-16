@@ -9,9 +9,9 @@
                     :rules="rules"
                     ref="ruleForm">
 
-                    <el-form-item prop="admin">
+                    <el-form-item prop="email">
                         <el-input
-                            v-model="ruleForm.admin"
+                            v-model="ruleForm.email"
                             autocomplete="off"
                             placeholder="邮箱"
                         ></el-input>
@@ -48,7 +48,7 @@
     export default {
         name: 'adminLogin',
         data() {
-            var validateAdmin = (rule, value, callback) => {
+            var validateEmail = (rule, value, callback) => {
                 if (value === '') {
                     this.isType = 'info'
                     this.isDisabled = true
@@ -76,17 +76,22 @@
                 isType: 'info',    // 登录按钮类型
                 isDisabled: true,  // 登录按钮是否可点击
                 ruleForm: {        // 验证用户名和密码
-                    admin: '',
+                    email: '',
                     pass: '',
                 },
                 rules: {           // 验证用户名和密码规则
-                    admin: [
-                        { validator: validateAdmin, trigger: 'change' }
+                    email: [
+                        { validator: validateEmail, trigger: 'change' }
                     ],
                     pass: [
                         { validator: validatePass, trigger: 'change' }
                     ]
                 }
+            }
+        },
+        mounted() {
+            if(localStorage.getItem('userToken')) {
+                this.$router.push({path: '/admin'})
             }
         },
         methods: {
@@ -96,14 +101,15 @@
                     if (valid) {
                         let _this = this
                         let params = {
-                            admin: transHtml(_this.ruleForm.admin),
+                            email: transHtml(_this.ruleForm.email),
                             password: transHtml(_this.ruleForm.pass)
                         }
                         userLogin(params).then(res => {
                             if(res.code === 200) {
-                                localStorage.setItem('adminToken',res.data.token)
-                                _this.$router.push({path: '/admin'})
+                                localStorage.setItem('userToken',res.data.token)
+                                _this.$router.go(0)
                             } else {
+                                localStorage.removeItem('userToken')
                                 _this.$message.error(res.message)
                             }
                         })

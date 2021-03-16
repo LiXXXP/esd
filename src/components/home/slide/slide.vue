@@ -1,29 +1,39 @@
 <template>
     <div class="slide">
-        <el-carousel :interval="3000" arrow="always">
-            <el-carousel-item v-for="item in list" :key="item.url">
-                <img :src="item.url">
+        <el-carousel :interval="3000" arrow="always" v-if="list.length>0">
+            <el-carousel-item v-for="item in list" :key="item.id">
+                <img :src="item.image" :title="item.image_name">
             </el-carousel-item>
         </el-carousel>
     </div>
 </template>
 
 <script>
-    import { defineComponent, reactive, toRefs } from 'vue'
+
+    import { defineComponent, onMounted, reactive, toRefs } from 'vue'
+    import { homeCarousel } from "@/scripts/request"
+
     export default defineComponent({
         setup(props,ctx) {
             const carouselList = reactive({
-                list: [
-                    {
-                        url: require('../../../assets/imgs/home/banner01.png'),
-                    },
-                    {
-                        url: require('../../../assets/imgs/home/banner02.png'),
-                    }
-                ]
+                list: []
             })
+            
+            const getCarousel = () => {
+                homeCarousel().then(res => {
+                    if(res.code === 200) {
+                        carouselList.list = res.data
+                    }
+                })
+            }
+
+            onMounted(() => {
+                getCarousel()
+            })
+            
             return {
-                ...toRefs(carouselList)
+                ...toRefs(carouselList),
+                getCarousel
             }
         },
     })

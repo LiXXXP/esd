@@ -313,6 +313,51 @@ function lolPlayerBattle(params) {
     return postRequest('/battle/lol_player_battle_detail', params)
 }
 
+/**
+ *
+ * 首页轮播图
+ * @param {*} params
+ */
+function homeCarousel(params) {
+    return getRequest('/image/home_carousel', params)
+}
+
+/**
+ *
+ * 广告图列表
+ * @param {*} params
+ */
+ function imageList(params) {
+    return postRequest('/image/advertisement_image_list', params)
+}
+
+/**
+ *
+ * 广告图信息
+ * @param {*} params
+ */
+ function imageInfo(params) {
+    return postRequest('/image/advertisement_image_info', params)
+}
+
+/**
+ *
+ * 广告图创建
+ * @param {*} params
+ */
+ function imageCreate(params) {
+    return postRequest('/image/advertisement_image_create', params)
+}
+
+/**
+ *
+ * 广告图更新
+ * @param {*} params
+ */
+ function imageUpdate(params) {
+    return postRequest('/image/advertisement_image_update', params)
+}
+
 export {
     userRegister,
     userLogin,
@@ -336,6 +381,11 @@ export {
     csgoPlayerInfo,
     lolGoldDiff,
     lolDataRank,
-    lolPlayerBattle
+    lolPlayerBattle,
+    homeCarousel,
+    imageList,
+    imageInfo,
+    imageCreate,
+    imageUpdate
 }
 

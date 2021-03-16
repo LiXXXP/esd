@@ -95,6 +95,15 @@ const routes = [
             requireAuth: true
         },
         component: defineAsyncComponent(() => import('@/components/admin/admin'))
+    },
+    {
+        path: '/admin/create',
+        name: 'adminCreate',
+        meta: {
+            title: '后台管理系统',
+            requireAuth: true
+        },
+        component: defineAsyncComponent(() => import('@/components/admin/create'))
     }
 ]
 
@@ -127,7 +136,7 @@ router.beforeEach((to, from, next) => {
     } else {
         if(to.path === '/admin') {
             if (to.matched.some(res => res.meta.requireAuth)) {
-                let admToken = localStorage.getItem('adminToken')
+                let admToken = localStorage.getItem('userToken')
                 if (admToken) {
                     next()
                 } else {
