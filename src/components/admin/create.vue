@@ -35,6 +35,7 @@
                     :limit="1"
                     :file-list="fileList"
                     :http-request="upload"
+                    :on-change="change"
                     list-type="picture">
                     <el-button size="small" type="primary">点击上传</el-button>
                     <template #tip>
@@ -45,13 +46,24 @@
 
             <el-form-item label="生效起始时间" required>
                 <el-form-item prop="begin">
-                    <el-date-picker type="date" placeholder="选择日期" v-model="ruleForm.begin" style="width:320px"></el-date-picker>
+                    <el-date-picker 
+                        type="date" 
+                        placeholder="选择日期"
+                        value-format="yyyy-MM-dd"
+                        v-model="ruleForm.begin"
+                        style="width:320px"
+                    ></el-date-picker>
                 </el-form-item>
             </el-form-item>
 
             <el-form-item label="生效结束时间" required>
                 <el-form-item prop="end">
-                    <el-date-picker type="date" placeholder="选择日期" v-model="ruleForm.end" style="width:320px"></el-date-picker>
+                    <el-date-picker 
+                        type="date" 
+                        placeholder="选择日期" 
+                        v-model="ruleForm.end"
+                        style="width:320px"
+                    ></el-date-picker>
                 </el-form-item>
             </el-form-item>
 
@@ -70,6 +82,7 @@
 
 <script>
     import { imageInfo, imageCreate, imageUpdate } from "@/scripts/request"
+    import { formatDate } from "@/scripts/utils"
     export default {
         data() {
             return {
@@ -139,6 +152,9 @@
                     }
                 })
             },
+            change( file, fileList) {
+                console.log(file)
+            },
             upload(e) {
                 let _this = this
                 new Promise(function(resolve, reject) {
@@ -146,6 +162,7 @@
                     reader.readAsDataURL(e.file)
                     reader.onload = function() {
                         _this.ruleForm.file = reader.result
+                        console.log(typeof reader.result)
                     }
                     reader.onerror = function(error) {
                         reject(error)
@@ -164,13 +181,13 @@
                             status: this.ruleForm.status,
                             order: this.ruleForm.order,
                             image_file: this.ruleForm.file,
-                            begin_time: this.ruleForm.begin,
-                            end_time: this.ruleForm.end,
+                            begin_time: formatDate(this.ruleForm.begin, 'yyyy-MM-dd'),
+                            end_time: formatDate(this.ruleForm.end, 'yyyy-MM-dd'),
                             image_name: this.ruleForm.name
                         }
                         if(parseInt(this.$route.query.imageId)) {
                             // 更新
-                            params.image_id = this.$route.query.imageId
+                            params.image_id = parseInt(this.$route.query.imageId)
                             imageUpdate(params).then(res => {
                                 if(res.code === 200) {
                                     this.$message.success(res.message)
