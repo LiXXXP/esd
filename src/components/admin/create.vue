@@ -160,20 +160,24 @@
             },
             upload(e) {
                 let _this = this
-                new Promise(function(resolve, reject) {
-                    const reader = new FileReader()
-                    reader.readAsDataURL(e.file)
-                    reader.onload = function() {
-                        _this.ruleForm.file = reader.result
-                        console.log(typeof reader.result)
-                    }
-                    reader.onerror = function(error) {
-                        reject(error)
-                    }
-                    reader.onloadend = function() {
-                        resolve(_this.ruleForm.file)
-                    }
-                })
+                if((e.file.size/1024)>500) {
+                    this.$message.error('图片大小不能超过500kb')
+                } else {
+                    new Promise(function(resolve, reject) {
+                        const reader = new FileReader()
+                        reader.readAsDataURL(e.file)
+                        
+                        reader.onload = function() {
+                            _this.ruleForm.file = reader.result
+                        }
+                        reader.onerror = function(error) {
+                            reject(error)
+                        }
+                        reader.onloadend = function() {
+                            resolve(_this.ruleForm.file)
+                        }
+                    })
+                }
             },
             submitForm(formName) {
                 this.$refs[formName].validate((valid) => {
@@ -201,14 +205,19 @@
                             })
                         } else {
                             // 创建
-                            imageCreate(params).then(res => {
-                                if(res.code === 200) {
-                                    this.$message.success(res.message)
-                                    this.$router.go(-1)
-                                } else {
-                                    this.$message.error(res.message)
-                                }
-                            })
+                            if(this.ruleForm.file.length !== 0) {
+                                imageCreate(params).then(res => {
+                                    if(res.code === 200) {
+                                        this.$message.success(res.message)
+                                        this.$router.go(-1)
+                                    } else {
+                                        this.$message.error(res.message)
+                                    }
+                                })
+                            } else {
+                                this.$message.error('图片大小不能超过500kb')
+                            }
+                            
                         }
                         
                     } else {
