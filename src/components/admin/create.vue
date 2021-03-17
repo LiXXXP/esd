@@ -35,7 +35,6 @@
                     :limit="1"
                     :file-list="fileList"
                     :http-request="upload"
-                    :on-change="change"
                     list-type="picture">
                     <el-button size="small" type="primary">点击上传</el-button>
                     <template #tip>
@@ -49,9 +48,9 @@
                     <el-date-picker 
                         type="date" 
                         placeholder="选择日期"
-                        value-format="yyyy-MM-dd"
                         v-model="ruleForm.begin"
                         style="width:320px"
+                        @change="beginChange"
                     ></el-date-picker>
                 </el-form-item>
             </el-form-item>
@@ -63,6 +62,7 @@
                         placeholder="选择日期" 
                         v-model="ruleForm.end"
                         style="width:320px"
+                        @change="endChange"
                     ></el-date-picker>
                 </el-form-item>
             </el-form-item>
@@ -152,8 +152,11 @@
                     }
                 })
             },
-            change( file, fileList) {
-                console.log(file)
+            beginChange(val) {
+                this.ruleForm.begin = formatDate(val, 'yyyy-MM-dd')
+            },
+            endChange(val) {
+                this.ruleForm.end = formatDate(val, 'yyyy-MM-dd')
             },
             upload(e) {
                 let _this = this
@@ -181,8 +184,8 @@
                             status: this.ruleForm.status,
                             order: this.ruleForm.order,
                             image_file: this.ruleForm.file,
-                            begin_time: formatDate(this.ruleForm.begin, 'yyyy-MM-dd'),
-                            end_time: formatDate(this.ruleForm.end, 'yyyy-MM-dd'),
+                            begin_time: this.ruleForm.begin,
+                            end_time: this.ruleForm.end,
                             image_name: this.ruleForm.name
                         }
                         if(parseInt(this.$route.query.imageId)) {
@@ -191,6 +194,7 @@
                             imageUpdate(params).then(res => {
                                 if(res.code === 200) {
                                     this.$message.success(res.message)
+                                    this.$router.go(-1)
                                 } else {
                                     this.$message.error(res.message)
                                 }
@@ -200,6 +204,7 @@
                             imageCreate(params).then(res => {
                                 if(res.code === 200) {
                                     this.$message.success(res.message)
+                                    this.$router.go(-1)
                                 } else {
                                     this.$message.error(res.message)
                                 }
