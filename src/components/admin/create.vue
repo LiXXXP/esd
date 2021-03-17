@@ -112,8 +112,8 @@
             };
         },
         mounted() {
-            if(this.$route.query.imageId) {
-                this.imageId = this.$route.query.imageId
+            if(parseInt(this.$route.query.imageId)) {
+                this.imageId = parseInt(this.$route.query.imageId)
                 this.getImageInfo()
             }
         },
@@ -168,7 +168,7 @@
                             end_time: this.ruleForm.end,
                             image_name: this.ruleForm.name
                         }
-                        if(this.$route.query.imageId) {
+                        if(parseInt(this.$route.query.imageId)) {
                             // 更新
                             params.image_id = this.$route.query.imageId
                             imageUpdate(params).then(res => {
