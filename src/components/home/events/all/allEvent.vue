@@ -163,6 +163,8 @@
             const getSelectAll = (index) => {
                 if(index === 0) {
                     selectGameId.value = undefined
+                    selectTournamentId.value = undefined
+                    selectTeamId.value = undefined
                 }
                 if(index === 1) {
                     selectTournamentId.value = undefined

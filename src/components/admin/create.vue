@@ -215,7 +215,7 @@
                                     }
                                 })
                             } else {
-                                this.$message.error('图片大小不能超过500kb')
+                                this.$message.error('请上传图片，以及图片大小不能超过500kb')
                             }
                             
                         }

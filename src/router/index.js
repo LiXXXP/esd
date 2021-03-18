@@ -28,7 +28,7 @@ const routes = [
                 path: '/match',
                 name: 'match',
                 meta: {
-                    title: '电竞比赛',
+                    title: '赛事',
                     requireAuth: true
                 },
                 component: defineAsyncComponent(() => import('@/components/match/index'))
@@ -55,7 +55,7 @@ const routes = [
                 path: '/mean',
                 name: 'mean',
                 meta: {
-                    title: '资料库',
+                    title: '战队',
                     requireAuth: true
                 },
                 component: defineAsyncComponent(() => import('@/components/mean/index'))

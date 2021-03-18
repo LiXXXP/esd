@@ -1,23 +1,7 @@
 <template>
     <div class="select">
-        <div v-if="size === 'max'" class="flex flex_start">
-            <div class="custom custom-max" 
-                v-for="(item,index) in selectList"
-                :key="item.placeholder">
-                <div class="select" @click="openOption(index)">
-                    <input type="text" :placeholder="item.placeholder" v-model="item.selectValue" disabled="disabled">
-                </div>
-                <ul class="option" v-if="index === currentIndex">
-                    <li v-for="key in item.list" 
-                        :key="key.game_id || key.tournament_id || key.team_id"
-                        :title="key.name_cn || key.tournament_name || key.team_name"
-                        @click="selectOption(key.name_cn,key.tournament_name,key.team_name,key.game_id,key.tournament_id,key.team_id,index)"
-                    >{{key.name_cn || key.tournament_name || key.team_name}}</li>
-                </ul>
-            </div>
-        </div>
-        <div v-if="size === 'small'" class="flex flex_start">
-            <div class="custom custom-small" 
+        <div class="flex flex_start">
+            <div :class="['custom', `custom-${size}`]" 
                 v-for="(item,index) in selectList"
                 :key="item.placeholder">
                 <div class="select" @click="openOption(index)">
@@ -78,6 +62,11 @@
 
             const selectOptionAll = ((placeholder,index) => {
                 select.selectList[index].selectValue = placeholder
+                if(index === 0) {
+                    select.selectList.map((currentValue,index) => {
+                        currentValue.selectValue = currentValue.placeholder
+                    })
+                }
                 select.currentIndex = -1
                 emit('getSelectAll', index)
             })

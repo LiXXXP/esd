@@ -29,11 +29,11 @@
                         path: '/home'
                     },
                     {
-                        title: '电竞比赛',
+                        title: '赛事',
                         path: '/match'
                     },
                     {
-                        title: '资料库',
+                        title: '战队',
                         path: '/mean'
                     }
                 ]

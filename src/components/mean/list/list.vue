@@ -2,6 +2,12 @@
     <div class="list">
         <div class="page-content">
             <Breadcrumb />
+            <SelectView 
+                :size="'max'"
+                style="margin-top:20px"
+                @getSelectIds="getSelectIds"
+                @getSelectAll="getSelectAll"
+            />
             <div class="flex flex_only_center flex_wrap">
                 <div class="block flex flex_column flex_center" 
                     v-for="item in teamList" :key="item.team_id" @click="gotoLink(item.team_id)">
@@ -22,20 +28,29 @@
 
 <script>
 
-    import { defineComponent, defineAsyncComponent, reactive, toRefs, onMounted } from 'vue'
+    import { defineComponent, defineAsyncComponent, reactive, toRefs, provide, onMounted } from 'vue'
     import { useRouter } from "vue-router"
-    import { teamList } from "@/scripts/request"
+    import { gameList, teamList } from "@/scripts/request"
 
     export default defineComponent({
         setup(props,ctx) {
             const listData = reactive({
+                selectList: [
+                    {
+                        placeholder: '游戏',
+                        selectValue: '',
+                        list: []
+                    }
+                ],
                 teamList: [],
                 page: {
                     limit: 12,    // 条数
                     count: 0,    // 总数
                     current: 1   // 当前页
-                }
+                },
+                gameId: 0
             })
+
             const router = useRouter()
             const gotoLink = (id) => {
                 router.push({
@@ -45,8 +60,19 @@
                     }
                 })
             }
-            const getTeamList = () => {
+
+            // 游戏列表
+            const getGameList = (() => {
+                gameList().then(res => {
+                    if(res.code === 200) {
+                        listData.selectList[0].list = res.data
+                    }
+                })
+            })
+
+            const getTeamList = (gameId) => {
                 let params = {
+                    game_id: gameId,
                     page: listData.page.current,
                     limit: listData.page.limit
                 }
@@ -57,22 +83,41 @@
                     }
                 })
             }
+
             const currentPage = (val) => {
                 listData.page.current = val
-                getTeamList()
+                getTeamList(listData.gameId)
             }
+
+            const getSelectIds = (gameId,tournamentId,teamId) => {
+                getTeamList(gameId)
+                listData.gameId = gameId
+            }
+
+            const getSelectAll = (index) => {
+                getTeamList()
+                listData.gameId = undefined
+            }
+
             onMounted(() => {
+                getGameList()
                 getTeamList()
             })
+
+            provide('selectData', listData)
+
             return {
                 ...toRefs(listData),
                 gotoLink,
-                currentPage
+                currentPage,
+                getSelectIds,
+                getSelectAll
             }
         },
         components: {
             Breadcrumb: defineAsyncComponent(() => import('@/components/common/breadcrumb/breadcrumb')), // 面包屑导航
-            Pagination: defineAsyncComponent(() => import('@/components/common/pagination/pagination'))  // 分页
+            Pagination: defineAsyncComponent(() => import('@/components/common/pagination/pagination')), // 分页
+            SelectView: defineAsyncComponent(() => import('@/components/common/select/select')),         // 下拉框
         }
     })
 </script>

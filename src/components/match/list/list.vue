@@ -2,6 +2,12 @@
     <div class="list">
         <div class="page-content">
             <Breadcrumb />
+            <SelectView 
+                :size="'max'"
+                style="margin-top:20px"
+                @getSelectIds="getSelectIds"
+                @getSelectAll="getSelectAll"
+            />
             <div class="flex flex_only_center flex_wrap">
                 <div class="block" 
                     v-for="item in tournamentList" 
@@ -26,21 +32,31 @@
 
 <script>
 
-    import { defineComponent, defineAsyncComponent, reactive, toRefs, onMounted } from 'vue'
+    import { defineComponent, defineAsyncComponent, reactive, toRefs, provide, onMounted } from 'vue'
     import { useRouter } from "vue-router"
-    import { tournamentList } from "@/scripts/request"
+    import { gameList, tournamentList } from "@/scripts/request"
 
     export default defineComponent({
         setup(props,ctx) {
             const listData = reactive({
+                selectList: [
+                    {
+                        placeholder: '游戏',
+                        selectValue: '',
+                        list: []
+                    }
+                ],
                 tournamentList: [],
                 page: {
                     limit: 9,    // 条数
                     count: 0,    // 总数
                     current: 1   // 当前页
-                }
+                },
+                gameId: 0
             })
+
             const router = useRouter()
+
             const gotoLink = (id) => {
                 router.push({
                     path: '/match/detail',
@@ -49,8 +65,20 @@
                     }
                 })
             }
-            const getTournamentList = () => {
+
+            // 游戏列表
+            const getGameList = (() => {
+                gameList().then(res => {
+                    if(res.code === 200) {
+                        listData.selectList[0].list = res.data
+                    }
+                })
+            })
+
+            // 赛事列表
+            const getTournamentList = (gameId) => {
                 let params = {
+                    game_id: gameId,
                     page: listData.page.current,
                     limit: listData.page.limit
                 }
@@ -61,22 +89,41 @@
                     }
                 })
             }
+
             const currentPage = (val) => {
                 listData.page.current = val
-                getTournamentList()
+                getTournamentList(listData.gameId)
             }
+
+            const getSelectIds = (gameId,tournamentId,teamId) => {
+                getTournamentList(gameId)
+                listData.gameId = gameId
+            }
+
+            const getSelectAll = (index) => {
+                getTournamentList()
+                listData.gameId = undefined
+            }
+
             onMounted(() => {
+                getGameList()
                 getTournamentList()
             })
+
+            provide('selectData', listData)
+
             return {
                 ...toRefs(listData),
                 gotoLink,
-                currentPage
+                currentPage,
+                getSelectIds,
+                getSelectAll
             }
         },
         components: {
             Breadcrumb: defineAsyncComponent(() => import('@/components/common/breadcrumb/breadcrumb')), // 面包屑导航
-            Pagination: defineAsyncComponent(() => import('@/components/common/pagination/pagination'))  // 分页
+            Pagination: defineAsyncComponent(() => import('@/components/common/pagination/pagination')), // 分页
+            SelectView: defineAsyncComponent(() => import('@/components/common/select/select')),         // 下拉框
         }
     })
 </script>
