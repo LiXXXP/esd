@@ -7,19 +7,9 @@
                 </div>
                 <div class="block">
                     <div class="title">友情链接</div>
-                    <!-- <a href="http://39.106.24.22:8087/#/index" class="els" target="_blank">
-                        <img src="../../assets/imgs/footer/els.png">
-                    </a>
-                    <a href="http://47.95.177.25/#/main" class="api" target="_blank">
-                        <img src="../../assets/imgs/footer/api.png">
-                    </a> -->
                 </div>
                 <div class="block apis">
                     <div class="title">API</div>
-                    <p>全部游戏API</p>
-                    <p>LOL - API</p>
-                    <p>DOTA2 - API</p>
-                    <p>CSGO - API</p>
                 </div>
                 <div class="block email">
                     <div class="title">联系我们</div>

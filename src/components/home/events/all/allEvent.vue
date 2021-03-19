@@ -128,12 +128,12 @@
                 if(val === 2) {
                     selectData.val = 'completed'
                 }
-                getMatchScreen(selectData.val)
+                getMatchScreen()
             }
             // 分页
             const currentPage = (val) => {
                 selectData.page.current = val
-                getMatchScreen(selectData.val)
+                getMatchScreen()
             }
 
             // 筛选 游戏 赛事 战队
@@ -141,10 +141,19 @@
             let selectTournamentId = ref()
             let selectTeamId = ref()
 
-            const getSelectIds = (gameId,tournamentId,teamId) => {
-                selectGameId.value = gameId
-                selectTournamentId.value = tournamentId
-                selectTeamId.value = teamId
+            const getSelectIds = (gameId,tournamentId,teamId,index,val) => {
+                if(index === 0) {
+                    selectGameId.value = gameId
+                    selectTournamentId.value = undefined
+                    selectTeamId.value = undefined
+                }
+                if(index === 1) {
+                    selectTournamentId.value = tournamentId
+                    selectTeamId.value = undefined
+                }
+                if(index === 2) {
+                    selectTeamId.value = teamId
+                }
                 getMatchScreen()
             }
 

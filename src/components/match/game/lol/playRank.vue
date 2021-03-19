@@ -107,7 +107,7 @@
                 })
             }
 
-            const getSelectIds = (gameId,tournamentId,teamId,val) => {
+            const getSelectIds = (gameId,tournamentId,teamId,index,val) => {
                 diffData.rankingInfo = val
                 getLolDataRank(diffData.battleId)
             }

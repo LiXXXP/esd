@@ -17,7 +17,16 @@
                         v-for="key in item.list" 
                         :key="key.game_id === key.game_id ? key.tournament_id || key.team_id : key.game_id" 
                         :title="key.name_cn || key.tournament_name || key.team_name"
-                        @click="selectOption(key.name_cn,key.tournament_name,key.team_name,key.game_id,key.tournament_id,key.team_id,index,key.val)"
+                        @click="selectOption(
+                            key.name_cn,
+                            key.tournament_name,
+                            key.team_name,
+                            key.game_id,
+                            key.tournament_id,
+                            key.team_id,
+                            index,
+                            key.val
+                        )"
                     >{{key.name_cn || key.tournament_name || key.team_name}}</li>
                 </ul>
             </div>
@@ -57,15 +66,29 @@
             const selectOption = ((gameName,tournamentName,teamName,gameId,tournamentId,teamId,index,val) => {
                 select.selectList[index].selectValue = gameName || tournamentName || teamName
                 select.currentIndex = -1
-                emit('getSelectIds', gameId,tournamentId,teamId,val)
+                if(select.selectList.length>1) {
+                    if(index === 0) {
+                        select.selectList[1].selectValue = select.selectList[1].placeholder
+                        select.selectList[2].selectValue = select.selectList[2].placeholder
+                    }
+                    if(index === 1) {
+                        select.selectList[2].selectValue = select.selectList[2].placeholder
+                    }
+                }
+                
+                emit('getSelectIds', gameId,tournamentId,teamId,index,val)
             })
 
             const selectOptionAll = ((placeholder,index) => {
                 select.selectList[index].selectValue = placeholder
-                if(index === 0) {
-                    select.selectList.map((currentValue,index) => {
-                        currentValue.selectValue = currentValue.placeholder
-                    })
+                if(select.selectList.length>1) {
+                    if(index === 0) {
+                        select.selectList[1].selectValue = select.selectList[1].placeholder
+                        select.selectList[2].selectValue = select.selectList[2].placeholder
+                    }
+                    if(index === 1) {
+                        select.selectList[2].selectValue = select.selectList[2].placeholder
+                    }
                 }
                 select.currentIndex = -1
                 emit('getSelectAll', index)

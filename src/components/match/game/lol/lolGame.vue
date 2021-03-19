@@ -6,7 +6,7 @@
         <PlayAnaly @getBattleId="getBattleId" />
         <!-- <PlayBattle /> -->
         <PlayTeams />
-        <div class="flex flex_between" v-if="battleId">
+        <div class="flex flex_between">
             <PlayDiff />
             <PlayRank />
         </div>
@@ -23,8 +23,8 @@
             const battleId = ref(0)
             const gameData = inject('detail')
             watch(gameData, () => {
-                if(gameData.gameDetail.battle_info.length > 0) {
-                    battleId.value = gameData.gameDetail.battle_info[0].battle_id
+                if(gameData.battleInfo.length > 0) {
+                    battleId.value = gameData.battleInfo[0].battle_id
                 }
             })
             const getBattleId = (val) => {

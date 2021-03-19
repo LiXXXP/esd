@@ -45,8 +45,10 @@
             const guestTeam = ref({})
             const gameData = inject('detail')
             watch(gameData, () => {
-                masterTeam.value = gameData.gameDetail.teams_info.master_team_info
-                guestTeam.value = gameData.gameDetail.teams_info.guest_team_info
+                if(gameData.gameDetail.teams_info) {
+                    masterTeam.value = gameData.gameDetail.teams_info.master_team_info
+                    guestTeam.value = gameData.gameDetail.teams_info.guest_team_info
+                }
             })
             const router = useRouter()
             const gotoLink = (id) => {

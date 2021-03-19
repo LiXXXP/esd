@@ -95,7 +95,7 @@
                 getTournamentList(listData.gameId)
             }
 
-            const getSelectIds = (gameId,tournamentId,teamId) => {
+            const getSelectIds = (gameId,tournamentId,teamId,index,val) => {
                 getTournamentList(gameId)
                 listData.gameId = gameId
             }

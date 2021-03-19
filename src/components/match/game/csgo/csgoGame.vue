@@ -35,9 +35,9 @@
             const guestTeamId = ref(0)
             const gameData = inject('detail')
             watch(gameData, () => {
-                if(gameData.gameDetail.battle_info.length > 0) {
-                    battle.list = gameData.gameDetail.battle_info
-                    battleId.value = gameData.gameDetail.battle_info[0].battle_id
+                if(gameData.battleInfo.length > 0) {
+                    battle.list = gameData.battleInfo
+                    battleId.value = gameData.battleInfo[0].battle_id
                     masterTeamId.value = gameData.gameDetail.teams_info.master_team_info.team_id
                     guestTeamId.value = gameData.gameDetail.teams_info.guest_team_info.team_id
                 }

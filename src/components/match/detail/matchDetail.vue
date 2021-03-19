@@ -54,15 +54,15 @@
     .match-detail {
         .block {
             width: 100%;
-            height: 180px;
+            height: 260px;
             color: #fff;
-            padding: 15px 50px;
+            padding: 0 50px;
             border-radius: 2px;
             box-sizing: border-box;
             background: linear-gradient(90deg, #080044 0%, #000B44 100%);
             .img {
-                width: 260px;
-                height: 150px;
+                width: 200px;
+                height: 200px;
                 margin-right: 30px;
                 img {
                     width: 100%;

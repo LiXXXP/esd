@@ -38,12 +38,12 @@
         width: 100%;
         height: 300px;
         padding: 40px 0;
-        box-sizing: border-box;
         border-radius: 2px;
-        background: linear-gradient(270deg, #262626 0%, #000000 100%);
+        box-sizing: border-box;
+        background: linear-gradient(300deg, #000 0%, #333 100%);
         .img {
-            width: 288px;
-            height: 174px;
+            width: 200px;
+            height: 200px;
             margin-right: 90px;
             img {
                 width: 100%;

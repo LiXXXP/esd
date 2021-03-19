@@ -40,10 +40,12 @@
 </script>
 
 <style lang="less" scoped>
-    .el-carousel__item:nth-child(2n) {
-        background-color: #99a9bf;
-    }
-    .el-carousel__item:nth-child(2n+1) {
-        background-color: #d3dce6;
+    .slide {
+        img {
+            width: 100%;
+            height: 100%;
+            display: block;
+            margin: 0 auto;
+        }
     }
 </style>

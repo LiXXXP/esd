@@ -3,8 +3,9 @@
         <Breadcrumb />
         <!-- gameId：1 为 csgo， 2 为 lol，3 为 dota -->
         <CSGOGame v-if="gameId === 1"></CSGOGame>
-        <LOLGame v-if="gameId === 2"></LOLGame>
-        <DotaGame v-if="gameId === 3"></DotaGame>
+        <LOLGame v-else-if="gameId === 2"></LOLGame>
+        <DotaGame v-else-if="gameId === 3"></DotaGame>
+        <div v-else style="text-align:center;">暂无游戏内容</div>
     </div>
 </template>
 
@@ -27,12 +28,9 @@
 
             const gameData = reactive({
                 gameDetail: {},
-                gameId: parseInt(route.query.gameId)
-            })
-
-            const timerData = reactive({
-                timer: null,
-                battleInfo: []
+                battleInfo: [],
+                gameId: parseInt(route.query.gameId),
+                timer: null
             })
 
             const getMatchDetail = (matchId) => {
@@ -42,60 +40,40 @@
                 matchDetail(params).then(res => {
                     if(res.code === 200) {
                         gameData.gameDetail = res.data
+                        gameData.battleInfo = res.data.battle_info
+                        if(res.data.status !== '比赛进行中' || res.data.length === 0) {
+                            clearInterval(gameData.timer)
+                        }
+                    } else {
+                        clearInterval(gameData.timer)
                     }
                 })
             }
             
             onMounted(() => {
                 getMatchDetail(route.query.matchId)
-                timerData.timer = setInterval( () => {
-                    let params = {
-                        game_id: parseInt(route.query.gameId),
-                        match_id: parseInt(route.query.matchId),
-                    }
-                    matchDetail(params).then(res => {
-                        if(res.code === 200) {
-                            timerData.battleInfo = res.data.battle_info
-                            if(res.data.status !== '比赛进行中' || res.data.length === 0) {
-                                clearInterval(timerData.timer)
-                            }
-                        } else {
-                            clearInterval(timerData.timer)
-                        }
-                    })
+                gameData.timer = setInterval( () => {
+                    getMatchDetail(route.query.matchId)
                 }, 5000)
             })
 
             onUnmounted(() => {
-                clearInterval(timerData.timer)
+                clearInterval(gameData.timer)
             })
 
             onBeforeRouteUpdate((to) => {
                 gameData.gameId = parseInt(to.query.gameId)
                 getMatchDetail(to.query.matchId)
-                timerData.timer = setInterval( () => {
-                    let params = {
-                        match_id: parseInt(to.query.matchId),
-                    }
-                    matchDetail(params).then(res => {
-                        if(res.code === 200) {
-                            timerData.battleInfo = res.data.battle_info
-                            if(res.data.status !== '比赛进行中' || res.data.length === 0) {
-                                clearInterval(timerData.timer)
-                            }
-                        } else {
-                            clearInterval(timerData.timer)
-                        }
-                    })
+                gameData.timer = setInterval( () => {
+                    getMatchDetail(to.query.matchId)
                 }, 5000)
             })
 
             provide('detail',gameData)
-            provide('battle',timerData)
             provide('echarts',echarts)
 
             return {
-                ...toRefs(gameData,timerData),
+                ...toRefs(gameData),
                 getMatchDetail
             }
         },

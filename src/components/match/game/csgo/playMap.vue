@@ -1,7 +1,7 @@
 <template>
     <div class="play-map">
-        <TitleView :titleName="mapName" v-if="mapInfo.length>0" />
-        <div class="info" v-if="mapInfo.length>0">
+        <TitleView :titleName="mapName" />
+        <div class="info">
 
             <div class="map-tab flex flex_end">
                 <div v-for="(item,index) in mapNav"
@@ -73,8 +73,10 @@
             const guestTeam = ref({})
             const gameData = inject('detail')
             watch(gameData, () => {
-                masterTeam.value = gameData.gameDetail.teams_info.master_team_info
-                guestTeam.value = gameData.gameDetail.teams_info.guest_team_info
+                if(gameData.gameDetail.teams_info) {
+                    masterTeam.value = gameData.gameDetail.teams_info.master_team_info
+                    guestTeam.value = gameData.gameDetail.teams_info.guest_team_info
+                }
                 mapData.mapInfo = gameData.gameDetail.map_info
             })
             return {

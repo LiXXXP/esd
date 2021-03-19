@@ -26,7 +26,7 @@
                 currentIndex: 0,
                 battleList: []
             })
-            const battleData = inject('battle')
+            const battleData = inject('detail')
             watch(battleData, () => {
                 battleDate.battleList = battleData.battleInfo
             })

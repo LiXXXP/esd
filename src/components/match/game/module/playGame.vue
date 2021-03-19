@@ -51,8 +51,10 @@
             watch(gameData, () => {
                 gameId.value = gameData.gameId
                 playData.value = gameData.gameDetail
-                masterTeam.value = gameData.gameDetail.teams_info.master_team_info
-                guestTeam.value = gameData.gameDetail.teams_info.guest_team_info
+                if(gameData.gameDetail.teams_info) {
+                    masterTeam.value = gameData.gameDetail.teams_info.master_team_info
+                    guestTeam.value = gameData.gameDetail.teams_info.guest_team_info
+                }
             })
             const router = useRouter()
             const gotoLink = (id) => {
