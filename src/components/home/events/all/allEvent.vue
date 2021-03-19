@@ -47,13 +47,16 @@
                 ],
                 navList: [
                     {
-                        tab: '进行中'
+                        tab: '进行中',
+                        status: 'ongoing'
                     },
                     {
-                        tab: '未开始'
+                        tab: '未开始',
+                        status: 'upcoming'
                     },
                     {
-                        tab: '已结束'
+                        tab: '已结束',
+                        status: 'completed'
                     }
                 ],
                 page: {
@@ -100,6 +103,60 @@
                 })
             })
 
+            const getSelectIndex = (val) => {
+                if(val === 0) {
+                    getGameList()
+                }
+                if(val === 1) {
+                    getTournamentList()
+                }
+                if(val === 2) {
+                    getTeamList()
+                }
+            }
+
+            // 筛选 游戏 赛事 战队
+            let selectGameId = ref()
+            let selectTournamentId = ref()
+            let selectTeamId = ref()
+
+            const getSelectIds = (gameId,tournamentId,teamId,index,val) => {
+                if(index === 0) {
+                    selectGameId.value = gameId
+                    selectTournamentId.value = undefined
+                    selectTeamId.value = undefined
+                    selectData.selectList[1].selectValue = selectData.selectList[1].placeholder
+                    selectData.selectList[2].selectValue = selectData.selectList[2].placeholder
+                }
+                if(index === 1) {
+                    selectTournamentId.value = tournamentId
+                    selectTeamId.value = undefined
+                    selectData.selectList[2].selectValue = selectData.selectList[2].placeholder
+                }
+                if(index === 2) {
+                    selectTeamId.value = teamId
+                }
+                getMatchScreen()
+            }
+
+            const getSelectAll = (index) => {
+                if(index === 0) {
+                    selectGameId.value = undefined
+                    selectTournamentId.value = undefined
+                    selectTeamId.value = undefined
+                    selectData.selectList[1].selectValue = selectData.selectList[1].placeholder
+                    selectData.selectList[2].selectValue = selectData.selectList[2].placeholder
+                }
+                if(index === 1) {
+                    selectTournamentId.value = undefined
+                    selectData.selectList[2].selectValue = selectData.selectList[2].placeholder
+                }
+                if(index === 2) {
+                    selectTeamId.value = undefined
+                }
+                getMatchScreen()
+            }
+
             // 比赛列表
             const getMatchScreen = (() => {
                 let params = {
@@ -117,70 +174,16 @@
                     }
                 })
             })
-            // 状态切换
-            const getStatus = (val) => {
-                if(val === 0) {
-                    selectData.val = 'ongoing'
-                }
-                if(val === 1) {
-                    selectData.val = 'upcoming'
-                }
-                if(val === 2) {
-                    selectData.val = 'completed'
-                }
-                getMatchScreen()
-            }
+
             // 分页
             const currentPage = (val) => {
                 selectData.page.current = val
                 getMatchScreen()
             }
 
-            // 筛选 游戏 赛事 战队
-            let selectGameId = ref()
-            let selectTournamentId = ref()
-            let selectTeamId = ref()
-
-            const getSelectIds = (gameId,tournamentId,teamId,index,val) => {
-                if(index === 0) {
-                    selectGameId.value = gameId
-                    selectTournamentId.value = undefined
-                    selectTeamId.value = undefined
-                }
-                if(index === 1) {
-                    selectTournamentId.value = tournamentId
-                    selectTeamId.value = undefined
-                }
-                if(index === 2) {
-                    selectTeamId.value = teamId
-                }
-                getMatchScreen()
-            }
-
-            const getSelectIndex = (val) => {
-                if(val === 0) {
-                    getGameList()
-                }
-                if(val === 1) {
-                    getTournamentList()
-                }
-                if(val === 2) {
-                    getTeamList()
-                }
-            }
-
-            const getSelectAll = (index) => {
-                if(index === 0) {
-                    selectGameId.value = undefined
-                    selectTournamentId.value = undefined
-                    selectTeamId.value = undefined
-                }
-                if(index === 1) {
-                    selectTournamentId.value = undefined
-                }
-                if(index === 2) {
-                    selectTeamId.value = undefined
-                }
+            // 状态切换
+            const getStatus = (val) => {
+                selectData.val = selectData.navList[val].status
                 getMatchScreen()
             }
 

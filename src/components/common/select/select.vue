@@ -66,30 +66,11 @@
             const selectOption = ((gameName,tournamentName,teamName,gameId,tournamentId,teamId,index,val) => {
                 select.selectList[index].selectValue = gameName || tournamentName || teamName
                 select.currentIndex = -1
-                if(select.selectList.length>1) {
-                    if(index === 0) {
-                        select.selectList[1].selectValue = select.selectList[1].placeholder
-                        select.selectList[2].selectValue = select.selectList[2].placeholder
-                    }
-                    if(index === 1) {
-                        select.selectList[2].selectValue = select.selectList[2].placeholder
-                    }
-                }
-                
                 emit('getSelectIds', gameId,tournamentId,teamId,index,val)
             })
 
             const selectOptionAll = ((placeholder,index) => {
                 select.selectList[index].selectValue = placeholder
-                if(select.selectList.length>1) {
-                    if(index === 0) {
-                        select.selectList[1].selectValue = select.selectList[1].placeholder
-                        select.selectList[2].selectValue = select.selectList[2].placeholder
-                    }
-                    if(index === 1) {
-                        select.selectList[2].selectValue = select.selectList[2].placeholder
-                    }
-                }
                 select.currentIndex = -1
                 emit('getSelectAll', index)
             })
