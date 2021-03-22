@@ -21,19 +21,28 @@
     export default defineComponent({
         emits: ['getBattleId'],
         setup(props,{ emit }) {
+
             const battleDate = reactive({
                 analyName: '对战分析',
                 currentIndex: 0,
                 battleList: []
             })
-            const battleData = inject('detail')
+
+            const gameData = inject('detail')
+            watch(gameData, () => {
+                battleDate.battleList = gameData.gameDetail.battle_info
+            })
+
+            const battleData = inject('battle')
             watch(battleData, () => {
                 battleDate.battleList = battleData.battleInfo
             })
+
             const getBattleId = (index,battleId) => {
                 battleDate.currentIndex = index
                 emit('getBattleId',battleId)
             }
+
             return {
                 ...toRefs(battleDate),
                 getBattleId

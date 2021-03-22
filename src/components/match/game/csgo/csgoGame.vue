@@ -27,32 +27,40 @@
 
     export default defineComponent({
         setup(props,ctx) {
-            const battleId = ref(0)
-            const battle = reactive({
-                list: []
+
+            let battleId = ref(0)
+
+            const battleList = reactive({
+                list: [],
+                masterTeamId: 0,
+                guestTeamId: 0,
             })
-            const masterTeamId = ref(0)
-            const guestTeamId = ref(0)
+
             const gameData = inject('detail')
             watch(gameData, () => {
-                if(gameData.battleInfo.length > 0) {
-                    battle.list = gameData.battleInfo
-                    battleId.value = gameData.battleInfo[0].battle_id
-                    masterTeamId.value = gameData.gameDetail.teams_info.master_team_info.team_id
-                    guestTeamId.value = gameData.gameDetail.teams_info.guest_team_info.team_id
+                if(gameData.gameDetail.battle_info.length > 0) {
+                    battleList.list = gameData.gameDetail.battle_info
+                    battleId.value = gameData.gameDetail.battle_info[0].battle_id
+                    battleList.masterTeamId = gameData.gameDetail.teams_info.master_team_info.team_id
+                    battleList.guestTeamId = gameData.gameDetail.teams_info.guest_team_info.team_id
                 }
             })
+
+            const battleData = inject('battle')
+            watch(battleData, () => {
+                battleList.list = battleData.battleInfo
+            })
+
             const getBattleId = (val) => {
                 battleId.value = val
             }
+
             provide('battleid',battleId)
+
             return {
+                ...toRefs(battleList),
                 battleId,
-                ...toRefs(battle),
-                gameData,
                 getBattleId,
-                masterTeamId,
-                guestTeamId
             }
         },
         components: {

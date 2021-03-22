@@ -73,10 +73,8 @@
             const guestTeam = ref({})
             const gameData = inject('detail')
             watch(gameData, () => {
-                if(gameData.gameDetail.teams_info) {
-                    masterTeam.value = gameData.gameDetail.teams_info.master_team_info
-                    guestTeam.value = gameData.gameDetail.teams_info.guest_team_info
-                }
+                masterTeam.value = gameData.gameDetail.teams_info.master_team_info
+                guestTeam.value = gameData.gameDetail.teams_info.guest_team_info
                 mapData.mapInfo = gameData.gameDetail.map_info
             })
             return {

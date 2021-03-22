@@ -1,6 +1,6 @@
 <template>
     <div class="play-game">
-        <div class="flex flex_between">
+        <div class="flex flex_between" v-if="masterTeam&&guestTeam">
             <div class="flex flex_only_center">
                 <div class="team" 
                     :title="masterTeam.team_name"
@@ -44,18 +44,24 @@
     export default defineComponent({
         setup(props,ctx) {
             const playData = ref({})
-            const masterTeam = ref({})
-            const guestTeam = ref({})
+            const masterTeam = ref(null)
+            const guestTeam = ref(null)
             const gameId = ref(0)
+            
             const gameData = inject('detail')
             watch(gameData, () => {
                 gameId.value = gameData.gameId
                 playData.value = gameData.gameDetail
-                if(gameData.gameDetail.teams_info) {
-                    masterTeam.value = gameData.gameDetail.teams_info.master_team_info
-                    guestTeam.value = gameData.gameDetail.teams_info.guest_team_info
-                }
+                masterTeam.value = gameData.gameDetail.teams_info.master_team_info
+                guestTeam.value = gameData.gameDetail.teams_info.guest_team_info
             })
+
+            const battleData = inject('battle')
+            watch(battleData, () => {
+                masterTeam.value = battleData.teamsInfo.master_team_info
+                guestTeam.value = battleData.teamsInfo.guest_team_info
+            })
+
             const router = useRouter()
             const gotoLink = (id) => {
                 router.push({
@@ -70,7 +76,6 @@
                 masterTeam,
                 guestTeam,
                 gameId,
-                gameData,
                 gotoLink
             }
         }

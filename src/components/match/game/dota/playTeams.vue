@@ -104,14 +104,16 @@
 
 <script>
 
-    import { defineComponent, defineAsyncComponent, reactive, toRefs, inject, watch, computed, onUnmounted } from 'vue'
+    import { defineComponent, defineAsyncComponent, reactive, toRefs, inject, watch, computed, onUnmounted, onMounted } from 'vue'
     import { useRoute, useRouter } from "vue-router"
     import { battleDetail } from "@/scripts/request"
     import { formatSeconds, formatNumber } from '@/scripts/utils'
 
     export default defineComponent({
         setup(props,ctx) {
+
             const route = useRoute()
+
             const teamsData = reactive({
                 teamsName: '队伍对局详情',
                 list: [
@@ -214,6 +216,7 @@
                 factions: [],
                 timer: null
             })
+
             const getbattleDetail = (battleId) => {
                 let params = {
                     game_id: parseInt(route.query.gameId),
@@ -235,10 +238,6 @@
                             }
 
                             battleDatas()
-
-                            if(res.data.status !== 'ongoing' ) {
-                                clearInterval(teamsData.timer)
-                            }
                             
                         } else {
                             clearInterval(teamsData.timer)
@@ -250,6 +249,7 @@
                     }
                 })
             }
+
             const battleDatas = () => {
                 teamsData.list.forEach( e => {
                     let field = e.type
@@ -264,10 +264,14 @@
                     }
                 })
             }
+
             const battleid = inject('battleid')
-            watch(battleid, () => {
+            watch(battleid, (newVal,oldVal) => {
                 teamsData.battleId = battleid
                 getbattleDetail(teamsData.battleId)
+            })
+
+            onMounted(() => {
                 teamsData.timer = setInterval( () => {
                     getbattleDetail(teamsData.battleId)
                 }, 5000)
@@ -371,8 +375,8 @@
                 .small {
                     margin: 15px 0;
                     img {
-                        width: 55px;
-                        height: 55px;
+                        width: 65px;
+                        height: 45px;
                         margin-right: 5px;
                         &:last-child {
                             margin-right: 0;
@@ -381,8 +385,8 @@
                 }
                 .big {
                     img {
-                        width: 80px;
-                        height: 80px;
+                        width: 99px;
+                        height: 65px;
                         margin-right: 10px;
                         &:last-child {
                             margin-right: 0;

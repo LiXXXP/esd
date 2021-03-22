@@ -1,7 +1,7 @@
 <template>
     <div class="play-score">
         <TitleView :titleName="scoreName" />
-        <div class="score flex flex_between flex_only_center">
+        <div class="score flex flex_between flex_only_center" v-if="masterTeam&&guestTeam">
             
             <div class="team flex flex_only_center" 
                 :title="masterTeam.team_name"
@@ -33,23 +33,30 @@
 
 <script>
 
-    import { defineComponent, defineAsyncComponent, reactive, toRefs, ref, inject, watch } from 'vue'
+    import { defineComponent, defineAsyncComponent, reactive, toRefs, inject, watch } from 'vue'
     import { useRouter } from "vue-router"
 
     export default defineComponent({
         setup(props,ctx) {
-            const titleName = reactive({
+
+            const scoreData = reactive({
                 scoreName: '当前比分',
+                masterTeam: null,
+                guestTeam: null
             })
-            const masterTeam = ref({})
-            const guestTeam = ref({})
+
             const gameData = inject('detail')
             watch(gameData, () => {
-                if(gameData.gameDetail.teams_info) {
-                    masterTeam.value = gameData.gameDetail.teams_info.master_team_info
-                    guestTeam.value = gameData.gameDetail.teams_info.guest_team_info
-                }
+                scoreData.masterTeam = gameData.gameDetail.teams_info.master_team_info
+                scoreData.guestTeam = gameData.gameDetail.teams_info.guest_team_info
             })
+
+            const battleData = inject('battle')
+            watch(battleData, () => {
+                scoreData.masterTeam = battleData.teamsInfo.master_team_info
+                scoreData.guestTeam = battleData.teamsInfo.guest_team_info
+            })
+
             const router = useRouter()
             const gotoLink = (id) => {
                 router.push({
@@ -60,10 +67,7 @@
                 })
             }
             return {
-                ...toRefs(titleName),
-                masterTeam,
-                guestTeam,
-                gameData,
+                ...toRefs(scoreData),
                 gotoLink
             }
         },

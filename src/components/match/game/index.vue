@@ -28,9 +28,13 @@
 
             const gameData = reactive({
                 gameDetail: {},
+                gameId: parseInt(route.query.gameId)
+            })
+
+            const timerData = reactive({
+                timer: null,
                 battleInfo: [],
-                gameId: parseInt(route.query.gameId),
-                timer: null
+                teamsInfo:{}
             })
 
             const getMatchDetail = (matchId) => {
@@ -40,36 +44,57 @@
                 matchDetail(params).then(res => {
                     if(res.code === 200) {
                         gameData.gameDetail = res.data
-                        gameData.battleInfo = res.data.battle_info
-                        if(res.data.status !== '比赛进行中' || res.data.length === 0) {
-                            clearInterval(gameData.timer)
-                        }
-                    } else {
-                        clearInterval(gameData.timer)
                     }
                 })
             }
             
             onMounted(() => {
                 getMatchDetail(route.query.matchId)
-                gameData.timer = setInterval( () => {
-                    getMatchDetail(route.query.matchId)
+                timerData.timer = setInterval( () => {
+                    let params = {
+                        match_id: parseInt(route.query.matchId),
+                    }
+                    matchDetail(params).then(res => {
+                        if(res.code === 200) {
+                            timerData.battleInfo = res.data.battle_info
+                            timerData.teamsInfo = res.data.teams_info
+                            if(res.data.status !== '比赛进行中' || res.data.length === 0) {
+                                clearInterval(timerData.timer)
+                            }
+                        } else {
+                            clearInterval(timerData.timer)
+                        }
+                    })
                 }, 5000)
             })
 
             onUnmounted(() => {
-                clearInterval(gameData.timer)
+                clearInterval(timerData.timer)
             })
 
             onBeforeRouteUpdate((to) => {
                 gameData.gameId = parseInt(to.query.gameId)
                 getMatchDetail(to.query.matchId)
-                gameData.timer = setInterval( () => {
-                    getMatchDetail(to.query.matchId)
+                timerData.timer = setInterval( () => {
+                    let params = {
+                        match_id: parseInt(to.query.matchId),
+                    }
+                    matchDetail(params).then(res => {
+                        if(res.code === 200) {
+                            timerData.battleInfo = res.data.battle_info
+                            timerData.teamsInfo = res.data.teams_info
+                            if(res.data.status !== '比赛进行中' || res.data.length === 0) {
+                                clearInterval(timerData.timer)
+                            }
+                        } else {
+                            clearInterval(timerData.timer)
+                        }
+                    })
                 }, 5000)
             })
 
             provide('detail',gameData)
+            provide('battle',timerData)
             provide('echarts',echarts)
 
             return {

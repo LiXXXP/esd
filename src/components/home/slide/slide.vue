@@ -2,7 +2,9 @@
     <div class="slide">
         <el-carousel :interval="3000" arrow="always" v-if="list.length>0">
             <el-carousel-item v-for="item in list" :key="item.id">
-                <img :src="item.image" :title="item.image_name">
+                <a :href="item.jump_address" target="_blank">
+                    <img :src="item.image" :title="item.image_name">
+                </a>
             </el-carousel-item>
         </el-carousel>
     </div>

@@ -28,6 +28,10 @@
                 <el-input v-model="ruleForm.order" style="width:320px"></el-input>
             </el-form-item>
 
+            <el-form-item label="图片跳转地址" prop="address">
+                <el-input v-model="ruleForm.address" style="width:320px"></el-input>
+            </el-form-item>
+
             <el-form-item label="图片文件" prop="file">
                 <el-upload
                     action="#"
@@ -91,6 +95,7 @@
                     type: 1,
                     status: 1,
                     order: 1,
+                    address: '',
                     file: '',
                     begin: '',
                     end: '',
@@ -109,6 +114,9 @@
                     order: [
                         { required: true, message: '请输入图片权重', trigger: 'blur' },
                         { type: 'number', min: 1, max: 4, message: '1~1000正整数', trigger: 'blur' }
+                    ],
+                    address: [
+                        { required: true, message: '请填写图片跳转地址', trigger: 'blur' }
                     ],
                     begin: [
                         { type: 'date', required: true, message: '请选择日期', trigger: 'change' }
@@ -142,6 +150,7 @@
                         _this.ruleForm.end = res.data.end_time
                         _this.ruleForm.name = res.data.image_name
                         _this.ruleForm.order = res.data.order
+                        _this.ruleForm.address = res.data.jump_address
                         _this.ruleForm.status = res.data.status === '上架'? 1:2
                         _this.fileList = [
                             {
@@ -190,7 +199,8 @@
                             image_file: this.ruleForm.file,
                             begin_time: this.ruleForm.begin,
                             end_time: this.ruleForm.end,
-                            image_name: this.ruleForm.name
+                            image_name: this.ruleForm.name,
+                            jump_address: this.ruleForm.address
                         }
                         if(parseInt(this.$route.query.imageId)) {
                             // 更新
