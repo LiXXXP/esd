@@ -16,10 +16,7 @@
                 </div>
             </div>
         </div>
-        <div class="footer">
-            <p>数据版权所有 Copyright © 2002-2020</p>
-            <p>经营许可证： 粤B1.B2-20060628粤ICP备09088851号 粤公网安备 44120202000185号</p>
-        </div>
+        <div class="footer"></div>
     </div>
 </template>
 
