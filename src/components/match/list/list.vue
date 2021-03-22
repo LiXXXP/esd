@@ -52,7 +52,7 @@
                     count: 0,    // 总数
                     current: 1   // 当前页
                 },
-                gameId: 0
+                gameId: undefined
             })
 
             const router = useRouter()
@@ -96,13 +96,13 @@
             }
 
             const getSelectIds = (gameId,tournamentId,teamId,index,val) => {
-                getTournamentList(gameId)
                 listData.gameId = gameId
+                getTournamentList(gameId)
             }
 
             const getSelectAll = (index) => {
-                getTournamentList()
                 listData.gameId = undefined
+                getTournamentList()
             }
 
             onMounted(() => {
