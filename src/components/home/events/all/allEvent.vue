@@ -68,6 +68,11 @@
                 val: 'ongoing'
             })
 
+            // 筛选 游戏 赛事 战队
+            let selectGameId = ref()
+            let selectTournamentId = ref()
+            let selectTeamId = ref()
+
             // 游戏列表
             const getGameList = (() => {
                 gameList().then(res => {
@@ -94,6 +99,7 @@
             const getTeamList = (() => {
                 let params = {
                     game_id: selectGameId.value,
+                    tournament_id: selectTournamentId.value,
                     limit: 15
                 }
                 teamList(params).then(res => {
@@ -114,11 +120,6 @@
                     getTeamList()
                 }
             }
-
-            // 筛选 游戏 赛事 战队
-            let selectGameId = ref()
-            let selectTournamentId = ref()
-            let selectTeamId = ref()
 
             const getSelectIds = (gameId,tournamentId,teamId,index,val) => {
                 if(index === 0) {

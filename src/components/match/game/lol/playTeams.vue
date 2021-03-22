@@ -285,6 +285,7 @@
                     }
                 })
             }
+            
             const battleid = inject('battleid')
             watch(battleid, () => {
                 teamsData.battleId = battleid
