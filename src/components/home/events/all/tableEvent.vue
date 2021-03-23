@@ -3,6 +3,7 @@
         <div :class="className">
             <table>
                 <thead>
+                    <th>游戏类型</th>
                     <th>状态</th>
                     <th>赛事名称</th>
                     <th>比赛时间</th>
@@ -11,6 +12,9 @@
                 </thead>
                 <tbody>
                     <tr v-for="item in screenList" :key="item.match_id">
+                        <td class="game">
+                            <img :src="item.game_image">
+                        </td>
                         <td :class="[{
                             green: item.match_status !== '已结束' && item.match_status !== '未开始'
                         }]">{{item.match_status}}</td>
@@ -121,6 +125,12 @@
                         border-bottom: 0;
                     }
                 }
+            }
+        }
+        .game {
+            img {
+                width: 40px;
+                height: 40px;
             }
         }
         .home {

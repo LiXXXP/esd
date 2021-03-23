@@ -10,7 +10,10 @@
                 <div :class="['title flex flex_between',{
                     ongoing: item.status === '比赛进行中'
                 }]">
-                    <p>{{item.status}}</p>
+                    <div class="game flex flex_only_center">
+                        <img :src="item.game_logo">
+                        <p>{{item.status}}</p>
+                    </div>
                     <p>{{item.scheduled_begin_at.substring(5,16)}}</p>
                 </div>
                 <div class="info">
@@ -145,6 +148,13 @@
                         background-color: #B29873;
                         p:first-child {
                             color: @green;
+                        }
+                    }
+                    .game {
+                        img {
+                            width: 23px;
+                            height: 23px;
+                            margin-right: 10px;
                         }
                     }
                 }

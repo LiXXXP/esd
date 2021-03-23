@@ -7,12 +7,15 @@
                 </thead>
                 <tbody>
                     <tr>
+                        <td v-if="type === 'match'">
+                            <img :src="item.game_image" class="game-logo">
+                        </td>
                         <td>
                             <span v-if="type === 'match'">{{item.match_status}}</span>
                             <img v-if="type === 'team'" :src="item.image" class="team-logo">
                             <img v-if="type === 'player'" :src="item.player_image" class="player-logo">
                         </td>
-                        <td style="width: 260px;">
+                        <td style="width: 240px;">
                             <span style="cursor:pointer;"
                                 v-if="type === 'match'" 
                                 @click="gotoMatch(item.tournament_id)"
@@ -27,7 +30,7 @@
                             </div>
                             <span v-if="type === 'player'">{{item.player_name}}</span>
                         </td>
-                        <td>
+                        <td style="width:360px;">
                             <div class="flex flex_center" v-if="type === 'match'">
                                 <div class="team flex flex_center"
                                     @click="gotoMean(item.teams_info.master_team_info.team_id)">
@@ -89,6 +92,9 @@
                 switch (selectData.selectVal) {
                     case 'match':
                         search.theadList = [
+                            {
+                                head: '游戏类型'
+                            },
                             {
                                 head: '状态'
                             },
@@ -232,6 +238,10 @@
                 }
             }
         }
+        .game-logo {
+            width: 40px;
+            height: 40px;
+        }
         .team-logo,
         .player-logo {
             width: 50px;
@@ -257,7 +267,7 @@
             }
         }
         .vs {
-            margin: 0 25px;
+            margin: 0 20px;
             font-size: 24px;
             font-weight: 600;
         }
