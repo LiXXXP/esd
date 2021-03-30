@@ -165,7 +165,7 @@
                 margin: 0 10px;
             }
             p {
-                width: 100px;
+                width: 120px;
             }
         }
         .vs {
