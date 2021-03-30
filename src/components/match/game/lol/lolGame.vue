@@ -4,7 +4,6 @@
         <PlayInfo />
         <PlayScore />
         <PlayAnaly @getBattleId="getBattleId" />
-        <!-- <PlayBattle /> -->
         <PlayTeams />
         <div class="flex flex_between">
             <PlayDiff />
@@ -42,7 +41,6 @@
             PlayInfo: defineAsyncComponent(() => import('@/components/match/game/module/playInfo')),   // 比赛信息
             PlayScore: defineAsyncComponent(() => import('@/components/match/game/module/playScore')), // 当前比分
             PlayAnaly: defineAsyncComponent(() => import('@/components/match/game/module/playAnaly')), // 对战分析
-            PlayBattle: defineAsyncComponent(() => import('@/components/match/game/lol/playBattle')),  // 阵容分析
             PlayTeams: defineAsyncComponent(() => import('@/components/match/game/lol/playTeams')),    // 队伍对局详情
             PlayDiff: defineAsyncComponent(() => import('@/components/match/game/lol/playDiff')),      // 经济差/经验差
             PlayRank: defineAsyncComponent(() => import('@/components/match/game/lol/playRank')),      // 数据排行

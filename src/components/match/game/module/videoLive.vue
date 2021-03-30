@@ -86,11 +86,5 @@
                 display: block;
             }
         }
-        .none {
-            color: #666;
-            line-height: 6;
-            font-size: 18px;
-            text-align: center;
-        } 
     }
 </style>

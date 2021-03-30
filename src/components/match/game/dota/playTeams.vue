@@ -438,9 +438,7 @@
             }
         }
         .none {
-            font-size: 16px;
             padding-top: 20px;
-            text-align: center;
         }
     }
 </style>

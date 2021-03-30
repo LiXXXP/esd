@@ -1,58 +1,147 @@
 <template>
-    <div class="map-live">
-        <div class="line"></div>
-        <div class="head flex flex_between flex_only_center">
-            <div class="score blue">0</div>
-            <div class="team blue flex flex_center">
-                <img src="">
-                <p>LGD</p>
+    <div>
+        <div class="map-live" v-if="framesData">
+            <div class="line"></div>
+            <div class="head flex flex_between flex_only_center">
+                <div class="score blue">{{framesData.match_scores[0].score}}</div>
+                <div class="team blue flex flex_center">
+                    <img :src="framesData.match_scores[0].image">
+                    <p>{{framesData.match_scores[0].name}}</p>
+                </div>
+                <div class="vs">
+                    <span class="blue">
+                        <span>{{thousands(framesData.factions[0].gold)}}</span>
+                        <span>{{framesData.factions[0].kills}}</span>
+                    </span>
+                    <span>VS</span>
+                    <span class="red">
+                        <span>{{framesData.factions[1].kills}}</span>
+                        <span>{{thousands(framesData.factions[1].gold)}}</span>
+                    </span>
+                </div>
+                <div class="team red flex flex_center">
+                    <p>{{framesData.match_scores[1].name}}</p>
+                    <img :src="framesData.match_scores[1].image">
+                </div>
+                <div class="score red">{{framesData.match_scores[1].score}}</div>
             </div>
-            <div class="vs">
-                <span class="blue">30.1k<span>3</span></span>
-                <span>VS</span>
-                <span class="red"><span>5</span>33.7k</span>
+            <div class="round flex flex_between flex_only_end">
+                <RoleView 
+                    :isReverse="false"
+                    :faction="framesData.factions[0]"
+                    :banArray="banData.blue"
+                />
+                <div class="time">
+                    <p class="num">第{{framesData.battle_order}}局</p>
+                    <p>{{durationTime(framesData.duration)}}</p>
+                </div>
+                <RoleView 
+                    :isReverse="true" 
+                    :faction="framesData.factions[1]"
+                    :banArray="banData.red"
+                />
             </div>
-            <div class="team red flex flex_center">
-                <p>SN</p>
-                <img src="">
+            <div class="flex flex_between">
+                <PlayersView :players="framesData.factions[0].players" />
+                <CanvasView :map="framesData.map" :coordinate="framesData.factions" />
+                <PlayersView :players="framesData.factions[1].players" />
             </div>
-            <div class="score red">2</div>
+            <LogsView :events="eventsData" />
         </div>
-        <div class="round flex flex_between flex_only_end">
-            <RoleView :isReverse="false" />
-            <div class="time">
-                <p class="num">第三局</p>
-                <p>18:10</p>
-            </div>
-            <RoleView :isReverse="true" />
-        </div>
-        <div class="flex flex_between">
-            <PlayersView />
-            <CanvasView />
-            <PlayersView />
-        </div>
-        <LogsView />
+        <div v-else class="none">暂无直播数据</div>
     </div>
 </template>
 
 <script>
 
-    import { defineComponent, defineAsyncComponent, reactive, toRefs } from 'vue'
+    import RoleView from '@/components/match/game/lol/live/map/role'       // 角色
+    import PlayersView from '@/components/match/game/lol/live/map/players' // 选手
+    import CanvasView from '@/components/match/game/lol/live/map/canvas'   // 地图
+    import LogsView from '@/components/match/game/lol/live/map/logs'       // 日志
 
-    export default defineComponent({
-        setup(props,ctx) {
-            
+    import { formatSeconds, formatNumber } from '@/scripts/utils'
+
+    export default {
+        data () {
             return {
-                
+                websock: null, // WebSocket
+                framesData: null,
+                eventsData: [],
+                banData: {
+                    blue: [],
+                    red: []
+                }
+            }
+        },
+        created() {
+            this.initWebSocket('frames')
+            this.initWebSocket('events')
+        },
+        unmounted () {
+            // 销毁监听
+            this.websock.close()
+            this.websock = null
+        },
+        methods: {
+            // 初始化weosocket
+            initWebSocket(url){
+                const wsuri = `ws://live.elementsdata.cn/v1/pbpdata/${this.$route.query.matchId}/${url}?token=HCI0p9JsDmUZEc5ueFitw5emDfKQdanvsxf2C9RjzRM5K1gwPdQ`
+                this.websock = new WebSocket(wsuri)
+                this.websock.onmessage = this.websocketonmessage
+                this.websock.onerror = this.websocketonerror
+                this.websock.onclose = this.websocketclose
+            },
+            // 连接建立失败重连
+            websocketonerror(){
+                this.initWebSocket('frames')
+                this.initWebSocket('events')
+            },
+            // 数据接收
+            websocketonmessage(e){
+                const redata = JSON.parse(e.data)
+                if(e.currentTarget.url.indexOf('frames') > 0) {
+                    if(redata.factions[0].faction !== 'blue') {
+                        redata.factions.reverse()
+                    }
+                    if(redata.factions[0].team.team_id !== redata.match_scores[0].team_id) {
+                        redata.match_scores.reverse()
+                    }
+                    this.framesData = redata
+                } else {
+                    this.eventsData.push(redata)
+                    if(redata.event_type === 'champion_banned') {
+                        if(redata.faction === 'blue') {
+                            this.banData.blue.push(redata.champion)
+                        }   else {
+                            this.banData.red.push(redata.champion)
+                        }
+                    }
+                }
+            },
+            // 关闭
+            websocketclose(e){
+                console.log('断开连接',e)
+            },
+        },
+        computed: {
+            durationTime(sec) {
+                return function(sec) {
+                    return formatSeconds(sec)
+                }
+            },
+            thousands() {
+                return function(num) {
+                    return formatNumber(num)
+                }
             }
         },
         components: {
-            RoleView: defineAsyncComponent(() => import('@/components/match/game/lol/live/map/role')),       // 角色
-            PlayersView: defineAsyncComponent(() => import('@/components/match/game/lol/live/map/players')), // 选手
-            CanvasView: defineAsyncComponent(() => import('@/components/match/game/lol/live/map/canvas')),   // 地图
-            LogsView: defineAsyncComponent(() => import('@/components/match/game/lol/live/map/logs'))        // 日志
+            RoleView,
+            PlayersView,
+            CanvasView,
+            LogsView,
         }
-    })
+    }
 </script>
 
 <style lang="less" scoped>

@@ -172,6 +172,12 @@ button {
     margin: 0 auto;
 }
 
+/* 无数据 */
+.none {
+    color: #666;
+    text-align: center;
+}
+
 /*滚动条的宽度*/
 ::-webkit-scrollbar {
     width: 10px;

@@ -222,7 +222,6 @@
             }
             .none {
                 padding-top: 100px;
-                text-align: center;
             }
         }
     }

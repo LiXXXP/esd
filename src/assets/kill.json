@@ -1,0 +1,39 @@
+{
+    "match_id": 51485,
+    "battle_id": 17625,
+    "battle_order": 2,
+    "ingame_timestamp": 413,
+    "event_id": 42783188,
+    "event_type": "elite_kill",
+    "position": "9961,4500",
+    "killer": {
+        "player_id": 27196,
+        "nick_name": "iBoy",
+        "faction": "red",
+        "champion": {
+            "champion_id": 35,
+            "name": "Kai'Sa",
+            "name_cn": "卡莎",
+            "external_id": "145",
+            "external_name": "Kaisa",
+            "title": "Daughter of the Void",
+            "title_cn": "虚空之女",
+            "slug": "kaisa",
+            "image": {
+                "image": "https://img.elementsdata.cn/els/MjEwMzI4/MjAyMTU2394.png?x-oss-process=image/resize,m_fixed,h_120,w_120",
+                "small_image": "https://img.elementsdata.cn/els/MjEwMzI4/MjAyMTU2394.png?x-oss-process=image/resize,m_fixed,h_32,w_32"
+            }
+        },
+        "ingame_obj_type": "player",
+        "ingame_obj_sub_type": "player"
+    },
+    "victim": {
+        "ingame_obj_name": null,
+        "ingame_obj_name_cn": null,
+        "ingame_obj_type": null,
+        "ingame_obj_sub_type": null
+    },
+    "assist": [],
+    "is_first_event": true,
+    "first_event_type": "first_dragon"
+}

@@ -4,7 +4,6 @@
         <PlayInfo />
         <PlayScore />
         <PlayAnaly @getBattleId="getBattleId" />
-        <!-- <PlayBattle /> -->
         <PlayTeams />
     </div>
 </template>
@@ -37,7 +36,6 @@
             PlayInfo: defineAsyncComponent(() => import('@/components/match/game/module/playInfo')),   // 比赛信息
             PlayScore: defineAsyncComponent(() => import('@/components/match/game/module/playScore')), // 当前比分
             PlayAnaly: defineAsyncComponent(() => import('@/components/match/game/module/playAnaly')), // 对战分析
-            PlayBattle: defineAsyncComponent(() => import('@/components/match/game/lol/playBattle')),  // 阵容分析
             PlayTeams: defineAsyncComponent(() => import('@/components/match/game/dota/playTeams'))    // 队伍对局详情
         }
     })

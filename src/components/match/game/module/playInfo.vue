@@ -2,18 +2,23 @@
     <div class="play-info">
         <TitleView :titleName="infoName" />
         <div class="tab flex flex_center">
-            <p class="active">视频直播</p>
-            <p>图文直播</p>
+            <p v-for="(item,index) in liveList" 
+                :key="item.title"
+                :class="{active: currentIndex === index}"
+                @click="currentIndex = index"
+            >{{item.title}}</p>
         </div>
-        <VideoLive />
-        <!-- <MapLive /> -->
+        <VideoLive v-show="!currentIndex" />
+        <CSGOMapLive v-if="currentIndex && gameId === 1" />
+        <LoLMapLive v-if="currentIndex && gameId === 2" />
     </div>
 </template>
 
 <script>
 
-    import VideoLive from '@/components/match/game/module/videoLive' // 视频直播
-    import MapLive from '@/components/match/game/lol/live/mapLive'   // 图文直播
+    import VideoLive from '@/components/match/game/module/videoLive'    // 视频直播
+    import CSGOMapLive from '@/components/match/game/csgo/live/mapLive' // csgo 图文直播
+    import LoLMapLive from '@/components/match/game/lol/live/mapLive'   // lol 图文直播
 
     import { defineComponent, defineAsyncComponent, reactive, toRefs, provide, onMounted } from 'vue'
     import { useRoute } from "vue-router"
@@ -24,7 +29,17 @@
             const route = useRoute()
             const infoData = reactive({
                 infoName: '比赛信息',
-                streamList: []
+                streamList: [],
+                liveList: [
+                    {
+                        title: '视频直播'
+                    },
+                    {
+                        title: '图文直播'
+                    }
+                ],
+                currentIndex: 0,
+                gameId: parseInt(route.query.gameId)
             })
 
             const getLiving = (matchId) => {
@@ -51,7 +66,8 @@
         components: {
             TitleView: defineAsyncComponent(() => import('@/components/common/title/title')), // 页面标题
             VideoLive,
-            MapLive
+            CSGOMapLive,
+            LoLMapLive
         }
     })
 </script>

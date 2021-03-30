@@ -1,0 +1,30 @@
+{
+    "match_id": 51485,
+    "battle_id": 17622,
+    "battle_order": 1,
+    "ingame_timestamp": 0,
+    "event_id": 42756462,
+    "event_type": "champion_banned",
+    "bp_order": 1,
+    "faction": "blue",
+    "team": {
+        "team_id": 16,
+        "name": "Rare Atom",
+        "image": "https://img.elementsdata.cn/els/MjEwMzI4/MjE1OTQ3822.png",
+        "opponent_order": 1
+    },
+    "champion": {
+        "champion_id": 8,
+        "name": "Gnar",
+        "name_cn": "纳尔",
+        "external_id": "150",
+        "external_name": "Gnar",
+        "title": "the Missing Link",
+        "title_cn": "迷失之牙",
+        "slug": "gnar",
+        "image": {
+            "image": "https://img.elementsdata.cn/els/MjEwMzI4/MjAxMjI4221.png?x-oss-process=image/resize,m_fixed,h_120,w_120",
+            "small_image": "https://img.elementsdata.cn/els/MjEwMzI4/MjAxMjI4221.png?x-oss-process=image/resize,m_fixed,h_32,w_32"
+        }
+    }
+}

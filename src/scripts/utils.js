@@ -315,18 +315,18 @@ function formatSeconds(sec) {
     }
     let result = parseInt(theTime)
     if( theTime < 10) {
-        result = `00:0${parseInt(theTime)}`
+        result = `00 : 0${parseInt(theTime)}`
     }
     if(theTime >= 10 && middle < 1) {
-        result = `00:${parseInt(theTime)}`
+        result = `00 : ${parseInt(theTime)}`
     }
     if( middle > 0 ) {
         result = parseInt(theTime)
-        result = `${parseInt(middle)}:${result}`
+        result = `${parseInt(middle)} : ${result}`
     }
     if( hour > 0 ) {
         result = parseInt(theTime)
-        result = `${parseInt(hour)}:${result}`
+        result = `${parseInt(hour)} : ${result}`
     }
     return result
 }
