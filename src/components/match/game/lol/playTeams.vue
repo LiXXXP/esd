@@ -102,7 +102,7 @@
 
 <script>
 
-    import { defineComponent, defineAsyncComponent, reactive, toRefs, inject, watch, computed, onUnmounted } from 'vue'
+    import { defineComponent, defineAsyncComponent, reactive, toRefs, inject, watch, computed, onUnmounted, onMounted } from 'vue'
     import { useRoute, useRouter } from "vue-router"
     import { battleDetail } from "@/scripts/request"
     import { formatSeconds, formatNumber } from '@/scripts/utils'
@@ -112,7 +112,55 @@
             const route = useRoute()
             const teamsData = reactive({
                 teamsName: '队伍对局详情',
-                list: [
+                list: [],
+                progressData: {
+                    showText: false,
+                    width: 13
+                },
+                battleId: 0,
+                battleInfo: null,
+                teamInfo: [],
+                factions: [],
+                timer: null
+            })
+            const getbattleDetail = (battleId) => {
+                let params = {
+                    game_id: parseInt(route.query.gameId),
+                    battle_id: battleId,
+                }
+                battleDetail(params).then(res => {
+                    if(res.code === 200) {
+                        if(res.data.length !== 0) {
+                            teamsData.battleInfo = res.data
+                            teamsData.teamInfo = res.data.team_info
+                            teamsData.factions = res.data.battle_detail.factions
+
+                            if(res.data.battle_detail.factions[0].faction !== 'blue') {
+                                teamsData.factions.reverse()
+                            }
+
+                            if(res.data.battle_detail.factions[0].team_id !== res.data.team_info[0].team_id) {
+                                teamsData.teamInfo.reverse()
+                            }
+
+                            battleDatas()
+
+                            if(res.data.status !== 'ongoing' ) {
+                                clearInterval(teamsData.timer)
+                            }
+                            
+                        } else {
+                            clearInterval(teamsData.timer)
+                            teamsData.battleInfo = null
+                        }
+                    } else {
+                        clearInterval(teamsData.timer)
+                        teamsData.battleInfo = null
+                    }
+                })
+            }
+            const battleDatas = () => {
+                teamsData.list = [
                     {
                         text: '击杀',
                         type: 'kills',
@@ -224,61 +272,14 @@
                             }
                         ]
                     }
-                ],
-                progressData: {
-                    showText: false,
-                    width: 13
-                },
-                battleId: 0,
-                battleInfo: null,
-                teamInfo: [],
-                factions: [],
-                timer: null
-            })
-            const getbattleDetail = (battleId) => {
-                let params = {
-                    game_id: parseInt(route.query.gameId),
-                    battle_id: battleId,
-                }
-                battleDetail(params).then(res => {
-                    if(res.code === 200) {
-                        if(res.data.length !== 0) {
-                            teamsData.battleInfo = res.data
-                            teamsData.teamInfo = res.data.team_info
-                            teamsData.factions = res.data.battle_detail.factions
-
-                            if(res.data.battle_detail.factions[0].faction !== 'blue') {
-                                teamsData.factions.reverse()
-                            }
-
-                            if(res.data.battle_detail.factions[0].team_id !== res.data.team_info[0].team_id) {
-                                teamsData.teamInfo.reverse()
-                            }
-
-                            battleDatas()
-
-                            if(res.data.status !== 'ongoing' ) {
-                                clearInterval(teamsData.timer)
-                            }
-                            
-                        } else {
-                            clearInterval(teamsData.timer)
-                            teamsData.battleInfo = null
-                        }
-                    } else {
-                        clearInterval(teamsData.timer)
-                        teamsData.battleInfo = null
-                    }
-                })
-            }
-            const battleDatas = () => {
+                ]
                 teamsData.list.forEach( e => {
                     let field = e.type
                     e.blue = teamsData.factions[0][field] || 0
                     e.red = teamsData.factions[1][field] || 0
                     for(let key of e.imgs) {
                         let type = key.type
-                        if(teamsData.battleInfo.battle_detail.first_events[type] !== null) {
+                        if(teamsData.battleInfo.battle_detail.first_events[type] != null) {
                             key.ingame = parseInt(teamsData.battleInfo.battle_detail.first_events[type].ingame_timestamp) || 0
                             key.faction = teamsData.battleInfo.battle_detail.first_events[type].faction || ''
                         }
@@ -290,6 +291,9 @@
             watch(battleid, () => {
                 teamsData.battleId = battleid
                 getbattleDetail(teamsData.battleId)
+            })
+
+            onMounted(() => {
                 teamsData.timer = setInterval( () => {
                     getbattleDetail(teamsData.battleId)
                 }, 5000)
@@ -323,7 +327,6 @@
             return {
                 ...toRefs(teamsData),
                 getbattleDetail,
-                battleDatas,
                 durationTime,
                 thousands,
                 gotoLink

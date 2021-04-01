@@ -66,7 +66,6 @@
             watch(battleid, () => {
                 playerData.battleId = battleid
                 getplayerData(playerData.battleId)
-                
             })
 
             const router = useRouter()

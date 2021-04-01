@@ -116,7 +116,53 @@
 
             const teamsData = reactive({
                 teamsName: '队伍对局详情',
-                list: [
+                list: [],
+                progressData: {
+                    showText: false,
+                    width: 13
+                },
+                battleId: 0,
+                battleInfo: null,
+                teamInfo: [],
+                factions: [],
+                timer: null
+            })
+
+            const getbattleDetail = (battleId) => {
+                let params = {
+                    game_id: parseInt(route.query.gameId),
+                    battle_id: battleId,
+                }
+                battleDetail(params).then(res => {
+                    if(res.code === 200) {
+                        if(res.data.length !== 0) {
+                            teamsData.battleInfo = res.data
+                            teamsData.teamInfo = res.data.team_info
+                            teamsData.factions = res.data.battle_detail.factions
+
+                            if(res.data.battle_detail.factions[0].faction !== 'radiant') {
+                                teamsData.factions.reverse()
+                            }
+
+                            if(res.data.battle_detail.factions[0].team_id !== res.data.team_info[0].team_id) {
+                                teamsData.teamInfo.reverse()
+                            }
+
+                            battleDatas()
+                            
+                        } else {
+                            clearInterval(teamsData.timer)
+                            teamsData.battleInfo = null
+                        }
+                    } else {
+                        clearInterval(teamsData.timer)
+                        teamsData.battleInfo = null
+                    }
+                })
+            }
+
+            const battleDatas = () => {
+                teamsData.list = [
                     {
                         text: '击杀',
                         type: 'kills',
@@ -205,52 +251,7 @@
                             }
                         ]
                     }
-                ],
-                progressData: {
-                    showText: false,
-                    width: 13
-                },
-                battleId: 0,
-                battleInfo: null,
-                teamInfo: [],
-                factions: [],
-                timer: null
-            })
-
-            const getbattleDetail = (battleId) => {
-                let params = {
-                    game_id: parseInt(route.query.gameId),
-                    battle_id: battleId,
-                }
-                battleDetail(params).then(res => {
-                    if(res.code === 200) {
-                        if(res.data.length !== 0) {
-                            teamsData.battleInfo = res.data
-                            teamsData.teamInfo = res.data.team_info
-                            teamsData.factions = res.data.battle_detail.factions
-
-                            if(res.data.battle_detail.factions[0].faction !== 'radiant') {
-                                teamsData.factions.reverse()
-                            }
-
-                            if(res.data.battle_detail.factions[0].team_id !== res.data.team_info[0].team_id) {
-                                teamsData.teamInfo.reverse()
-                            }
-
-                            battleDatas()
-                            
-                        } else {
-                            clearInterval(teamsData.timer)
-                            teamsData.battleInfo = null
-                        }
-                    } else {
-                        clearInterval(teamsData.timer)
-                        teamsData.battleInfo = null
-                    }
-                })
-            }
-
-            const battleDatas = () => {
+                ]
                 teamsData.list.forEach( e => {
                     let field = e.type
                     e.green = teamsData.factions[0][field] || 0
@@ -305,7 +306,6 @@
             return {
                 ...toRefs(teamsData),
                 getbattleDetail,
-                battleDatas,
                 durationTime,
                 thousands,
                 gotoLink
