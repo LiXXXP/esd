@@ -61,7 +61,7 @@
                         <div class="td-bar" v-if="!isNormal">
                             <Progress 
                                 :progressData="progressData" 
-                                :progressColor="parseInt(item.hp)>59?'#00AB49':parseInt(item.hp)>39?'#F6B600':'#D94629'"
+                                :progressColor="parseInt(item.hp)>59?'#00AB49':parseInt(item.hp)>39?'#e8751a':'#D94629'"
                                 :rateData="parseInt(item.hp) || 0" 
                             />
                             <p>{{item.hp}}</p>
@@ -183,10 +183,10 @@
                     height: 40px;
                     &.ct,
                     &.terrorists {
-                        opacity: 0.6;
+                        opacity: 0.7;
                     }
                     &.dark {
-                        background-color: rgba(147, 163, 171, .5);
+                        background-color: rgba(147, 163, 171, .6);
                     }
                     td {
                         width: 100px;

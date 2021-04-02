@@ -84,7 +84,7 @@
             },
             // 初始化weosocket
             initWebSocket(url){
-                const wsuri = `ws://live.elementsdata.cn/v1/pbpdata/${this.$route.query.matchId}/${url}?token=HCI0p9JsDmUZEc5ueFitw5emDfKQdanvsxf2C9RjzRM5K1gwPdQ`
+                const wsuri = `wss://live.elementsdata.cn/v1/pbpdata/${this.$route.query.matchId}/${url}?token=HCI0p9JsDmUZEc5ueFitw5emDfKQdanvsxf2C9RjzRM5K1gwPdQ`
                 this.websock = new WebSocket(wsuri)
                 this.websock.onmessage = this.websocketonmessage
                 this.websock.onerror = this.websocketonerror
