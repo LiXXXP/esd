@@ -121,7 +121,8 @@
                 battleInfo: null,
                 teamInfo: [],
                 factions: [],
-                timer: null
+                timer: null,
+                status: ''
             })
             const getbattleDetail = (battleId) => {
                 let params = {
@@ -134,6 +135,7 @@
                             teamsData.battleInfo = res.data
                             teamsData.teamInfo = res.data.team_info
                             teamsData.factions = res.data.battle_detail.factions
+                            teamsData.status = res.data.status
 
                             if(res.data.battle_detail.factions[0].faction !== 'blue') {
                                 teamsData.factions.reverse()
@@ -144,10 +146,6 @@
                             }
 
                             battleDatas()
-
-                            if(res.data.status !== 'ongoing' ) {
-                                clearInterval(teamsData.timer)
-                            }
                             
                         } else {
                             clearInterval(teamsData.timer)
@@ -159,6 +157,7 @@
                     }
                 })
             }
+
             const battleDatas = () => {
                 teamsData.list = [
                     {
@@ -295,7 +294,9 @@
 
             onMounted(() => {
                 teamsData.timer = setInterval( () => {
-                    getbattleDetail(teamsData.battleId)
+                    if(teamsData.status === 'ongoing') {
+                        getbattleDetail(teamsData.battleId)
+                    }
                 }, 5000)
             })
 

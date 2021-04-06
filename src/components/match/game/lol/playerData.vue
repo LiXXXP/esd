@@ -59,7 +59,7 @@
 
 <script>
 
-    import { defineComponent, defineAsyncComponent, reactive, toRefs, inject, watch } from 'vue'
+    import { defineComponent, defineAsyncComponent, reactive, toRefs, inject, watch, onMounted, onUnmounted } from 'vue'
     import { useRouter } from "vue-router"
     import { lolPlayerBattle } from "@/scripts/request"
 
@@ -68,7 +68,9 @@
             const playerData = reactive({
                 name: '选手对局详情',
                 battleId: 0,
-                teamList: []
+                teamList: [],
+                timer: null,
+                status: ''
             })
             
             const getplayerData = (battleId) => {
@@ -82,6 +84,9 @@
                         } else {
                             playerData.teamList = []
                         }
+                        playerData.status = res.data.status
+                    } else {
+                        clearInterval(playerData.timer)
                     }
                 })
             }
@@ -90,7 +95,18 @@
             watch(battleid, () => {
                 playerData.battleId = battleid
                 getplayerData(playerData.battleId)
-                
+            })
+
+            onMounted(() => {
+                playerData.timer = setInterval( () => {
+                    if(playerData.status === 'ongoing') {
+                        getplayerData(playerData.battleId)
+                    }
+                }, 600000)
+            })
+
+            onUnmounted(() => {
+                clearInterval(playerData.timer)
             })
 
             const router = useRouter()

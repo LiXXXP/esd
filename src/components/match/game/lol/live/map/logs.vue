@@ -1,7 +1,7 @@
 <template>
     <div class="logs">
         <div class="title">比赛日志：</div>
-        <div class="cont">
+        <div class="cont" ref="scrollRef">
             <div class="list flex flex_only_end" v-for="item in events" :key="item.position">
 
                 <span>{{durationTime(item.ingame_timestamp)}}</span>
@@ -62,7 +62,7 @@
 </template>
 
 <script>
-    import { defineComponent, computed } from 'vue'
+    import { defineComponent, computed, ref, nextTick, watch } from 'vue'
     import { formatSeconds } from '@/scripts/utils'
 
     export default defineComponent({
@@ -74,6 +74,14 @@
         },
         setup(props,ctx) {
 
+            const scrollRef = ref(0)
+
+            watch(props.events,() => {
+                nextTick(() => {
+                    scrollRef.value.scrollTop = scrollRef.value.scrollHeight
+                })
+            })
+
             const durationTime = computed(() => {
                 return function(sec) {
                     return formatSeconds(sec)
@@ -81,6 +89,7 @@
             })
 
             return {
+                scrollRef,
                 durationTime
             }
         }

@@ -183,7 +183,7 @@
 
 <script>
 
-    import { defineComponent, defineAsyncComponent, reactive, toRefs, inject, watch, onUnmounted } from 'vue'
+    import { defineComponent, defineAsyncComponent, reactive, toRefs, inject, watch, onUnmounted, onMounted } from 'vue'
     import { useRoute, useRouter } from "vue-router"
     import { battleDetail } from "@/scripts/request"
 
@@ -211,8 +211,10 @@
                 mapInfo: {},
                 teamsData: [],
                 roundDetail: [],
-                timer: null
+                timer: null,
+                status: ''
             })
+
             const getbattleDetail = (battleId) => {
                 let params = {
                     game_id: parseInt(route.query.gameId),
@@ -225,6 +227,7 @@
                             killData.mapInfo = res.data.map_info
                             killData.teamsData = res.data.battle_detail.teams
                             killData.roundDetail = res.data.battle_detail.round_detail.slice(0,30)
+                            killData.status = res.data.status
 
                             if(res.data.battle_detail.teams[0].starting_side !== 'ct') {
                                 killData.teamsData.reverse()
@@ -251,10 +254,6 @@
                                     item.side.reverse()
                                 }
                             }
-
-                            if(res.data.status !== 'ongoing' ) {
-                                clearInterval(killData.timer)
-                            }
                             
                         } else {
                             clearInterval(killData.timer)
@@ -269,8 +268,13 @@
             watch(battleid, () => {
                 killData.battleId = battleid
                 getbattleDetail(killData.battleId)
+            })
+
+            onMounted(() => {
                 killData.timer = setInterval( () => {
-                    getbattleDetail(killData.battleId)
+                    if(killData.status === 'ongoing') { 
+                        getbattleDetail(killData.battleId)
+                     }
                 }, 5000)
             })
 

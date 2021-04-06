@@ -40,7 +40,7 @@
 <script>
 
     import { csgoPlayerInfo } from "@/scripts/request"
-    import { defineComponent, defineAsyncComponent, reactive, toRefs, inject, watch } from 'vue'
+    import { defineComponent, defineAsyncComponent, reactive, toRefs, inject, watch, onMounted, onUnmounted } from 'vue'
     import { useRouter } from "vue-router"
 
     export default defineComponent({
@@ -48,7 +48,9 @@
             const playerData = reactive({
                 name: '选手数据',
                 battleId: 0,
-                teamList: []
+                teamList: [],
+                timer: null,
+                status: ''
             })
             
             const getplayerData = (battleId) => {
@@ -57,7 +59,10 @@
                 }
                 csgoPlayerInfo(params).then(res => {
                     if(res.code === 200) {
-                        playerData.teamList = res.data
+                        playerData.teamList = res.data.team_info
+                        playerData.status = res.data.battle_status
+                    } else {
+                        clearInterval(playerData.timer)
                     }
                 })
             }
@@ -66,6 +71,18 @@
             watch(battleid, () => {
                 playerData.battleId = battleid
                 getplayerData(playerData.battleId)
+            })
+
+            onMounted(() => {
+                playerData.timer = setInterval( () => {
+                    if(playerData.status === 'ongoing') {
+                        getplayerData(playerData.battleId)
+                    }
+                }, 600000)
+            })
+
+            onUnmounted(() => {
+                clearInterval(playerData.timer)
             })
 
             const router = useRouter()

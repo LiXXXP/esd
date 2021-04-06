@@ -125,7 +125,8 @@
                 battleInfo: null,
                 teamInfo: [],
                 factions: [],
-                timer: null
+                timer: null,
+                status: ''
             })
 
             const getbattleDetail = (battleId) => {
@@ -139,6 +140,7 @@
                             teamsData.battleInfo = res.data
                             teamsData.teamInfo = res.data.team_info
                             teamsData.factions = res.data.battle_detail.factions
+                            teamsData.status = res.data.status
 
                             if(res.data.battle_detail.factions[0].faction !== 'radiant') {
                                 teamsData.factions.reverse()
@@ -274,7 +276,9 @@
 
             onMounted(() => {
                 teamsData.timer = setInterval( () => {
-                    getbattleDetail(teamsData.battleId)
+                    if(teamsData.status === 'ongoing') {
+                        getbattleDetail(teamsData.battleId)
+                    }
                 }, 5000)
             })
 

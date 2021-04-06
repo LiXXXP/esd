@@ -1,7 +1,7 @@
 <template>
     <div class="logs">
         <div class="title">比赛日志：</div>
-        <div class="cont">
+        <div class="cont" ref="scrollRef">
             <div class="list flex flex_only_end" v-for="item in events" :key="item.battle_timestamp">
 
                 <div class="item flex flex_start flex_only_center"
@@ -50,7 +50,7 @@
 </template>
 
 <script>
-    import { defineComponent } from 'vue'
+    import { defineComponent, ref, nextTick, watch } from 'vue'
 
     export default defineComponent({
         props: {
@@ -61,8 +61,16 @@
         },
         setup(props,ctx) {
 
+            const scrollRef = ref(0)
+
+            watch(props.events,() => {
+                nextTick(() => {
+                    scrollRef.value.scrollTop = scrollRef.value.scrollHeight
+                })
+            })
+
             return {
-                
+                scrollRef
             }
         }
     })
