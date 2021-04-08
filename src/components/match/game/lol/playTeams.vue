@@ -274,8 +274,8 @@
                 ]
                 teamsData.list.forEach( e => {
                     let field = e.type
-                    e.blue = teamsData.factions[0][field] || 0
-                    e.red = teamsData.factions[1][field] || 0
+                    e.blue = teamsData.factions[0][field] || '-'
+                    e.red = teamsData.factions[1][field] || '-'
                     for(let key of e.imgs) {
                         let type = key.type
                         if(teamsData.battleInfo.battle_detail.first_events[type] != null) {
