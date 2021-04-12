@@ -66,12 +66,12 @@
                                 </div>
                             </div>
                             <div class="flex flex_only_center">
-                                <span>{{thousands(item.blue)}}</span>
+                                <span>{{item.blue===null?'-':thousands(item.blue)}}</span>
                                 <Progress 
                                     class="progress" 
                                     :progressData="progressData" 
                                     :progressColor="''"
-                                    :rateData="parseInt(item.blue/(item.blue+item.red)*100 || 0)" 
+                                    :rateData="parseInt(item.blue/(item.blue+item.red)*100) || 0" 
                                 />
                             </div>
                         </div>
@@ -82,9 +82,9 @@
                                     class="progress" 
                                     :progressData="progressData" 
                                     :progressColor="''"
-                                    :rateData="parseInt(item.red/(item.blue+item.red)*100 || 0)"
+                                    :rateData="parseInt(item.red/(item.blue+item.red)*100) || 0"
                                 />
-                                <span>{{thousands(item.red)}}</span>
+                                <span>{{item.red===null?'-':thousands(item.red)}}</span>
                             </div>
                             <div class="flex flex_start" v-if="item.imgs">
                                 <div class="imgs" v-for="key in item.imgs" :key="key.type">
@@ -274,8 +274,8 @@
                 ]
                 teamsData.list.forEach( e => {
                     let field = e.type
-                    e.blue = teamsData.factions[0][field] == null ? '-' : teamsData.factions[0][field]
-                    e.red = teamsData.factions[1][field] == null ? '-' : teamsData.factions[1][field]
+                    e.blue = teamsData.factions[0][field]
+                    e.red = teamsData.factions[1][field]
                     for(let key of e.imgs) {
                         let type = key.type
                         if(teamsData.battleInfo.battle_detail.first_events[type] != null) {
@@ -288,13 +288,15 @@
             
             const battleid = inject('battleid')
             watch(battleid, () => {
-                teamsData.battleId = battleid
-                getbattleDetail(teamsData.battleId)
+                if(battleid.value > 0) {
+                    teamsData.battleId = battleid
+                    getbattleDetail(teamsData.battleId)
+                }
             })
 
             onMounted(() => {
                 teamsData.timer = setInterval( () => {
-                    if(teamsData.status === 'ongoing') {
+                    if(battleid.value > 0 && teamsData.status === 'ongoing') {
                         getbattleDetail(teamsData.battleId)
                     }
                 }, 5000)

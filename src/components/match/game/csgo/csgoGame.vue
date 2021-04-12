@@ -16,8 +16,14 @@
         </play-score>
         <PlayMap />
         <PlayAnaly @getBattleId="getBattleId" />
-        <PlayKill />
-        <PlayerData />
+        <!-- 对战分析 -->
+        <div v-show="!battleId">
+            <MatchNear />
+        </div>
+        <div v-show="battleId">
+            <PlayKill />
+            <PlayerData />
+        </div>
     </div>
 </template>
 
@@ -33,14 +39,13 @@
             const battleList = reactive({
                 list: [],
                 masterTeamId: 0,
-                guestTeamId: 0,
+                guestTeamId: 0
             })
 
             const gameData = inject('detail')
             watch(gameData, () => {
                 if(gameData.gameDetail.battle_info.length > 0) {
                     battleList.list = gameData.gameDetail.battle_info
-                    battleId.value = gameData.gameDetail.battle_info[0].battle_id
                     battleList.masterTeamId = gameData.gameDetail.teams_info.master_team_info.team_id
                     battleList.guestTeamId = gameData.gameDetail.teams_info.guest_team_info.team_id
                 }
@@ -70,7 +75,8 @@
             PlayAnaly: defineAsyncComponent(() => import('@/components/match/game/module/playAnaly')), // 对战分析
             PlayMap: defineAsyncComponent(() => import('@/components/match/game/csgo/playMap')),       // 地图信息
             PlayKill: defineAsyncComponent(() => import('@/components/match/game/csgo/playKill')),     // 对局详情
-            PlayerData: defineAsyncComponent(() => import('@/components/match/game/csgo/playerData'))  // 选手数据
+            PlayerData: defineAsyncComponent(() => import('@/components/match/game/csgo/playerData')), // 选手数据
+            MatchNear: defineAsyncComponent(() => import('@/components/match/game/module/matchNear'))  // 近期比赛情况
         }
     })
 </script>

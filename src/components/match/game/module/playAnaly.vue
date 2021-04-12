@@ -2,6 +2,10 @@
     <div class="play-analy">
         <TitleView :titleName="analyName" v-if="battleList.length>0" />
         <div class="analy flex flex_only_center flex_wrap" v-if="battleList.length>0">
+            <div :class="['nav flex flex_center',{active: currentIndex === -1}]"
+                @click="getBattleId(-1,0)">
+                <p>对战分析</p>
+            </div>
             <div :class="['nav flex flex_center',{active: currentIndex === index}]" 
                 v-for="(item,index) in battleList" 
                 :key="item.battle_id"
@@ -24,7 +28,7 @@
 
             const battleDate = reactive({
                 analyName: '对战分析',
-                currentIndex: 0,
+                currentIndex: -1,
                 battleList: []
             })
 

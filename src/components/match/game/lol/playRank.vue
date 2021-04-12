@@ -91,8 +91,10 @@
             
             const battleid = inject('battleid')
             watch(battleid, () => {
-                diffData.battleId = battleid
-                getLolDataRank(diffData.battleId)
+                if(battleid.value > 0) {
+                    diffData.battleId = battleid
+                    getLolDataRank(diffData.battleId)
+                }
             })
 
             const getLolDataRank = (battleId) => {

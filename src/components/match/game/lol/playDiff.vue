@@ -38,8 +38,10 @@
             
             const battleid = inject('battleid')
             watch(battleid, () => {
-                diffData.battleId = battleid
-                getLolGoldDiff(diffData.battleId)
+                if(battleid.value > 0) {
+                    diffData.battleId = battleid
+                    getLolGoldDiff(diffData.battleId)
+                }
             })
 
             const getLolGoldDiff = (battleId) => {

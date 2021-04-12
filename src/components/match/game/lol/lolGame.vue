@@ -4,12 +4,18 @@
         <PlayInfo />
         <PlayScore />
         <PlayAnaly @getBattleId="getBattleId" />
-        <PlayTeams />
-        <div class="flex flex_between">
-            <PlayDiff />
-            <PlayRank />
+        <!-- 对战分析 -->
+        <div v-show="!battleId">
+            <MatchNear />
         </div>
-        <PlayerData />
+        <div v-show="battleId">
+            <PlayTeams />
+            <div class="flex flex_between">
+                <PlayDiff />
+                <PlayRank />
+            </div>
+            <PlayerData />
+        </div>
     </div>
 </template>
 
@@ -20,19 +26,12 @@
     export default defineComponent({
         setup(props,ctx) {
             const battleId = ref(0)
-            const gameData = inject('detail')
-            watch(gameData, () => {
-                if(gameData.gameDetail.battle_info.length > 0) {
-                    battleId.value = gameData.gameDetail.battle_info[0].battle_id
-                }
-            })
             const getBattleId = (val) => {
                 battleId.value = val
             }
             provide('battleid',battleId)
             return {
                 battleId,
-                gameData,
                 getBattleId
             }
         },
@@ -44,7 +43,8 @@
             PlayTeams: defineAsyncComponent(() => import('@/components/match/game/lol/playTeams')),    // 队伍对局详情
             PlayDiff: defineAsyncComponent(() => import('@/components/match/game/lol/playDiff')),      // 经济差/经验差
             PlayRank: defineAsyncComponent(() => import('@/components/match/game/lol/playRank')),      // 数据排行
-            PlayerData: defineAsyncComponent(() => import('@/components/match/game/lol/playerData'))  // 选手对局详情
+            PlayerData: defineAsyncComponent(() => import('@/components/match/game/lol/playerData')),  // 选手对局详情
+            MatchNear: defineAsyncComponent(() => import('@/components/match/game/module/matchNear'))  // 近期比赛情况
         }
     })
 </script>

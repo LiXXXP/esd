@@ -358,6 +358,15 @@ function homeCarousel(params) {
     return postRequest('/image/advertisement_image_update', params)
 }
 
+/**
+ *
+ * 近期比赛情况CSGO
+ * @param {*} params
+ */
+ function matchNearInfo(params) {
+    return postRequest('/match/near_match_info', params)
+}
+
 export {
     userRegister,
     userLogin,
@@ -386,6 +395,7 @@ export {
     imageList,
     imageInfo,
     imageCreate,
-    imageUpdate
+    imageUpdate,
+    matchNearInfo
 }
 

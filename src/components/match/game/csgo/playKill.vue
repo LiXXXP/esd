@@ -266,13 +266,15 @@
 
             const battleid = inject('battleid')
             watch(battleid, () => {
-                killData.battleId = battleid
-                getbattleDetail(killData.battleId)
+                if(battleid.value > 0) {
+                    killData.battleId = battleid
+                    getbattleDetail(killData.battleId)
+                }
             })
 
             onMounted(() => {
                 killData.timer = setInterval( () => {
-                    if(killData.status === 'ongoing') { 
+                    if(killData.battleId>0 && killData.status === 'ongoing') { 
                         getbattleDetail(killData.battleId)
                      }
                 }, 5000)

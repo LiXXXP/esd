@@ -69,13 +69,15 @@
 
             const battleid = inject('battleid')
             watch(battleid, () => {
-                playerData.battleId = battleid
-                getplayerData(playerData.battleId)
+                if(battleid.value>0) {
+                    playerData.battleId = battleid
+                    getplayerData(playerData.battleId)
+                }
             })
 
             onMounted(() => {
                 playerData.timer = setInterval( () => {
-                    if(playerData.status === 'ongoing') {
+                    if(playerData.battleId>0 && playerData.status === 'ongoing') {
                         getplayerData(playerData.battleId)
                     }
                 }, 600000)
