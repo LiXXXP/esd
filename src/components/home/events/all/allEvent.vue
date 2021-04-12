@@ -58,6 +58,9 @@
                     },
                     {
                         tab: '已结束'
+                    },
+                    {
+                        tab: '异常'
                     }
                 ],
                 page: {
@@ -121,6 +124,7 @@
                     }
                 })
             })
+
             // 状态切换
             const getStatus = (val) => {
                 if(val === 0) {
@@ -132,8 +136,12 @@
                 if(val === 2) {
                     selectData.val = 'completed'
                 }
+                if(val === 3) {
+                    selectData.val = 'abnormal'
+                }
                 getMatchScreen(selectData.val)
             }
+            
             // 分页
             const currentPage = (val) => {
                 selectData.page.current = val

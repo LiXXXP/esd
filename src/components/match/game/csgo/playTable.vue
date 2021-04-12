@@ -2,6 +2,17 @@
     <div class="play-data">
         <TitleView :titleName="name" v-if="datas || score" />
 
+        <table v-if="total">
+            <thead>
+                <th>总击杀数（加时赛击杀数）</th>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{`${total.kill_total_count}(${total.overtime_kill_count})`}}</td>
+                </tr>
+            </tbody>
+        </table>
+
         <table v-if="datas">
             <thead>
                 <th>最大首杀战队</th>
@@ -107,8 +118,8 @@
 <script>
     import TitleView from '@/components/common/title/title.vue'             // 页面标题
 
-    import { csgoAddData, csgoScore } from "@/scripts/request"
-    import { defineComponent, reactive, toRefs, inject, watch, onUnmounted } from 'vue'
+    import { csgoAddData, csgoScore, csgoTotal } from "@/scripts/request"
+    import { defineComponent, reactive, toRefs, inject, watch, onUnmounted, onMounted } from 'vue'
 
     export default defineComponent({
         setup(props,ctx) {
@@ -117,6 +128,8 @@
                 battleId: 0,
                 datas: null,
                 score: null,
+                total: null,
+                status: '',
                 timer: null
             })
 
@@ -128,9 +141,6 @@
                     if(res.code === 200) {
                         if(res.data.length !== 0) {
                             tableData.datas = res.data
-                            if(res.data.status !== 'ongoing' ) {
-                                clearInterval(tableData.timer)
-                            }
                         } else {
                             tableData.datas = null
                             clearInterval(tableData.timer)
@@ -148,11 +158,9 @@
                 }
                 csgoScore(params).then(res => {
                     if(res.code === 200) {
+                        tableData.status = res.data.status
                         if(res.data.length !== 0) {
                             tableData.score = res.data
-                            if(res.data.status !== 'ongoing' ) {
-                                clearInterval(tableData.timer)
-                            }
                         } else {
                             tableData.score = null
                             clearInterval(tableData.timer)
@@ -163,15 +171,37 @@
                     }
                 })
             }
+
+            // 总计
+            const getCsgoTotal = (battleId) => {
+                let params = {
+                    battle_id: battleId,
+                }
+                csgoTotal(params).then(res => {
+                    if(res.code === 200) {
+                        tableData.total = res.data
+                    } else {
+                        tableData.total = null
+                        clearInterval(tableData.timer)
+                    }
+                })
+            }
             
             const battleid = inject('battleid')
             watch(battleid, () => {
-                tableData.battleId = battleid
+                tableData.battleId = battleid.value
                 getcsgoAddData(tableData.battleId)
                 getCsgoScore(tableData.battleId)
+                getCsgoTotal(tableData.battleId)
+            })
+
+            onMounted(() => {
                 tableData.timer = setInterval( () => {
-                    getcsgoAddData(tableData.battleId)
-                    getCsgoScore(tableData.battleId)
+                    if(tableData.status === 'onging') {
+                        getcsgoAddData(tableData.battleId)
+                        getCsgoScore(tableData.battleId)
+                        getCsgoTotal(tableData.battleId)
+                    }
                 }, 5000)
             })
 
@@ -180,9 +210,7 @@
             })
 
             return {
-                ...toRefs(tableData),
-                getcsgoAddData,
-                getCsgoScore
+                ...toRefs(tableData)
             }
         },
         components: {

@@ -26,7 +26,7 @@
                         <td>{{key.assists || 0}}({{key.flash_assists || 0}})</td>
                         <td>{{key.deaths || 0}}</td>
                         <td>{{(key.kast*100).toFixed(2) || 0}}%</td>
-                        <td>{{parseInt(key.kills - key.deaths) || 0}}</td>
+                        <td>{{`${key.kills} - ${key.deaths}`}}</td>
                         <td>{{key.adr || 0}}</td>
                         <td>{{key.first_kills_diff || 0}}</td>
                         <td>{{key.rating || 0}}</td>

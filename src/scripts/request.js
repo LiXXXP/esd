@@ -322,6 +322,15 @@ function csgoScore(params) {
     return postRequest('/battle/csgo_battle_score', params)
 }
 
+/**
+ *
+ * CSGO指定battle数据总计
+ * @param {*} params
+ */
+ function csgoTotal(params) {
+    return postRequest('/battle/csgo_battle_info_total', params)
+}
+
 export {
     userRegister,
     userLogin,
@@ -346,6 +355,7 @@ export {
     lolAddData,
     lolTeam,
     csgoAddData,
-    csgoScore
+    csgoScore,
+    csgoTotal
 }
 
