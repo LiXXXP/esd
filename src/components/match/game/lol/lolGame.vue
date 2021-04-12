@@ -21,7 +21,7 @@
 
 <script>
 
-    import { defineComponent, defineAsyncComponent, ref, provide, inject, watch } from 'vue'
+    import { defineComponent, defineAsyncComponent, ref, provide } from 'vue'
 
     export default defineComponent({
         setup(props,ctx) {
