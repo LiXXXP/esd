@@ -83,6 +83,8 @@
                 <th>下半场得分</th>
                 <th>加时赛得分</th>
                 <th>总得分</th>
+                <th>C4爆炸获得胜利总数</th>
+                <th>炸弹拆除总数</th>
             </thead>
             <tbody>
                 <tr>
@@ -96,6 +98,8 @@
                     <td>{{score.master_team.second_half_score || 0}}</td>
                     <td>{{score.master_team.ot_score || 0}}</td>
                     <td>{{score.master_team.score || 0}}</td>
+                    <td>{{score.master_team.master_team_target_bombed_count || 0}}</td>
+                    <td>{{score.master_team.master_team_bomb_defused_count || 0}}</td>
                 </tr>
                 <tr>
                     <td>
@@ -108,6 +112,8 @@
                     <td>{{score.guest_team.second_half_score || 0}}</td>
                     <td>{{score.guest_team.ot_score || 0}}</td>
                     <td>{{score.guest_team.score || 0}}</td>
+                    <td>{{score.guest_team.guest_team_target_bombed_count || 0}}</td>
+                    <td>{{score.guest_team.guest_team_bomb_defused_count || 0}}</td>
                 </tr>
             </tbody>
         </table>
