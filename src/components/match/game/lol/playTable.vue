@@ -26,6 +26,7 @@
             <thead>
                 <th width="20%;"></th>
                 <th>最高个人击杀数</th>
+                <th>杀敌总数</th>
             </thead>
             <tbody>
                 <tr>
@@ -36,6 +37,7 @@
                         </div>
                     </td>
                     <td>{{teams.master_team.max_player_kill || 0}}</td>
+                    <td>{{teams.master_team.kill_count || 0}}</td>
                 </tr>
                 <tr>
                     <td>
@@ -45,6 +47,7 @@
                         </div>
                     </td>
                     <td>{{teams.guest_team.max_player_kill || 0}}</td>
+                    <td>{{teams.guest_team.kill_count || 0}}</td>
                 </tr>
             </tbody>
         </table>

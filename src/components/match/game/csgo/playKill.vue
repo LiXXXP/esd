@@ -164,6 +164,29 @@
 
             <div class="info flex flex_end">
                 <div class="flex flex_center">
+                    <img src="../../../../assets/imgs/game/csgo/ct01.png">
+                    <p class="text">CT全歼 T获胜</p>
+                </div>
+                <div class="flex flex_center">
+                    <img src="../../../../assets/imgs/game/csgo/ct02.png">
+                    <p class="text">CT拆除炸弹获胜</p>
+                </div>
+                <div class="flex flex_center">
+                    <img src="../../../../assets/imgs/game/csgo/ct03.png">
+                    <p class="text">CT目标保存完好获胜</p>
+                </div>
+                <div class="flex flex_center">
+                    <img src="../../../../assets/imgs/game/csgo/t01.png">
+                    <p class="text">炸弹爆炸T获胜</p>
+                </div>
+                <div class="flex flex_center">
+                    <img src="../../../../assets/imgs/game/csgo/t02.png">
+                    <p class="text">T全歼 CT获胜</p>
+                </div>
+            </div>
+
+            <div class="info flex flex_end">
+                <div class="flex flex_center">
                     <div>
                         <p class="bar blue"></p>
                         <p class="bar yellow"></p>
@@ -516,6 +539,11 @@
                 padding: 5px 15px;
                 border-radius: 13px;
                 background-color: #D2D2D2;
+            }
+            img {
+                width: 20px;
+                height: 20px;
+                margin-right: 4px;
             }
         }
         .order {
