@@ -9,6 +9,7 @@
                 <th>第一条元素龙名称</th>
                 <th>第二条元素龙名称</th>
                 <th>首峡谷先锋游戏内时间戳</th>
+                <th>击杀小龙总数</th>
             </thead>
             <tbody>
                 <tr>
@@ -18,6 +19,7 @@
                     <td>{{datas.first_dragon_kill}}</td>
                     <td>{{datas.second_dragon_kill}}</td>
                     <td>{{durationTime(datas.first_rift_herald)}}</td>
+                    <td>{{datas.dragon_kill_count}}</td>
                 </tr>
             </tbody>
         </table>
@@ -51,23 +53,80 @@
                 </tr>
             </tbody>
         </table>
+
+        <table v-if="addData != null">
+            <thead>
+                <th>击杀总数</th>
+                <th>摧毁水晶总数</th>
+                <th>击杀大龙总数</th>
+                <th>摧毁防御塔总数</th>
+                <th>获得龙魂时间</th>
+                <th>首塔时间</th>
+                <th>首塔位置</th>
+                <th>首水晶位置</th>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{addData.kill_count}}</td>
+                    <td>{{addData.inhibitor_kill_count}}</td>
+                    <td>{{addData.baron_nashor_kill_count}}</td>
+                    <td>{{addData.turret_kill_count}}</td>
+                    <td>{{addData.dragon_soul_time}}</td>
+                    <td>{{addData.first_turret_time}}</td>
+                    <td>{{addData.first_turret_position}}</td>
+                    <td>{{addData.first_inhibitor_position}}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <table v-if="addData != null">
+            <thead>
+                <th>获得一血战队名称</th>
+                <th>率先获得五杀战队名称</th>
+                <th>率先获得十杀战队名称</th>
+                <th>首塔战队名称</th>
+                <th>首峡谷先锋战队名称</th>
+                <th>首小龙战队名称</th>
+                <th>击杀第二条小龙战队名称</th>
+                <th>首大龙战队名称</th>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{addData.first_blood_tame_name}}</td>
+                    <td>{{addData.first_to_5_kills_team_name}}</td>
+                    <td>{{addData.first_to_10_kills_team_name}}</td>
+                    <td>{{addData.first_turret_team_name}}</td>
+                    <td>{{addData.first_rift_herald_team_name}}</td>
+                    <td>{{addData.first_dragon_team_name}}</td>
+                    <td>{{addData.second_dragon_team_name}}</td>
+                    <td>{{addData.first_baron_nashor_team_name}}</td>
+                </tr>
+            </tbody>
+        </table>
+
     </div>
 </template>
 
 <script>
     import TitleView from '@/components/common/title/title.vue'             // 页面标题
 
-    import { defineComponent, reactive, toRefs, inject, watch, onUnmounted, computed } from 'vue'
-    import { lolAddData, lolTeam } from "@/scripts/request"
+    import { defineComponent, reactive, toRefs, inject, watch, onUnmounted, computed, onMounted } from 'vue'
+    import { useRoute } from "vue-router"
+    import { lolAddData, lolTeam, lolAdditional } from "@/scripts/request"
     import { formatSeconds } from '@/scripts/utils'
 
     export default defineComponent({
         setup(props,ctx) {
+
+            const route = useRoute()
+
             const tableData = reactive({
                 name: '数据统计',
                 battleId: 0,
                 datas: null,
                 teams: null,
+                addData: null,
+                status: '',
                 timer: null
             })
 
@@ -99,17 +158,35 @@
                 }
                 lolTeam(params).then(res => {
                     if(res.code === 200) {
+                        tableData.status = res.data.status
                         if(res.data.length !== 0) {
                             tableData.teams = res.data
-                            if(res.data.status !== 'ongoing' ) {
-                                clearInterval(tableData.timer)
-                            }
                         } else {
                             tableData.teams = null
                             clearInterval(tableData.timer)
                         }
                     } else {
                         tableData.teams = null
+                        clearInterval(tableData.timer)
+                    }
+                })
+            }
+
+            const getlolAdditional = (battleId) => {
+                let params = {
+                    battle_id: battleId,
+                    game_id: parseInt(route.query.gameId)
+                }
+                lolAdditional(params).then(res => {
+                    if(res.code === 200) {
+                        if(res.data.length !== 0) {
+                            tableData.addData = res.data
+                        } else {
+                            tableData.addData = null
+                            clearInterval(tableData.timer)
+                        }
+                    } else {
+                        tableData.addData = null
                         clearInterval(tableData.timer)
                     }
                 })
@@ -126,9 +203,16 @@
                 tableData.battleId = battleid
                 getlolAddData(tableData.battleId)
                 getlolTeams(tableData.battleId)
+                getlolAdditional(tableData.battleId)
+            })
+
+            onMounted(() => {
                 tableData.timer = setInterval( () => {
-                    getlolAddData(tableData.battleId)
-                    getlolTeams(tableData.battleId)
+                    if(tableData.status === 'onging') { 
+                        getlolAddData(tableData.battleId)
+                        getlolTeams(tableData.battleId)
+                        getlolAdditional(tableData.battleId)
+                    }
                 }, 5000)
             })
 

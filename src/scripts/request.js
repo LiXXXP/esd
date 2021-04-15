@@ -306,6 +306,15 @@ function lolAddData(params) {
 
 /**
  *
+ * LOL--对局附加数据
+ * @param {*} params
+ */
+ function lolAdditional(params) {
+    return postRequest('/battle/lol_battle_additional_data', params)
+}
+
+/**
+ *
  * CSGO--battle附加数据
  * @param {*} params
  */
@@ -363,6 +372,7 @@ export {
     csgoPlayerInfo,
     lolAddData,
     lolTeam,
+    lolAdditional,
     csgoAddData,
     csgoScore,
     csgoTotal,
