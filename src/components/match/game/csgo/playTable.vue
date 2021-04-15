@@ -34,6 +34,23 @@
             </tbody>
         </table>
 
+        <table v-if="round">
+            <thead>
+                <th>率先五胜</th>
+                <th>率先十胜</th>
+                <th>回合总数</th>
+                <th>全歼对方回合序号</th>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{round.first_five_team}}</td>
+                    <td>{{round.first_ten_team}}</td>
+                    <td>{{round.round_count}}</td>
+                    <td>{{round.total_annihilation_round}}</td>
+                </tr>
+            </tbody>
+        </table>
+
         <table v-if="datas">
             <thead>
                 <th>第四回合爆头击杀数</th>
@@ -124,7 +141,7 @@
 <script>
     import TitleView from '@/components/common/title/title.vue'             // 页面标题
 
-    import { csgoAddData, csgoScore, csgoTotal } from "@/scripts/request"
+    import { csgoAddData, csgoScore, csgoTotal, csgoRound } from "@/scripts/request"
     import { defineComponent, reactive, toRefs, inject, watch, onUnmounted, onMounted } from 'vue'
 
     export default defineComponent({
@@ -135,6 +152,7 @@
                 datas: null,
                 score: null,
                 total: null,
+                round: null,
                 status: '',
                 timer: null
             })
@@ -192,6 +210,21 @@
                     }
                 })
             }
+
+            // round
+            const getCsgoRound = (battleId) => {
+                let params = {
+                    battle_id: battleId,
+                }
+                csgoRound(params).then(res => {
+                    if(res.code === 200) {
+                        tableData.round = res.data
+                    } else {
+                        tableData.round = null
+                        clearInterval(tableData.timer)
+                    }
+                })
+            }
             
             const battleid = inject('battleid')
             watch(battleid, () => {
@@ -199,6 +232,7 @@
                 getcsgoAddData(tableData.battleId)
                 getCsgoScore(tableData.battleId)
                 getCsgoTotal(tableData.battleId)
+                getCsgoRound(tableData.battleId)
             })
 
             onMounted(() => {
@@ -207,6 +241,7 @@
                         getcsgoAddData(tableData.battleId)
                         getCsgoScore(tableData.battleId)
                         getCsgoTotal(tableData.battleId)
+                        getCsgoRound(tableData.battleId)
                     }
                 }, 5000)
             })

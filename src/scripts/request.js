@@ -331,6 +331,15 @@ function csgoScore(params) {
     return postRequest('/battle/csgo_battle_info_total', params)
 }
 
+/**
+ *
+ * CSGO指定battle的round数据
+ * @param {*} params
+ */
+ function csgoRound(params) {
+    return postRequest('/battle/csgo_battle_round_info', params)
+}
+
 export {
     userRegister,
     userLogin,
@@ -356,6 +365,7 @@ export {
     lolTeam,
     csgoAddData,
     csgoScore,
-    csgoTotal
+    csgoTotal,
+    csgoRound
 }
 
