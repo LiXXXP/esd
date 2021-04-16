@@ -107,7 +107,7 @@
     import { useRoute, useRouter } from "vue-router"
     import { battleDetail } from "@/scripts/request"
     import { formatSeconds, formatNumber } from '@/scripts/utils'
-    import { defineComponent, reactive, toRefs, inject, watch, computed, onUnmounted } from 'vue'
+    import { defineComponent, reactive, toRefs, inject, watch, computed, onUnmounted, onMounted } from 'vue'
 
     export default defineComponent({
         setup(props,ctx) {
@@ -212,6 +212,7 @@
                 battleInfo: null,
                 teamInfo: [],
                 factions: [],
+                status: '',
                 timer: null
             })
             const getbattleDetail = (battleId) => {
@@ -225,6 +226,7 @@
                             teamsData.battleInfo = res.data
                             teamsData.teamInfo = res.data.team_info
                             teamsData.factions = res.data.battle_detail.factions
+                            teamsData.status = res.data.status
 
                             if(res.data.battle_detail.factions[0].faction !== 'radiant') {
                                 teamsData.factions.reverse()
@@ -235,10 +237,6 @@
                             }
 
                             battleDatas()
-
-                            if(res.data.status !== 'ongoing' ) {
-                                clearInterval(teamsData.timer)
-                            }
                             
                         } else {
                             clearInterval(teamsData.timer)
@@ -268,8 +266,13 @@
             watch(battleid, () => {
                 teamsData.battleId = battleid
                 getbattleDetail(teamsData.battleId)
+            })
+
+            onMounted(() => {
                 teamsData.timer = setInterval( () => {
-                    getbattleDetail(teamsData.battleId)
+                    if (teamsData.status === 'ongoing') {
+                        getbattleDetail(teamsData.battleId)
+                    }
                 }, 5000)
             })
 

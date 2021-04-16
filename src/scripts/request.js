@@ -349,6 +349,15 @@ function csgoScore(params) {
     return postRequest('/battle/csgo_battle_round_info', params)
 }
 
+/**
+ *
+ * DOTA2附加数据
+ * @param {*} params
+ */
+ function dotaAdditional(params) {
+    return postRequest('/battle/dota_battle_additional', params)
+}
+
 export {
     userRegister,
     userLogin,
@@ -376,6 +385,7 @@ export {
     csgoAddData,
     csgoScore,
     csgoTotal,
-    csgoRound
+    csgoRound,
+    dotaAdditional
 }
 

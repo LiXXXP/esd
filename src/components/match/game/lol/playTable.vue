@@ -147,9 +147,6 @@
                     if(res.code === 200) {
                         if(res.data.length !== 0) {
                             tableData.datas = res.data
-                            if(res.data.status !== 'ongoing' ) {
-                                clearInterval(tableData.timer)
-                            }
                         } else {
                             tableData.datas = null
                             clearInterval(tableData.timer)
