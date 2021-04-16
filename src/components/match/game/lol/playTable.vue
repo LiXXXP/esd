@@ -85,10 +85,6 @@
                 <th>率先获得五杀战队名称</th>
                 <th>率先获得十杀战队名称</th>
                 <th>首塔战队名称</th>
-                <th>首峡谷先锋战队名称</th>
-                <th>首小龙战队名称</th>
-                <th>击杀第二条小龙战队名称</th>
-                <th>首大龙战队名称</th>
             </thead>
             <tbody>
                 <tr>
@@ -96,6 +92,19 @@
                     <td>{{addData.first_to_5_kills_team_name}}</td>
                     <td>{{addData.first_to_10_kills_team_name}}</td>
                     <td>{{addData.first_turret_team_name}}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <table v-if="addData != null">
+            <thead>
+                <th>首峡谷先锋战队名称</th>
+                <th>首小龙战队名称</th>
+                <th>击杀第二条小龙战队名称</th>
+                <th>首大龙战队名称</th>
+            </thead>
+            <tbody>
+                <tr>
                     <td>{{addData.first_rift_herald_team_name}}</td>
                     <td>{{addData.first_dragon_team_name}}</td>
                     <td>{{addData.second_dragon_team_name}}</td>
