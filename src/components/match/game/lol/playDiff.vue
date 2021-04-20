@@ -27,13 +27,13 @@
 
     import { defineComponent, defineAsyncComponent, ref, reactive, toRefs, inject, watch, onMounted } from 'vue'
     import { lolGoldDiff } from "@/scripts/request"
+    import { formatSeconds } from '@/scripts/utils'
 
     export default defineComponent({
         setup(props,ctx) {
             const diffData = reactive({
                 name: '经济差/经验差',
                 battleId: 0,
-                goldDiffTimeline: []
             })
             
             const battleid = inject('battleid')
@@ -50,7 +50,40 @@
                 }
                 lolGoldDiff(params).then( res => {
                     if(res.code === 200) {
-                        diffData.goldDiffTimeline = res.data.gold_diff_timeline
+                        let goldArr = [], experienceArr = [], dateArr = []
+                        for(let item of res.data.gold_diff_timeline) {
+                            goldArr.push(item.gold_diff)
+                            dateArr.push(formatSeconds(item.ingame_timestamp))
+                        }
+                        for(let item of res.data.experience_diff_timeline) {
+                            experienceArr.push(item.experience_diff)
+                        }
+                        let myChart = echarts.init(echartRef.value)
+                        // 绘制图表
+                        myChart.setOption({
+                            tooltip: {},
+                            xAxis: {
+                                data: dateArr,
+                            },
+                            yAxis: {
+                                axisLine: {
+                                    show: true
+                                }
+                            },
+                            series: [
+                                {
+                                    name: "经济差",
+                                    type: "line",
+                                    data: goldArr
+                                },
+                                {
+                                    name: "经验差",
+                                    type: "line",
+                                    data: experienceArr
+                                }
+                            ],
+                            color: [ '#B29873', '#521DBD' ],
+                        })
                     }
                 })
             }
@@ -58,32 +91,7 @@
             const echartRef = ref(null)
             const echarts = inject('echarts')
 
-            onMounted( () => {
-                let myChart = echarts.init(echartRef.value)
-                // 绘制图表
-                myChart.setOption({
-                    xAxis: {
-                        data: ["12-3", "12-4", "12-5", "12-6", "12-7", "12-8"],
-                    },
-                    yAxis: {
-                        axisLine: {
-                            show: true
-                        }
-                    },
-                    series: [
-                        {
-                            name: "经济差",
-                            type: "line",
-                            data: [5, 20, 36, 10, 10, 20],
-                        },
-                        {
-                            name: "经验差",
-                            type: "line",
-                            data: [10, 20, 30, 40, 50, 60],
-                        }
-                    ],
-                    color: [ '#B29873', '#521DBD' ],
-                })
+            onMounted(() => {
                 //自适应大小
                 window.onresize = function () {
                     myChart.resize()

@@ -1,7 +1,7 @@
 <template>
     <div class="near">
-        <TitleView :titleName="titleName" v-if="list.lenght>0" />
-        <div class="clearfix" v-if="list.lenght>0">
+        <TitleView :titleName="titleName" v-if="list.length>0" />
+        <div class="clearfix" v-if="list.length>0">
             <div :class="['block',{'f-left': index === 0,'f-right': index === 1}]" 
                 v-for="(item,index) in list" :key="item.team_id">
                 <div class="team flex flex_only_center">
