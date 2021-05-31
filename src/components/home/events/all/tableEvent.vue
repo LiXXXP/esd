@@ -18,7 +18,7 @@
                         <td :class="[{
                             green: item.match_status !== '已结束' && item.match_status !== '未开始'
                         }]">{{item.match_status}}</td>
-                        <td style="width:300px;">{{item.tournament_name}}</td>
+                        <td class="tournament" @click="gotoMatch(item.tournament_id)">{{item.tournament_name}}</td>
                         <td>
                             <p>{{item.scheduled_begin_at.substring(0,10)}}</p>
                             <p>{{item.scheduled_begin_at.substring(11,19)}}</p>
@@ -73,7 +73,9 @@
             }
         },
         setup(props,ctx) {
+
             const router = useRouter()
+
             const gotoLink = (gameId,matchId,status) => {
                 if(status !== '未开始') {
                     router.push({
@@ -85,6 +87,7 @@
                     })
                 }
             }
+
             const gotoMean = (teamId) => {
                 router.push({
                     path: '/mean/detail',
@@ -93,9 +96,20 @@
                     }
                 })
             }
+
+            const gotoMatch = (tournamentId) => {
+                router.push({
+                    path: '/match/detail',
+                    query: {
+                        tournamentId: tournamentId
+                    }
+                })
+            }
+
             return {
                 gotoLink,
-                gotoMean
+                gotoMean,
+                gotoMatch
             }
         }
     })
@@ -131,6 +145,13 @@
             img {
                 width: 40px;
                 height: 40px;
+            }
+        }
+        .tournament {
+            width: 300px;
+            cursor: pointer;
+            &:hover {
+                color: #B29873;
             }
         }
         .home {

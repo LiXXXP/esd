@@ -38,7 +38,9 @@
                             <p class="beyond-ellipsis" :title="item.guest_team_name">{{item.guest_team_name}}</p>
                         </div>
                     </div>
-                    <p>{{item.tournament_name}}</p>
+                    <p @click="gotoMatch(item.tournament_id)" class="tournament">
+                        {{item.tournament_name}}
+                    </p>
                     <p>{{item.match_config}}</p>
                 </div>
             </div>
@@ -62,10 +64,13 @@
         },
         emits: ['cutData'],
         setup(props,{ emit }) {
+
             const cut = (val) => {
                 emit('cutData',val)
             }
+
             const router = useRouter()
+
             const gotoLink = (status, gameId,matchId) => {
                 if(status !== '敬请期待') {
                     router.push({
@@ -77,6 +82,7 @@
                     })
                 }
             }
+
             const gotoMean = (teamId) => {
                 router.push({
                     path: '/mean/detail',
@@ -85,10 +91,21 @@
                     }
                 })
             }
+
+            const gotoMatch = (tournamentId) => {
+                router.push({
+                    path: '/match/detail',
+                    query: {
+                        tournamentId: tournamentId
+                    }
+                })
+            }
+
             return {
                 cut,
                 gotoLink,
-                gotoMean
+                gotoMean,
+                gotoMatch
             }
         },
     })
@@ -205,6 +222,9 @@
                         font-size: 12px;
                         color: #E9E9E9;
                         text-align: center;
+                    }
+                    .tournament:hover {
+                        color: #B29873;
                     }
                 }
             }
