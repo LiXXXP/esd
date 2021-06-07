@@ -237,7 +237,7 @@
 
             onMounted(() => {
                 tableData.timer = setInterval( () => {
-                    if(tableData.status === 'ongoing') {
+                    if(tableData.status === 'onging') {
                         getcsgoAddData(tableData.battleId)
                         getCsgoScore(tableData.battleId)
                         getCsgoTotal(tableData.battleId)

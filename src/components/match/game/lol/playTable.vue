@@ -214,7 +214,7 @@
 
             onMounted(() => {
                 tableData.timer = setInterval( () => {
-                    if(tableData.status === 'ongoing') { 
+                    if(tableData.status === 'onging') { 
                         getlolAddData(tableData.battleId)
                         getlolTeams(tableData.battleId)
                         getlolAdditional(tableData.battleId)

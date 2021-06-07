@@ -114,7 +114,7 @@
 
             onMounted(() => {
                 tableData.timer = setInterval( () => {
-                    if(tableData.status === 'ongoing') { 
+                    if(tableData.status === 'onging') { 
                         getdotaAddData(tableData.battleId)
                     }
                 }, 5000)
