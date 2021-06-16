@@ -8,7 +8,7 @@ environmentVar = '复刻'
 // environmentVar = '极速'
 
 if(environmentVar === '复刻') {
-    sparkUrlVar = 'https://sapi.esport.beer'
+    sparkUrlVar = 'http://sapi.esport.beer'
     basePathVar = '/'
 } else if(environmentVar === '极速') {
     sparkUrlVar = 'https://tools.esport.beer'
